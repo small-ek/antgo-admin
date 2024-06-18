@@ -1,0 +1,16 @@
+package api
+
+import (
+	"server/app/entity/vo"
+	"github.com/gin-gonic/gin"
+)
+
+type IndexController struct {
+	vo.Base
+}
+
+// Index
+func (ctrl *IndexController) Index(c *gin.Context) {
+	c.String(200, "Hello AntGo")
+}
+
