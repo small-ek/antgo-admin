@@ -20,7 +20,7 @@ export default defineConfig({
         //预加载
         seoPrerender({
             hashHistory: false,　// 使用hash路由，需设置为true
-            routes: ['/test', "/test2"], // 需要生成的路由,无法使用二级目录
+            routes: ['/login'], // 需要生成的路由,无法使用二级目录
             callback: (html, route) => { //渲染和处理public下.html文件处理回调事件
 
             },
