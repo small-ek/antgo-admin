@@ -15,4 +15,3 @@ import "server/boot/serve"
 func main() {
 	serve.LoadSrv()
 }
-

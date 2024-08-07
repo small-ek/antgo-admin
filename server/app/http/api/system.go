@@ -5,12 +5,11 @@ import (
 	"server/app/entity/vo"
 )
 
-type IndexController struct {
+type SystemController struct {
 	vo.Base
 }
 
 // Index
-func (ctrl *IndexController) Index(c *gin.Context) {
+func (ctrl *SystemController) Index(c *gin.Context) {
 	c.String(200, "Hello AntGo")
 }
-

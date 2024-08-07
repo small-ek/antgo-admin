@@ -31,7 +31,7 @@
                       </template>
                     </a-input>
                     <div class="login-code">
-                      <img :src="show.pic" @click="reloadCaptcha" class="login-code-img"/>
+                      <img :src="show.pic" @click="reloadCaptcha" class="login-code-img" alt="验证码"/>
                     </div>
                   </a-form-item>
                   <a-form-item>
