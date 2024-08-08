@@ -13,4 +13,3 @@ type IndexController struct {
 func (ctrl *IndexController) Index(c *gin.Context) {
 	c.String(200, "Hello AntGo")
 }
-

@@ -17,7 +17,7 @@ export default defineConfig({
     },
     plugins: [
         vue(),
-        //预加载
+        //预加载,生成预渲染文件
         seoPrerender({
             hashHistory: false,　// 使用hash路由，需设置为true
             routes: ['/login'], // 需要生成的路由,无法使用二级目录
@@ -31,9 +31,7 @@ export default defineConfig({
             resolvers: [ArcoResolver({
                 importStyle: 'less',
             })],
-
         }),
-
         Components({
             resolvers: [
                 ArcoResolver({
@@ -42,7 +40,8 @@ export default defineConfig({
             ]
         }),
         vitePluginForArco({
-            style: 'css'
+            style: 'css',
+            theme: '@arco-themes/vue-ant-admin' // 自定义主题不要单独引入，会导致样式重复引入且不生效,https://arco.design/themes
         }),
         // 压缩插件
         viteCompression({

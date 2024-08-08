@@ -35,7 +35,7 @@
                     </div>
                   </a-form-item>
                   <a-form-item>
-                    <a-button round html-type="submit" long type="primary" size="large" shape="round">
+                    <a-button round html-type="submit" long type="primary" size="large" >
                       登 &nbsp 录
                     </a-button>
                   </a-form-item>
