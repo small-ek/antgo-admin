@@ -6,11 +6,13 @@ require (
 	github.com/gin-contrib/cors v1.7.2
 	github.com/gin-contrib/requestid v1.0.2
 	github.com/gin-gonic/gin v1.10.0
-	github.com/small-ek/antgo v1.6.8
+	github.com/mojocn/base64Captcha v1.3.6
+	github.com/small-ek/antgo v1.6.9
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.3
 	go.uber.org/zap v1.27.0
+	gorm.io/gorm v1.25.5
 )
 
 require (
@@ -48,8 +50,10 @@ require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
+	github.com/golang-jwt/jwt/v5 v5.2.0 // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
+	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
@@ -126,6 +130,7 @@ require (
 	golang.org/x/arch v0.8.0 // indirect
 	golang.org/x/crypto v0.23.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
+	golang.org/x/image v0.13.0 // indirect
 	golang.org/x/net v0.25.0 // indirect
 	golang.org/x/oauth2 v0.15.0 // indirect
 	golang.org/x/sync v0.5.0 // indirect
@@ -148,6 +153,5 @@ require (
 	gorm.io/driver/mysql v1.5.2 // indirect
 	gorm.io/driver/postgres v1.5.4 // indirect
 	gorm.io/driver/sqlserver v1.5.2 // indirect
-	gorm.io/gorm v1.25.5 // indirect
 	gorm.io/plugin/dbresolver v1.5.0 // indirect
 )

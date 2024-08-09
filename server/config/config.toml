@@ -7,14 +7,14 @@ cors = false
 #是否开发调试模式
 debug = true
 #项目名称
-app_name="antgo"
+app_name = "antgo"
 
 #接口请求日志
 [log]
 #路径
 path = "./log/ant.log"
 #输出格式 支持(json、console)
-format = "console"
+format = "json"
 #日志服务名称
 service_name = "antgo"
 #日志输出等级 all、info、warn、error、debug、dpanic、panic、fatal
@@ -35,7 +35,7 @@ compress = false
 #数据库设置
 [[connections]]
 #数据库名称(必须唯一)
-name = ""
+name = "mysql"
 #数据库类型支持mysql、pgsql、sqlsrv、clickhouse
 type = "mysql"
 #服务器地址
@@ -43,11 +43,11 @@ hostname = "127.0.0.1"
 #服务器端口
 port = "3306"
 #数据库用户名
-username = ""
+username = "root"
 #数据库密码
-password = ""
+password = "root"
 #数据库名
-database = ""
+database = "antgo"
 #数据库连接参数
 params = "charset=utf8mb4&parseTime=True&loc=Local"
 #是否开启日志
@@ -55,13 +55,16 @@ log = true
 #设置空闲连接池中的最大连接数
 max_idle_conns = 100
 #设置数据库的最大打开连接数。
-max_open_conns= 200
+max_open_conns = 200
 #设置连接可能被重用的最大时间(秒)。
-conn_max_lifetime=300
-
+conn_max_lifetime = 300
+#设置连接最大生命周期(小时)。
+conn_max_idleTime = 2
+#日志等级,1=静默;2=错误;3=警告;4=信息
+level = 4
 #Redis配置
 [[redis]]
-name=""
+name = ""
 address = ""
 password = ""
 db = 0
@@ -74,10 +77,19 @@ from = ''
 host = ''
 secret = ''
 
+#图片验证码
+[captcha]
+#验证码长度
+length = 4
+#验证码宽度
+width = 240
+#验证码高度
+height = 80
+
 #Json web token
 [jwt]
 #过期时间(秒)
-exp=168
+exp = 168
 #私钥
 private_key = ""
 #公钥
