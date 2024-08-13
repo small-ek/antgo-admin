@@ -1,13 +1,14 @@
 import {defineStore} from 'pinia';
+import {useDevice} from "@/utils/device.js";
+
 
 export const useUserLoginStore = defineStore('userLogin', {
     state: () => {
         return {
-            authorization: uni.getStorageSync("authorization") || "",
-            userInfo: uni.getStorageSync("userInfo") || {},
-            expiresAt: uni.getStorageSync("expiresAt") || "",
-            deviceId: uni.getStorageSync("deviceId") || "",
-            isLogin: uni.getStorageSync("authorization") !== "",
+            authorization: "",
+            userInfo: {},
+            expiresAt: "",
+            deviceId: ""
         };
     },
     getters: {
@@ -19,14 +20,11 @@ export const useUserLoginStore = defineStore('userLogin', {
         },
         getDeviceId: (state) => {
             if (state.deviceId === "") {
-                state.deviceId = uni.getSystemInfoSync()?.deviceId;
-                uni.setStorageSync('deviceId', state.deviceId)
+                state.deviceId = useDevice().getUniqueNumber()
             }
             return state.deviceId;
         },
-        getIsLogin(state) {
-            return state.authorization !== "";
-        },
+
         getExpiresAt(state) {
             return state.expiresAt;
         }
@@ -34,15 +32,12 @@ export const useUserLoginStore = defineStore('userLogin', {
     actions: {
         setAuthorization(authorization) {
             this.authorization = authorization;
-            uni.setStorageSync("authorization", authorization);
         },
         setUserInfo(userInfo) {
             this.userInfo = userInfo;
-            uni.setStorageSync("userInfo", userInfo);
         },
         setExpiresAt(expiresAt) {
             this.expiresAt = expiresAt;
-            uni.setStorageSync("expiresAt", expiresAt);
         },
         // 登录
         login(userInfo) {
@@ -58,4 +53,15 @@ export const useUserLoginStore = defineStore('userLogin', {
             this.setExpiresAt("");
         }
     },
+    persist: {
+        // 开启持久化
+        enabled: true,
+        // 选择存储方式和内容
+        strategies: [
+            {
+                storage: localStorage,
+                paths: ['authorization', 'userInfo', 'expiresAt', 'deviceId']
+            }
+        ]
+    }
 });

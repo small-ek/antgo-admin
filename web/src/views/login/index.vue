@@ -35,7 +35,7 @@
                     </div>
                   </a-form-item>
                   <a-form-item>
-                    <a-button round html-type="submit" long type="primary" size="large" >
+                    <a-button round html-type="submit" long type="primary" size="large">
                       登 &nbsp 录
                     </a-button>
                   </a-form-item>
@@ -53,6 +53,7 @@
 <script setup>
 import {onMounted, reactive} from 'vue'
 import {IconLock, IconSafe, IconUser} from '@arco-design/web-vue/es/icon';
+import {getCaptcha} from "@/api/common.js";
 
 const rules = reactive({
   username: [
@@ -79,10 +80,10 @@ let show = reactive({
 
 //验证码
 const reloadCaptcha = () => {
-  // User.Captcha().then(res => {
-  //   show.pic = res.data.result.pic
-  //   form.id = res.data.result.id
-  // })
+  getCaptcha().then(res => {
+    show.pic = res.result.pic
+    form.id = res.result.id
+  })
 }
 onMounted(() => {
   reloadCaptcha()

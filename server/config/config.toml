@@ -3,7 +3,7 @@
 #启动地址
 address = "9001"
 #是否开启跨域
-cors = false
+cors = true
 #是否开发调试模式
 debug = true
 #项目名称
