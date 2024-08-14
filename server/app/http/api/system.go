@@ -19,13 +19,11 @@ func NewSystemController() *SystemController {
 	return &SystemController{}
 }
 
+//	@Tags			系统
 //	@Summary		获取验证码
-//	@Description	获取验证码相关数据
-//	@Tags			Report
 //	@Accept			json
 //	@Produce		json
-//	@Param		    data query request.ReportRequest true "分页获取列表"
-//	@Success		200	{array}		response.Write
+//	@Success		200	{object}	response.Write{data=vo.ResponseCaptcha}
 //	@Failure		500	{object}	response.Write
 //	@Router			/captcha [get] 路由
 //
@@ -35,9 +33,9 @@ func (ctrl *SystemController) Captcha(c *gin.Context) {
 	// cp := base64Captcha.NewCaptcha(driver, store.UseWithCtx(c))   // 使用redis
 	cp := base64Captcha.NewCaptcha(driver, store)
 	if id, b64s, _, err := cp.Generate(); err != nil {
-		ctrl.Fail(c, "验证码获取失败", err.Error())
+		ctrl.Fail(c, "ERROR", err.Error())
 	} else {
-		ctrl.Success(c, "success", vo.ResponseCaptcha{
+		ctrl.Success(c, "SUCCESS", vo.ResponseCaptcha{
 			Id:  id,
 			Pic: b64s,
 		})

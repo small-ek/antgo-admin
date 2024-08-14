@@ -31,7 +31,7 @@
                       </template>
                     </a-input>
                     <div class="login-code">
-                      <img :src="show.pic" @click="reloadCaptcha" class="login-code-img" alt="验证码"/>
+                      <img :src="captcha" @click="reloadCaptcha" class="login-code-img" alt="验证码"/>
                     </div>
                   </a-form-item>
                   <a-form-item>
@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import {onMounted, reactive} from 'vue'
+import {onMounted, reactive, ref} from 'vue'
 import {IconLock, IconSafe, IconUser} from '@arco-design/web-vue/es/icon';
 import {getCaptcha} from "@/api/common.js";
 
@@ -74,15 +74,13 @@ const form = reactive({
   id: ""
 })
 
-let show = reactive({
-  pic: ""
-})
+let captcha = ref("")
 
 //验证码
 const reloadCaptcha = () => {
   getCaptcha().then(res => {
-    show.pic = res.result.pic
-    form.id = res.result.id
+    captcha.value = res.data.pic
+    form.id = res.data.id
   })
 }
 onMounted(() => {

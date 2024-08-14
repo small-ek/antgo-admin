@@ -7,7 +7,7 @@ NProgress.configure({
     showSpinner: true, // 是否显示加载ico
     trickleSpeed: 200, // 自动递增间隔
     minimum: 0.3, // 初始化时的最小百分比
-    barColor: '#ff0000', // 进度条颜色
-    spinnerColor: '#ff0000' // 加载图标颜色
+    barColor: '#F56C6C', // 进度条颜色
+    spinnerColor: '#F56C6C' // 加载图标颜色
 });
 export default NProgress;

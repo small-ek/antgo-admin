@@ -11,4 +11,5 @@ func IndexRoute(route *gin.RouterGroup) {
 
 	NewSystemController := api.NewSystemController()
 	route.GET("captcha", NewSystemController.Captcha) //验证码
+
 }
