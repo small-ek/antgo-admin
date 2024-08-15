@@ -53,7 +53,7 @@
 <script setup>
 import {onMounted, reactive, ref} from 'vue'
 import {IconLock, IconSafe, IconUser} from '@arco-design/web-vue/es/icon';
-import {getCaptcha} from "@/api/common.js";
+import {getCaptcha, login} from "@/api/common.js";
 
 const rules = reactive({
   username: [
@@ -67,7 +67,7 @@ const rules = reactive({
   ],
 })
 
-const form = reactive({
+const form = ref({
   username: '',
   password: '',
   code: "",
@@ -80,7 +80,7 @@ let captcha = ref("")
 const reloadCaptcha = () => {
   getCaptcha().then(res => {
     captcha.value = res.data.pic
-    form.id = res.data.id
+    form.value.id = res.data.id
   })
 }
 onMounted(() => {
@@ -88,7 +88,10 @@ onMounted(() => {
 })
 
 const onSubmit = () => {
-  console.log(form)
+  console.log(form.value)
+  login(form.value).then(res => {
+    console.log(res)
+  })
 }
 </script>
 

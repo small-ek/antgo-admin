@@ -6,10 +6,10 @@ let config = {
 
 if (process.env.NODE_ENV === 'development') {
     // 开发环境
-    config.url = 'http://127.0.0.1:9001'
+    config.url = 'http://127.0.0.1:9001/api/'
 } else {
     // 生产环境
-    config.url = 'http://127.0.0.1:9001'
+    config.url = 'http://127.0.0.1:9001/api/'
 }
 
 export default config

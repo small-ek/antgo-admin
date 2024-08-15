@@ -39,9 +39,10 @@ func Router() *gin.Engine {
 func Load() *gin.Engine {
 	app := Router()
 	//添加路由组前缀
-	Group := app.Group("")
+	Group := app.Group("api")
 	//注册路由
 	routes.IndexRoute(Group)
+	routes.SysAdminUsersRoute(Group)
 	Group.Use(middleware.AuthJWT())
 	{
 

@@ -26,7 +26,7 @@ func AuthJWT() gin.HandlerFunc {
 			return
 		}
 
-		getUser := dao.NewSysAdminsDao().GetById(conv.Int(getAuthorization["id"]))
+		getUser := dao.NewSysAdminUsersDao().GetById(conv.Int(getAuthorization["id"]))
 		if getUser.Id == 0 {
 			c.AbortWithStatusJSON(401, response.Fail("用户不存在,请重新登录", 401))
 			return
@@ -38,10 +38,10 @@ func AuthJWT() gin.HandlerFunc {
 }
 
 // GetUser 获取当前用户
-func GetUser(c *gin.Context) models.SysAdmins {
-	userModel, ok := c.MustGet("user").(models.SysAdmins)
+func GetUser(c *gin.Context) models.SysAdminUsers {
+	userModel, ok := c.MustGet("user").(models.SysAdminUsers)
 	if !ok {
-		return models.SysAdmins{}
+		return models.SysAdminUsers{}
 	}
 	return userModel
 }
