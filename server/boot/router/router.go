@@ -9,7 +9,6 @@ import (
 	"github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
 	"io/ioutil"
-	"server/app/http/middleware"
 	_ "server/docs"
 	"server/routes"
 )
@@ -42,10 +41,6 @@ func Load() *gin.Engine {
 	Group := app.Group("api")
 	//注册路由
 	routes.IndexRoute(Group)
-	routes.SysAdminUsersRoute(Group)
-	Group.Use(middleware.AuthJWT())
-	{
 
-	}
 	return app
 }

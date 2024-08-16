@@ -52,9 +52,17 @@
 
 <script setup>
 import {onMounted, reactive, ref} from 'vue'
+import {useRouter} from "vue-router";
 import {IconLock, IconSafe, IconUser} from '@arco-design/web-vue/es/icon';
 import {getCaptcha, login} from "@/api/common.js";
+import {useI18n} from "vue-i18n"
+import {Message} from "@arco-design/web-vue";
+import {useUserLoginStore} from "@/stores/userLogin.js";
+import {useNavigation} from "@/utils/base.js";
+const router = useRouter();
+const {jump} = useNavigation(router);
 
+const {t} = useI18n()
 const rules = reactive({
   username: [
     {required: true, message: '请输入用户名', trigger: 'blur'},
@@ -90,7 +98,14 @@ onMounted(() => {
 const onSubmit = () => {
   console.log(form.value)
   login(form.value).then(res => {
-    console.log(res)
+    if (res.code === 200) {
+      useUserLoginStore().login(res.data)
+      Message.info(t('login.' + res.message))
+      jump("/")
+    } else {
+      reloadCaptcha()
+      Message.error(t('tip.' + res.message))
+    }
   })
 }
 </script>

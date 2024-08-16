@@ -2,7 +2,7 @@ package request
 
 import (
 	"github.com/small-ek/antgo/utils/page"
-	"server/app/models"
+	"server/app/entity/models"
 )
 
 type SysAdminUsersRequest struct {

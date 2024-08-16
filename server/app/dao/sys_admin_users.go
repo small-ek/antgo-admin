@@ -5,7 +5,7 @@ import (
 	"github.com/small-ek/antgo/frame/ant"
 	"github.com/small-ek/antgo/utils/page"
 	"gorm.io/gorm"
-	"server/app/models"
+	"server/app/entity/models"
 )
 
 type SysAdminUsersDao struct {

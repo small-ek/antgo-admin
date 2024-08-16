@@ -13,10 +13,12 @@ type Base struct {
 
 // Success 成功返回
 func (b *Base) Success(c *gin.Context, msg string, data ...interface{}) {
-	if b.Code == 0 {
-		b.Code = 200
+	code := 200
+	if b.Code != 0 {
+		code = b.Code
 	}
-	c.SecureJSON(200, response.Success(msg, b.Code, data...))
+
+	c.SecureJSON(200, response.Success(msg, code, data...))
 }
 
 // Fail 错误返回
@@ -24,16 +26,18 @@ func (b *Base) Fail(c *gin.Context, msg string, err ...string) {
 	if len(err) > 0 {
 		alog.Write.Debug("Return error", zap.Any("error", err))
 	}
-	if b.Code == 0 {
-		b.Code = 422
+	code := 422
+	if b.Code != 0 {
+		code = b.Code
 	}
-	c.SecureJSON(200, response.Fail(msg, b.Code, err...))
+
+	c.SecureJSON(200, response.Fail(msg, code, err...))
 
 }
 
-// SetStatus 修改状态
-func (b *Base) SetStatus(status int) *Base {
-	b.Code = status
+// SetCode 修改状态
+func (b *Base) SetCode(code int) *Base {
+	b.Code = code
 	return b
 }
 

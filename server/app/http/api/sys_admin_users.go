@@ -43,7 +43,7 @@ func (ctrl *SysAdminUsersController) Index(c *gin.Context) {
 		ctrl.Fail(c, "INVALID_REQUEST_PARAMETERS", err.Error())
 		return
 	}
-	ctrl.Success(c, "SUCCESS", ctrl.Page(total, list))
+	ctrl.SetCode(102).Success(c, "SUCCESS", ctrl.Page(total, list))
 }
 
 //	@Tags			管理员用户

@@ -21,7 +21,7 @@
 - 框架Cli工具：ant-cli
 - 安装：go install github.com/small-ek/ant-cli@latest
 - 帮助文档：ant-cli h
-- RSA生成：ant-cli rsa
+- RSA生成用于JWT配置：ant-cli rsa
 - 创建项目:ant-cli create demo
 - 生成接口相关内容,请先设置配置文件,生成后需要执行:ant-cli install
 - 命令根据表生成接口：ant-cli gen api database.table

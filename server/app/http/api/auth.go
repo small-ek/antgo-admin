@@ -63,6 +63,10 @@ func (ctrl *AuthController) Login(c *gin.Context) {
 		ctrl.Fail(c, "INVALID_REQUEST_PARAMETERS", err.Error())
 		return
 	}
+	if ctrl.verifyCaptcha(req.Id, req.Code) == false {
+		ctrl.Fail(c, "CAPTCHA_ERROR")
+		return
+	}
 
 	if result, err := ctrl.SysAdminUsersService.SetReqLoginForm(req).Login(); err != nil {
 		ctrl.Fail(c, "LOGIN_ERROR", err.Error())
@@ -70,5 +74,12 @@ func (ctrl *AuthController) Login(c *gin.Context) {
 	} else {
 		ctrl.Success(c, "SUCCESS", result)
 	}
+}
 
+// verifyCaptcha 验证验证码
+func (ctrl *AuthController) verifyCaptcha(id string, VerifyValue string) bool {
+	if store.Verify(id, VerifyValue, true) {
+		return true
+	}
+	return false
 }

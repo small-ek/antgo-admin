@@ -1,0 +1,14 @@
+{
+  "tip": {
+    "INVALID_REQUEST_PARAMETERS": "请求参数无效",
+    "CAPTCHA_ERROR": "验证码错误",
+    "LOGIN_ERROR": "登录失败",
+    "SUCCESS": "操作成功",
+    "CREATION_FAILED": "创建失败",
+    "UPDATE_FAILED": "更新失败",
+    "DELETE_FAILED": "删除失败"
+  },
+  "login": {
+    "SUCCESS": "登录成功"
+  }
+}

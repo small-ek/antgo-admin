@@ -12,11 +12,11 @@ app_name = "antgo"
 #接口请求日志
 [log]
 #路径
-path = "./log/ant.log"
+path = "./log/app.log"
 #输出格式 支持(json、console)
-format = "json"
+format = "console"
 #日志服务名称
-service_name = "antgo"
+service_name = "admin"
 #日志输出等级 all、info、warn、error、debug、dpanic、panic、fatal
 level = "all"
 #是否输出控制台
@@ -92,6 +92,42 @@ height = 80
 #过期时间(秒)
 exp = 168
 #私钥
-private_key = ""
+private_key = """-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAtKaIYSS59GF8vxJooI1THCFR6Q6bzcEf2LnQHdkuWd0oVGf5
+JAsbPiNtQ45+AhKRfIfmoSWUzSl2lBZ64TGIL+jhX2bUy3N3R20weT0roNEGW9pA
+/uf7YDYFgIed2fQpwQ8MfvtPWsiIZpOnc1OE8TYeZZLbkb93rVyles/WjhYtMCGH
+pKrI21IbknKqMJkFfb3gi0mQidqy1lvd6OIfaXacbfkuoJmANA/KFQ5Ywii6RX4W
+zoJunW410bbm8tEpR17XKymEoFzuo8+QWfjqoVhD4lmIW0gww9hXhA8/U6fiaUwL
+J586MDuNzQImnxaJ/WuUPNzlOfaSKUW06DASlQIDAQABAoIBAGZu23wB4DNTJ/IM
+FSmcmRilSBXXg776l/1C92BFasPn5FtgDWRDq/HjEqyw2oCAWOB9CugrMCHZNfSo
+foq8lFVePpTi8Rxf362vm0HTzq5Ed8+ThTFFB0O5vgrwWzBgA2EGEHbcN1XpyXYo
+mVWKcSJ5JmlACaKuJ8U0eFyYBzfPJXLqF4rIALBSbDE4MQGZEz85/U0Mf7zMU7Ks
+JjX8661xlufnKDLlCRxNQh9Uarf9R4//LFtdLrFy2CkvrjArzfX50k3MORSjJEJt
+GTX8nXiEGTpnNL8UfaUPekXwM0Ua/4j+EVOslruWYg5YuJHbIWSHaTgr4rb/BF5Y
+Ip7RaCECgYEA2MsPBVeu1Y8aAttNecWnQLf8zxmaKj2Ozms1md24wWEUTnQFfILT
+Br9igghjI3MbF08ERAmD75lstl11/KNzHqSk3HhOJMkY7rUQ8M6ytsmMvrsfea41
+qCKtLwISfZ6dFMHgBMPQJDgaB6AOmrfQ7V63C+pPTd9VouLkkRHsGb0CgYEA1VIq
+UiefJzCdRx1qdnkNaj/ryiu6tLExA9wUujOpKNV1h3tcPBn6VZi0GTwtmEzUAbtp
+ciQ5IKdIq5Pcc4SjvG8THsreP3a8eWpJ2Cgi+6trXbQk3axMmHorYFqCq10/ZyPD
+Y2m9qvLFQ1H843N1A01Oix9Mcz4066DQY8fMbbkCgYAHTB5/UYpDCgQYIIWlGbAd
+j5Pk7Lmxvky2SgmN2lbDu57RXTpqDIVJ7ttEAUBFCzTYPgKov6E/SWzNXqwACwhu
++Z/LBAmtV0+NiW6+jFabrIEeUnImyGRp+nDV6j3xGIu1DSmbP3QcI/9MTmjvcEyK
+EOwcbJCq0F+zkeubrnzCCQKBgHDLYl9QXgId3XvF3Q5J0cMVi3q6Bp4WdyFgVIFk
+YZSa0etSWiHZZpmuBcS2IjG+pfdIfmgBKUfPzEgVBeL7BozTepu0jzGleeEFR4iJ
+KH5EVKAWacvgmBujtZ3cHe24f5bsvRqqxcRHW/DNwFcQLJYTYW2EnirtgJP601V/
+RuPZAoGBALfKZEKMJS7wqOnw2oqOQCHSaXniTjh+0WeSASiSYI8xZC9JsXbVfNfG
+yLPW8BvM3iblkV6h2wlTBlwCJNjCtg8OKUzoPzDi4qkOgAYLgbYgcxhkkFBttrLG
+Fcxq3Tjr5U5RP2huHBmBfmfVpOALTwzsKXyVZd2VRPeljM0IaFPA
+-----END RSA PRIVATE KEY-----
+"""
 #公钥
-public_key = ""
+public_key = """-----BEGIN RSA PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtKaIYSS59GF8vxJooI1T
+HCFR6Q6bzcEf2LnQHdkuWd0oVGf5JAsbPiNtQ45+AhKRfIfmoSWUzSl2lBZ64TGI
+L+jhX2bUy3N3R20weT0roNEGW9pA/uf7YDYFgIed2fQpwQ8MfvtPWsiIZpOnc1OE
+8TYeZZLbkb93rVyles/WjhYtMCGHpKrI21IbknKqMJkFfb3gi0mQidqy1lvd6OIf
+aXacbfkuoJmANA/KFQ5Ywii6RX4WzoJunW410bbm8tEpR17XKymEoFzuo8+QWfjq
+oVhD4lmIW0gww9hXhA8/U6fiaUwLJ586MDuNzQImnxaJ/WuUPNzlOfaSKUW06DAS
+lQIDAQAB
+-----END RSA PUBLIC KEY-----
+"""

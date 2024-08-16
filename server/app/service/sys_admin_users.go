@@ -6,8 +6,8 @@ import (
 	"github.com/small-ek/antgo/utils/conv"
 	"github.com/small-ek/antgo/utils/jwt"
 	"server/app/dao"
+	"server/app/entity/models"
 	"server/app/entity/request"
-	"server/app/models"
 	"server/utils"
 	"time"
 )
@@ -72,16 +72,16 @@ func (svc *SysAdminUsers) Delete() error {
 // Login 添加
 func (svc *SysAdminUsers) Login() (result map[string]interface{}, err error) {
 	item := dao.NewSysAdminUsersDao().GetByUserName(svc.reqLoginForm.Username)
-
 	if utils.VerifyPassword(item.Password, svc.reqLoginForm.Password) == true {
 
-		token, err := svc.token(map[string]interface{}{"id": item.Id, "username": item.Username})
+		token, expiresAt, err := svc.token(map[string]interface{}{"id": item.Id, "username": item.Username})
 		if err != nil {
 			return nil, err
 		}
 
 		return map[string]interface{}{
-			"token": token,
+			"token":     token,
+			"expiresAt": expiresAt,
 			"user": map[string]interface{}{
 				"username": item.Username,
 				"nickname": item.NickName,
@@ -91,9 +91,9 @@ func (svc *SysAdminUsers) Login() (result map[string]interface{}, err error) {
 }
 
 // token 生成token
-func (svc *SysAdminUsers) token(str map[string]interface{}) (token string, err error) {
+func (svc *SysAdminUsers) token(str map[string]interface{}) (token string, expiresAt int64, err error) {
 	var j = jwt.New().SetPrivateKey(conv.Bytes(config.GetString("jwt.private_key")))
-	exp := time.Now().Add(time.Hour * time.Duration(config.GetInt64("jwt.exp"))).Unix()
-	token, err = j.Encrypt(str, exp)
+	expiresAt = time.Now().Add(time.Hour * time.Duration(config.GetInt64("jwt.exp"))).Unix()
+	token, err = j.Encrypt(str, expiresAt)
 	return
 }

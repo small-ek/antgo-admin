@@ -7,7 +7,7 @@ import (
 	"github.com/small-ek/antgo/utils/jwt"
 	"github.com/small-ek/antgo/utils/response"
 	"server/app/dao"
-	"server/app/models"
+	"server/app/entity/models"
 )
 
 func AuthJWT() gin.HandlerFunc {
