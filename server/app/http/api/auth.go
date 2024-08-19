@@ -60,19 +60,19 @@ func (ctrl *AuthController) Captcha(c *gin.Context) {
 func (ctrl *AuthController) Login(c *gin.Context) {
 	var req request.SysAdminUsersLoginRequestForm
 	if err := c.ShouldBindJSON(&req); err != nil {
-		ctrl.Fail(c, "INVALID_REQUEST_PARAMETERS", err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
 		return
 	}
 	if ctrl.verifyCaptcha(req.Id, req.Code) == false {
-		ctrl.Fail(c, "CAPTCHA_ERROR")
+		ctrl.Fail(c, vo.CAPTCHA_ERROR)
 		return
 	}
 
 	if result, err := ctrl.SysAdminUsersService.SetReqLoginForm(req).Login(); err != nil {
-		ctrl.Fail(c, "LOGIN_ERROR", err.Error())
+		ctrl.Fail(c, vo.LOGIN_ERROR, err.Error())
 		return
 	} else {
-		ctrl.Success(c, "SUCCESS", result)
+		ctrl.Success(c, vo.SUCCESS, result)
 	}
 }
 

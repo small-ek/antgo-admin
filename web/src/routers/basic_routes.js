@@ -1,11 +1,6 @@
 // 基础路由
 const routes = [
     {
-        path: '/',
-        component: () => import('@/views/home/index.vue'),
-        hidden: true,
-    },
-    {
         path: '/login',
         component: () => import('@/views/login/index.vue'),
         meta: {
@@ -13,7 +8,22 @@ const routes = [
             keywords: '后台登录',
             description: '后台登录'
         },
-        hidden: true,
+    },
+    {
+        path: '/',
+        name: 'index',
+        component: () => import('@/layout/index.vue'),
+        children: [
+            {
+                path: '/',
+                component: () => import('@/views/user/index.vue'),
+                meta: {
+                    title: '关于我们33',
+                    keywords: '关键词44, 关键词55',
+                    description: '关于我们描述4666'
+                },
+            },
+        ],
     },
     {
         path: '/user',
@@ -23,10 +33,8 @@ const routes = [
             keywords: '关键词44, 关键词55',
             description: '关于我们描述4666'
         },
-        hidden: true,
     },
 ]
-
 
 
 export default routes

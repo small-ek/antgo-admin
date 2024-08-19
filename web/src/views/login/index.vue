@@ -52,16 +52,17 @@
 
 <script setup>
 import {onMounted, reactive, ref} from 'vue'
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {IconLock, IconSafe, IconUser} from '@arco-design/web-vue/es/icon';
 import {getCaptcha, login} from "@/api/common.js";
 import {useI18n} from "vue-i18n"
 import {Message} from "@arco-design/web-vue";
 import {useUserLoginStore} from "@/stores/userLogin.js";
 import {useNavigation} from "@/utils/base.js";
+
 const router = useRouter();
 const {jump} = useNavigation(router);
-
+const route = useRoute()
 const {t} = useI18n()
 const rules = reactive({
   username: [
@@ -95,13 +96,13 @@ onMounted(() => {
   reloadCaptcha()
 })
 
+//登录
 const onSubmit = () => {
-  console.log(form.value)
   login(form.value).then(res => {
     if (res.code === 200) {
       useUserLoginStore().login(res.data)
-      Message.info(t('login.' + res.message))
-      jump("/")
+      Message.info(t('tip.' + res.message))
+      jump(route.query.redirect || '/')
     } else {
       reloadCaptcha()
       Message.error(t('tip.' + res.message))

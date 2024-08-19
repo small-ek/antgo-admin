@@ -13,7 +13,6 @@
     "axios": "^1.7.2",
     "clientjs": "^0.2.1",
     "nprogress": "^0.2.0",
-    "peerjs": "^1.5.4",
     "pinia": "^2.1.7",
     "pinia-plugin-persist": "^1.0.0",
     "vue": "^3.4.29",

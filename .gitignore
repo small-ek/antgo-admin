@@ -27,3 +27,5 @@ web/pnpm-lock.yaml
 web/package-lock.json
 server/docs/
 server/log/
+server/private.pem
+server/public.pem

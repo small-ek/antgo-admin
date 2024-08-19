@@ -27,6 +27,11 @@ func (dao *SysAdminUsersDao) DeleteById(id int) error {
 	return dao.db.Delete(&dao.models, id).Error
 }
 
+// DeleteByIds
+func (dao *SysAdminUsersDao) DeleteByIds(id []int) error {
+	return dao.db.Delete(&dao.models, id).Error
+}
+
 // Update
 func (dao *SysAdminUsersDao) Update(sysAdminUsers models.SysAdminUsers) error {
 	return dao.db.Updates(&sysAdminUsers).Error

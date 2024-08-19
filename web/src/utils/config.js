@@ -2,6 +2,7 @@ let config = {
     url: "",//请求地址
     timeout: 10000,
     token_expiration_time: 60 * 60 * 24 * 7,//token过期时间
+    noLoginUrls: ["/login"] //不需要登录的url
 }
 
 if (process.env.NODE_ENV === 'development') {

@@ -1,6 +1,8 @@
 import {createRouter, createWebHistory} from "vue-router";
-import routes from "./basic_routes"
-import NProgress from '../utils/nprogress';
+import routes from "./basic_routes.js"
+import NProgress from '@/utils/nprogress';
+import {useUserLoginStore} from "@/stores/userLogin.js";
+import config from "@/utils/config.js";
 
 //创建路由
 const router = createRouter({
@@ -10,29 +12,41 @@ const router = createRouter({
 
 
 //全局前置守卫
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to, from, next) => {
     NProgress.start();
+
+    const isLogin = useUserLoginStore().getAuthorization === ""
+    const isLoginUrl = config.noLoginUrls.includes(to.path)
+    if (isLogin && !isLoginUrl) {
+        next({path: '/login', query: {redirect: to.fullPath}});
+    } else {
+        next();
+    }
     return true
 })
 
 //全局后置钩子
 router.afterEach((to) => {
     const {title, keywords, description} = to.meta
+
     if (title) {
         document.title = title
     }
+
     if (keywords) {
         const metaKeywords = document.querySelector('meta[name="keywords"]')
         if (metaKeywords) {
             metaKeywords.content = keywords
         }
     }
+
     if (description) {
         const metaDescription = document.querySelector('meta[name="description"]')
         if (metaDescription) {
             metaDescription.content = description
         }
     }
+
     NProgress.done();
 
 });

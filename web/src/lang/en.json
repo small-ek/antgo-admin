@@ -6,6 +6,7 @@
     "SUCCESS": "Operation successful",
     "CREATION_FAILED": "Creation failed",
     "UPDATE_FAILED": "Update failed",
-    "DELETE_FAILED": "Delete failed"
+    "DELETE_FAILED": "Delete failed",
+    "LOGIN_SUCCESS": "Login successful"
   }
 }

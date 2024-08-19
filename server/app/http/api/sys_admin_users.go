@@ -34,16 +34,16 @@ func (ctrl *SysAdminUsersController) Index(c *gin.Context) {
 		PageParam: page.New(),
 	}
 	if err := c.ShouldBindQuery(&req); err != nil {
-		ctrl.Fail(c, "INVALID_REQUEST_PARAMETERS", err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
 		return
 	}
 
 	list, total, err := ctrl.SysAdminUsersService.SetReq(req).Index()
 	if err != nil {
-		ctrl.Fail(c, "INVALID_REQUEST_PARAMETERS", err.Error())
+		ctrl.Fail(c, vo.FAILED, err.Error())
 		return
 	}
-	ctrl.SetCode(102).Success(c, "SUCCESS", ctrl.Page(total, list))
+	ctrl.SetCode(102).Success(c, vo.SUCCESS, ctrl.Page(total, list))
 }
 
 //	@Tags			管理员用户
@@ -58,12 +58,12 @@ func (ctrl *SysAdminUsersController) Index(c *gin.Context) {
 func (ctrl *SysAdminUsersController) Show(c *gin.Context) {
 	var req request.SysAdminUsersRequest
 	if err := c.ShouldBindUri(&req); err != nil {
-		ctrl.Fail(c, "INVALID_REQUEST_PARAMETERS", err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
 		return
 	}
 
 	result := ctrl.SysAdminUsersService.SetReq(req).Show()
-	ctrl.Success(c, "SUCCESS", result)
+	ctrl.Success(c, vo.SUCCESS, result)
 }
 
 //	@Tags			管理员用户
@@ -79,15 +79,15 @@ func (ctrl *SysAdminUsersController) Show(c *gin.Context) {
 func (ctrl *SysAdminUsersController) Create(c *gin.Context) {
 	var req request.SysAdminUsersRequestForm
 	if err := c.ShouldBindJSON(&req); err != nil {
-		ctrl.Fail(c, "INVALID_REQUEST_PARAMETERS", err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
 		return
 	}
 
 	if err := ctrl.SysAdminUsersService.SetReqForm(req).Store(); err != nil {
-		ctrl.Fail(c, "CREATION_FAILED", err.Error())
+		ctrl.Fail(c, vo.CREATION_FAILED, err.Error())
 		return
 	}
-	ctrl.Success(c, "SUCCESS")
+	ctrl.Success(c, vo.CREATION_SUCCESS)
 }
 
 //	@Tags			管理员用户
@@ -103,14 +103,14 @@ func (ctrl *SysAdminUsersController) Create(c *gin.Context) {
 func (ctrl *SysAdminUsersController) Update(c *gin.Context) {
 	var req request.SysAdminUsersRequestForm
 	if err := c.ShouldBindJSON(&req); err != nil {
-		ctrl.Fail(c, "INVALID_REQUEST_PARAMETERS", err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
 		return
 	}
 
 	if err := ctrl.SysAdminUsersService.SetReqForm(req).Update(); err != nil {
-		ctrl.Fail(c, "UPDATE_FAILED", err.Error())
+		ctrl.Fail(c, vo.UPDATE_FAILED, err.Error())
 	}
-	ctrl.Success(c, "SUCCESS")
+	ctrl.Success(c, vo.UPDATE_SUCCESS)
 }
 
 //	@Tags			管理员用户
@@ -125,14 +125,14 @@ func (ctrl *SysAdminUsersController) Update(c *gin.Context) {
 func (ctrl *SysAdminUsersController) Delete(c *gin.Context) {
 	var req request.SysAdminUsersRequest
 	if err := c.ShouldBindUri(&req); err != nil {
-		ctrl.Fail(c, "INVALID_REQUEST_PARAMETERS", err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
 		return
 	}
 
 	if err := ctrl.SysAdminUsersService.SetReq(req).Delete(); err != nil {
-		ctrl.Fail(c, "DELETE_FAILED", err.Error())
+		ctrl.Fail(c, vo.DELETE_FAILED, err.Error())
 		return
 	}
 
-	ctrl.Success(c, "SUCCESS")
+	ctrl.Success(c, vo.DELETE_SUCCESS)
 }
