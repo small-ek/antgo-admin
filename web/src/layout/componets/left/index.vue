@@ -4,7 +4,6 @@ import Logo from "@/layout/componets/logo/index.vue";
 import {defineProps, ref} from "vue";
 import {useLayout} from '@/stores/layout.js'
 
-const store = useLayout();
 const collapsed = ref(false)
 const props = defineProps({
   collapsed: {
@@ -18,7 +17,7 @@ collapsed.value = props.collapsed
 </script>
 
 <template>
-  <a-layout-sider hide-trigger collapsible :collapsed="store.isCollapse">
+  <a-layout-sider hide-trigger collapsible :collapsed="useLayout().isCollapse">
     <!--logo-->
     <Logo></Logo>
     <!--菜单-->

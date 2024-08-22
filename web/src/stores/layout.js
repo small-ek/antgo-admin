@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia';
 
 
-export const useLayout = defineStore('userLogin', {
+export const useLayout = defineStore('useLayout', {
     state: () => {
         return {
             // 布局模式 (纵向：vertical | 经典：classic | 横向：transverse | 分栏：columns)
@@ -13,7 +13,7 @@ export const useLayout = defineStore('userLogin', {
             // 当前页面是否全屏
             maximize: false,
             // 主题颜色
-            primary: DEFAULT_PRIMARY,
+            primary: "#009688",
             // 深色模式
             isDark: false,
             // 灰色模式
@@ -56,7 +56,7 @@ export const useLayout = defineStore('userLogin', {
         strategies: [
             {
                 storage: localStorage,
-                paths: []
+                paths: ["isCollapse"]
             }
         ]
     }

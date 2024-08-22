@@ -1,15 +1,22 @@
 <script setup>
 import logo from '@/assets/img/logo.png'
+import {useLayout} from "@/stores/layout.js";
 </script>
 
 <template>
-  <a-row justify="center" class="logo-container" align="center">
+  <a-row justify="center" class="logo-container" align="center" v-if="!useLayout().isCollapse">
     <a-col :span="6">
       <img :src="logo" alt=""/>
     </a-col>
     <a-col :span="15">
-    <span class="logo-text">Antgo admin</span>
+      <span class="logo-text">Antgo admin</span>
     </a-col>
+  </a-row>
+  <a-row justify="center" class="logo-container" align="center" v-if="useLayout().isCollapse">
+    <a-col :span="20">
+      <img :src="logo" alt=""/>
+    </a-col>
+
   </a-row>
 </template>
 

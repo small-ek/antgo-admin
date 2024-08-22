@@ -4,7 +4,6 @@ import {IconCaretLeft, IconCaretRight} from "@arco-design/web-vue/es/icon/index.
 import {defineProps, ref} from "vue";
 import {useLayout} from '@/stores/layout.js'
 
-const store = useLayout();
 const emit = defineEmits(['onCollapse'])
 const collapsed = ref(false)
 const props = defineProps({
@@ -16,9 +15,7 @@ const props = defineProps({
 collapsed.value = props.collapsed
 
 const onCollapse = () => {
-  // collapsed.value = !collapsed.value
-  store.setState({"isCollapse": !store.isCollapse})
-  emit("onCollapse")
+  useLayout().setState("isCollapse",!useLayout().isCollapse)
 }
 </script>
 
@@ -27,7 +24,7 @@ const onCollapse = () => {
     <a-row class="grid-demo">
       <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="10" :xxl="8">
         <a-button shape="round" @click="onCollapse">
-          <IconCaretRight v-if="store.isCollapse"/>
+          <IconCaretRight v-if="useLayout().isCollapse"/>
           <IconCaretLeft v-else/>
         </a-button>
       </a-col>
