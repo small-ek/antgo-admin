@@ -1,14 +1,15 @@
 <script setup>
 import logo from '@/assets/img/logo.png'
 import {useLayout} from "@/stores/layout.js";
+import {useNavigation} from "@/utils/base.js";
 </script>
 
 <template>
-  <a-row justify="center" class="logo-container" align="center" v-if="!useLayout().isCollapse">
-    <a-col :span="6">
+  <a-row justify="center" class="logo-container" align="center" v-if="!useLayout().isCollapse" @click="useNavigation().jump('user')">
+    <a-col :span="5">
       <img :src="logo" alt=""/>
     </a-col>
-    <a-col :span="15">
+    <a-col :span="12">
       <span class="logo-text">Antgo admin</span>
     </a-col>
   </a-row>
@@ -21,13 +22,15 @@ import {useLayout} from "@/stores/layout.js";
 </template>
 
 <style scoped>
-.logo-container{
+.logo-container {
   height: 64px;
-  img{
+  cursor: pointer;
+  img {
     width: 35px;
     height: 35px;
   }
-  .logo-text{
+
+  .logo-text {
     font-size: 16px;
     font-weight: bold;
   }

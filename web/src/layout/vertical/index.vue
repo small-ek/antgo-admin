@@ -5,9 +5,9 @@
     <a-layout>
       <!--头部-->
       <Header :collapsed="collapsed" @onCollapse="onCollapse"></Header>
+      <Tags></Tags>
       <a-layout style="padding: 0 24px;">
-        <!--面包屑-->
-        <Breadcrumbs></Breadcrumbs>
+
         <a-layout-content>
           <router-view></router-view>
         </a-layout-content>
@@ -24,10 +24,9 @@ import Left from "@/layout/componets/left/index.vue";
 import Header from "@/layout/componets/header/index.vue";
 import Breadcrumbs from "@/layout/componets/breadcrumbs/index.vue";
 import Footer from "@/layout/componets/fooder/index.vue";
-
+import Tags from "@/layout/componets/tabs/index.vue"
 import {useLayout} from '@/stores/layout.js'
 
-const store = useLayout();
 const collapsed = ref(true);
 const onCollapse = () => {
   collapsed.value = !collapsed.value;

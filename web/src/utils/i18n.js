@@ -15,5 +15,5 @@ const i18n = createI18n({
     fallbackLocale: 'en', // 设置备用语言
     messages,
 });
-console.log(i18n)
+
 export default i18n;

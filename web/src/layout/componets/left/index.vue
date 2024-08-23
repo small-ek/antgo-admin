@@ -17,7 +17,7 @@ collapsed.value = props.collapsed
 </script>
 
 <template>
-  <a-layout-sider hide-trigger collapsible :collapsed="useLayout().isCollapse">
+  <a-layout-sider hide-trigger collapsible :collapsed="useLayout().isCollapse" :width="240" class="ant-left">
     <!--logo-->
     <Logo></Logo>
     <!--菜单-->
@@ -26,5 +26,7 @@ collapsed.value = props.collapsed
 </template>
 
 <style scoped>
-
+.ant-left{
+  box-shadow: 2px 0 8px 0 rgba(29,35,41,.05)
+}
 </style>
