@@ -1,17 +1,25 @@
 <script setup>
 import {Message} from "@arco-design/web-vue";
+import {useLayout} from "@/stores/layout.js";
 
 const onClickMenuItem = (key) => {
   Message.info({content: `You select ${key}`, showIcon: true});
+}
+const onCollapse = (val, type) => {
+  const content = type === 'responsive' ? '触发响应式收缩' : '点击触发收缩';
+  useLayout().setState("isCollapse",val)
 }
 </script>
 
 <template>
   <a-menu
+      theme="dark"
       :defaultOpenKeys="['1']"
       :defaultSelectedKeys="['0_3']"
       :style="{ width: '100%' }"
+      breakpoint="lg"
       @menuItemClick="onClickMenuItem"
+      @collapse="onCollapse"
   >
     <a-menu-item key="0_1" disabled>
       <IconHome/>

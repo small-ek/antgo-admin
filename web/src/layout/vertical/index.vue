@@ -19,33 +19,28 @@
 </template>
 <script setup>
 import {ref} from 'vue';
-import {Message} from '@arco-design/web-vue';
 import Left from "@/layout/componets/left/index.vue";
 import Header from "@/layout/componets/header/index.vue";
-import Breadcrumbs from "@/layout/componets/breadcrumbs/index.vue";
 import Footer from "@/layout/componets/fooder/index.vue";
 import Tags from "@/layout/componets/tabs/index.vue"
-import {useLayout} from '@/stores/layout.js'
 
 const collapsed = ref(true);
 const onCollapse = () => {
   collapsed.value = !collapsed.value;
 };
-const onClickMenuItem = (key) => {
-  Message.info({content: `You select ${key}`, showIcon: true});
-}
+
 </script>
 <style scoped>
 .ant-layout {
   height: 100vh;
   background: var(--color-fill-2);
-  border: 1px solid var(--color-border);
 }
 
 .ant-layout :deep(.arco-layout-header) {
   height: 64px;
   line-height: 64px;
   background: var(--color-bg-3);
+  padding-left: 5px !important;
 }
 
 .ant-layout :deep(.arco-layout-footer) {

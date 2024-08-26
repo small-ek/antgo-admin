@@ -25,6 +25,7 @@ import {useNavigation} from "@/utils/base.js";
 .logo-container {
   height: 64px;
   cursor: pointer;
+
   img {
     width: 35px;
     height: 35px;
@@ -33,6 +34,7 @@ import {useNavigation} from "@/utils/base.js";
   .logo-text {
     font-size: 16px;
     font-weight: bold;
+    color: white;
   }
 }
 </style>

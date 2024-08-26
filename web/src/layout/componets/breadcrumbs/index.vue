@@ -3,16 +3,19 @@
 </script>
 
 <template>
-  <a-breadcrumb :style="{ margin: '16px 0' }">
+  <a-breadcrumb class="ant-breadcrumb">
     <a-breadcrumb-item>
-      <icon-home/>
       <span class="breadcrumb-text">首页</span></a-breadcrumb-item>
-    <a-breadcrumb-item>List</a-breadcrumb-item>
-    <a-breadcrumb-item>App</a-breadcrumb-item>
+    <a-breadcrumb-item>首页首页</a-breadcrumb-item>
+    <a-breadcrumb-item>首页首页</a-breadcrumb-item>
   </a-breadcrumb>
 </template>
 
 <style scoped>
+.ant-breadcrumb{
+  position: relative;
+  top: -6px;
+}
 .breadcrumb-text {
   margin-left: 8px;
 }
