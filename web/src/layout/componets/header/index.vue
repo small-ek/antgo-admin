@@ -17,9 +17,13 @@ collapsed.value = props.collapsed
 const onCollapse = () => {
   useLayout().setState("isCollapse", !useLayout().isCollapse)
 }
+
+//刷新
 const onRefresh = () => {
   window.location.reload()
 }
+
+//全屏
 const onFullscreen = () => {
   if (!isFullscreen.value) {
     const element = document.documentElement;
@@ -74,12 +78,12 @@ const onFullscreen = () => {
           </a-button>
         </a-tooltip>
         <a-tooltip content="搜索菜单内容">
-          <a-button @click="showSearch" class="btn-icon shadow" shape="circle">
+          <a-button  class="btn-icon shadow" shape="circle">
             <icon-search size="19"/>
           </a-button>
         </a-tooltip>
-        <a-dropdown @select="handleSelect">
-          <a-button @click="showSearch" class="btn-icon shadow" shape="circle">
+        <a-dropdown trigger="hover">
+          <a-button class="btn-icon shadow" shape="circle">
             <icon-language size="19"/>
           </a-button>
           <template #content>
@@ -97,7 +101,7 @@ const onFullscreen = () => {
           <a-avatar class="head-img">
           <img alt="avatar" src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"/>
         </a-avatar>
-        <a-dropdown @select="handleSelect" :popup-max-height="false">
+        <a-dropdown :popup-max-height="false" trigger="hover">
           <span class="head-text">Antgo Admin</span>
           <template #content>
             <a-doption>信息设置</a-doption>
@@ -129,8 +133,9 @@ const onFullscreen = () => {
   margin-left: 10px;
   cursor: pointer;
 }
-.head-row{
+
+.head-row {
   position: relative;
-  top:-5px
+  top: -5px
 }
 </style>

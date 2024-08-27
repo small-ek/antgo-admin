@@ -18,6 +18,7 @@ const onCollapse = (val, type) => {
       :defaultSelectedKeys="['0_3']"
       :style="{ width: '100%' }"
       breakpoint="lg"
+      :collapsed="useLayout().isCollapse"
       @menuItemClick="onClickMenuItem"
       @collapse="onCollapse"
   >
