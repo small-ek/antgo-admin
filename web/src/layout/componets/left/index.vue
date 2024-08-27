@@ -1,7 +1,7 @@
 <script setup>
 import Menu from "@/layout/componets/menu/index.vue";
 import Logo from "@/layout/componets/logo/index.vue";
-import {computed, defineProps, onMounted, onUnmounted, ref} from "vue";
+import {defineProps, onMounted, onUnmounted, ref} from "vue";
 import {useLayout} from '@/stores/layout.js'
 
 const collapsed = ref(false)
