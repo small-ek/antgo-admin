@@ -1,28 +1,17 @@
 <script setup>
 import Menu from "@/layout/componets/menu/index.vue";
 import Logo from "@/layout/componets/logo/index.vue";
-import {defineProps, onMounted, onUnmounted, ref} from "vue";
+import {onMounted, onUnmounted} from "vue";
 import {useLayout} from '@/stores/layout.js'
 
-const collapsed = ref(false)
-const mobileVisible = ref(false)
-const props = defineProps({
-  collapsed: {
-    type: Boolean,
-    default: false
-  },
-});
-collapsed.value = props.collapsed
-
-const windowWidth = ref(window.innerWidth);
 
 const handleResize = () => {
-  windowWidth.value = window.innerWidth;
-  if (windowWidth.value < 768) {
+  useLayout().setState("windowWidth", window.innerWidth)
+  useLayout().setState("windowHeight", window.innerHeight)
+  if (useLayout().windowWidth < 768) {
     useLayout().setState("isCollapse", false)
-    mobileVisible.value = true
   } else {
-    mobileVisible.value = false
+    useLayout().setState("mobileVisible", false)
   }
 };
 
@@ -36,12 +25,13 @@ onUnmounted(() => {
 
 
 const onCancel = () => {
-  mobileVisible.value = false;
+  useLayout().setState("mobileVisible", false)
 }
 </script>
 
 <template>
-  <a-drawer v-if="windowWidth<768" :width="250" :visible="mobileVisible" placement="left" :closable="false" :header="false" :footer="false" :drawerStyle="{padding:'0px'}" @cancel="onCancel">
+  <!--手机菜单-->
+  <a-drawer v-if="useLayout().windowWidth<768" :width="250" :visible="useLayout().mobileVisible" placement="left" :closable="false" :header="false" :footer="false" :drawerStyle="{padding:'0px'}" @cancel="onCancel">
     <a-layout-sider hide-trigger collapsible :collapsed="useLayout().isCollapse" :width="250" class="ant-left">
       <!--logo-->
       <Logo></Logo>
@@ -49,8 +39,8 @@ const onCancel = () => {
       <Menu></Menu>
     </a-layout-sider>
   </a-drawer>
-
-  <a-layout-sider v-if="windowWidth>768" hide-trigger collapsible :collapsed="useLayout().isCollapse" :width="250" class="ant-left">
+  <!--PC菜单-->
+  <a-layout-sider v-if="useLayout().windowWidth>768" hide-trigger collapsible :collapsed="useLayout().isCollapse" :width="250" class="ant-left">
     <!--logo-->
     <Logo></Logo>
     <!--菜单-->

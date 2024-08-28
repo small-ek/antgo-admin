@@ -1,5 +1,5 @@
 <template>
-  <a-space direction="vertical" :size="16" style="display: block;">
+  <a-space direction="vertical" :size="16" style="display: block;background: #F5F5F5;position: relative;top: -1px">
     <a-row justify="space-between" align="center" :wrap="false">
       <a-col :span="20">
         <a-tabs type="card-gutter" class="ant-tabs" size="large" :editable="true" @delete="onDelete" @tab-click="onClick" auto-switch lazy-load :active-key="activeKey">

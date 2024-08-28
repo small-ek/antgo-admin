@@ -1,21 +1,18 @@
 <script setup>
 import Breadcrumbs from '@/layout/componets/breadcrumbs/index.vue'
-import {defineProps, ref} from "vue";
+import {ref} from "vue";
 import {useLayout} from '@/stores/layout.js'
 
-const emit = defineEmits(['onCollapse'])
-const collapsed = ref(false)
 const isFullscreen = ref(false)
-const props = defineProps({
-  collapsed: {
-    type: Boolean,
-    default: false
-  },
-});
-collapsed.value = props.collapsed
+const leftWidth = ref("300px")
 
 const onCollapse = () => {
-  useLayout().setState("isCollapse", !useLayout().isCollapse)
+  if (useLayout().windowWidth < 768) {
+    useLayout().setState("isCollapse", false)
+    useLayout().setState("mobileVisible", !useLayout().mobileVisible)
+  } else {
+    useLayout().setState("isCollapse", !useLayout().isCollapse)
+  }
 }
 
 //刷新
@@ -52,9 +49,9 @@ const onFullscreen = () => {
 </script>
 
 <template>
-  <a-layout-header style="padding-left: 20px;">
+  <a-layout-header style="padding-left: 20px;position: relative;top:-1px">
     <a-row justify="space-between" align="center" :wrap="false">
-      <a-col flex="320px">
+      <a-col flex="auto">
         <a-tooltip content="收缩菜单">
           <a-button @click="onCollapse" class="btn-icon shadow" shape="circle">
             <icon-menu-unfold size="19" v-if="useLayout().isCollapse"/>
@@ -67,18 +64,18 @@ const onFullscreen = () => {
             <icon-refresh size="19"/>
           </a-button>
         </a-tooltip>
-        <Breadcrumbs></Breadcrumbs>
+        <Breadcrumbs v-if="useLayout().windowWidth>768"></Breadcrumbs>
       </a-col>
 
-      <a-col flex="320px">
-        <a-tooltip content="全屏开关">
+      <a-col :flex="useLayout().windowWidth>768?'320px':'250px'">
+        <a-tooltip content="全屏开关" v-if="useLayout().windowWidth>768">
           <a-button @click="onFullscreen" class="btn-icon shadow" shape="circle">
             <icon-fullscreen size="19" v-if="!isFullscreen"/>
             <icon-fullscreen-exit size="19" v-else/>
           </a-button>
         </a-tooltip>
         <a-tooltip content="搜索菜单内容">
-          <a-button  class="btn-icon shadow" shape="circle">
+          <a-button class="btn-icon shadow" shape="circle">
             <icon-search size="19"/>
           </a-button>
         </a-tooltip>
@@ -91,8 +88,8 @@ const onFullscreen = () => {
             <a-doption>English</a-doption>
           </template>
         </a-dropdown>
-        <a-tooltip content="设置">
-          <a-button class="btn-icon shadow" shape="circle">
+        <a-tooltip content="设置" v-if="useLayout().windowWidth>768">
+          <a-button class="btn-icon shadow" shape="circle" @click="useLayout().setState('isSetting',true)">
             <icon-settings size="19"/>
           </a-button>
         </a-tooltip>

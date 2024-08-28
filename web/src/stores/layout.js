@@ -37,7 +37,16 @@ export const useLayout = defineStore('useLayout', {
             // 标签页图标
             tabsIcon: true,
             // 页脚
-            footer: true
+            footer: true,
+            //手机端是否可见
+            mobileVisible: false,
+            //显示区宽度
+            windowWidth: window.innerWidth,
+            //显示区高度
+            windowHeight: window.innerHeight,
+
+            //是否显示设置
+            isSetting: false
         };
     },
     getters: {},
@@ -56,7 +65,7 @@ export const useLayout = defineStore('useLayout', {
         strategies: [
             {
                 storage: localStorage,
-                paths: ["isCollapse"]
+                paths: ["windowWidth", "windowHeight"]
             }
         ]
     }

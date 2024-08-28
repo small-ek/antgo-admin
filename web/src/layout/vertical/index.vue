@@ -1,11 +1,15 @@
 <template>
   <a-layout class="ant-layout">
     <!--左侧-->
-    <Left :collapsed="collapsed"></Left>
+    <Left></Left>
     <a-layout>
       <!--头部-->
-      <Header :collapsed="collapsed" @onCollapse="onCollapse"></Header>
-      <Tags></Tags>
+      <a-affix ref="affixRef" :offsetTop="1" @change="onAffix">
+        <Header></Header>
+      </a-affix>
+      <a-affix :offsetTop="65">
+        <Tags></Tags>
+      </a-affix>
       <a-layout style="padding: 0 24px;">
 
         <a-layout-content>
@@ -15,19 +19,29 @@
         <Footer></Footer>
       </a-layout>
     </a-layout>
+    <!--布局设置-->
+    <Setting></Setting>
   </a-layout>
 </template>
 <script setup>
-import {ref} from 'vue';
+import {ref} from "vue";
 import Left from "@/layout/componets/left/index.vue";
 import Header from "@/layout/componets/header/index.vue";
 import Footer from "@/layout/componets/fooder/index.vue";
 import Tags from "@/layout/componets/tabs/index.vue"
+import Setting from "@/layout/componets/setting/index.vue"
 
-const collapsed = ref(true);
-const onCollapse = () => {
-  collapsed.value = !collapsed.value;
-};
+const affixRef = ref();
+
+const onAffix = (fixed) => {
+  console.log(fixed);
+  console.log(affixRef.value);
+  if (affixRef.value) {
+    //affixRef.value.fixedStyles.top = '19px'; // Set the top style property
+    console.log(affixRef.value.fixedStyles.top)
+  }
+  console.log(affixRef.value);
+}
 
 </script>
 <style scoped>

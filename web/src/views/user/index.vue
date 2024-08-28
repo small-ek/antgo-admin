@@ -3,8 +3,8 @@
 </script>
 
 <template>
-  <div>
-    用户中心
+  <div v-for="(row ,index) in 3000">
+    用户中心用户中心用户中心{{index}}
   </div>
 </template>
 
