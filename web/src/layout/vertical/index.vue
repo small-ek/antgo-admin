@@ -4,7 +4,7 @@
     <Left></Left>
     <a-layout>
       <!--头部-->
-      <a-affix ref="affixRef" :offsetTop="1" @change="onAffix">
+      <a-affix :offsetTop="1">
         <Header></Header>
       </a-affix>
       <a-affix :offsetTop="65">
@@ -24,25 +24,11 @@
   </a-layout>
 </template>
 <script setup>
-import {ref} from "vue";
 import Left from "@/layout/componets/left/index.vue";
 import Header from "@/layout/componets/header/index.vue";
 import Footer from "@/layout/componets/fooder/index.vue";
 import Tags from "@/layout/componets/tabs/index.vue"
 import Setting from "@/layout/componets/setting/index.vue"
-
-const affixRef = ref();
-
-const onAffix = (fixed) => {
-  console.log(fixed);
-  console.log(affixRef.value);
-  if (affixRef.value) {
-    //affixRef.value.fixedStyles.top = '19px'; // Set the top style property
-    console.log(affixRef.value.fixedStyles.top)
-  }
-  console.log(affixRef.value);
-}
-
 </script>
 <style scoped>
 .ant-layout {
