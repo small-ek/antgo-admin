@@ -10,7 +10,7 @@
       <a-affix :offsetTop="65">
         <Tags></Tags>
       </a-affix>
-      <a-layout style="padding: 0 24px;">
+      <a-layout style="padding: 0 1vw;">
 
         <a-layout-content>
           <router-view></router-view>

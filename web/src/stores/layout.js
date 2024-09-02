@@ -44,7 +44,6 @@ export const useLayout = defineStore('useLayout', {
             windowWidth: window.innerWidth,
             //显示区高度
             windowHeight: window.innerHeight,
-
             //是否显示设置
             isSetting: false
         };
@@ -65,7 +64,7 @@ export const useLayout = defineStore('useLayout', {
         strategies: [
             {
                 storage: localStorage,
-                paths: ["windowWidth", "windowHeight"]
+                paths: ["windowWidth", "windowHeight", "primary"]
             }
         ]
     }
