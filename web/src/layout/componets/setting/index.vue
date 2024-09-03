@@ -18,111 +18,270 @@ const addHistory = (visible, color) => {
 </script>
 
 <template>
-  <a-drawer :width="250" :visible="useLayout().isSetting" title="布局设置" placement="right" :closable="false" :footer="false" :drawerStyle="{padding:'2%'}" @cancel="useLayout().setState('isSetting', false)">
-    <a-divider orientation="center" class="setting-title" style="margin-top: 50px;margin-bottom: 30px">
-      <icon-layout/>
-      布局设置
-    </a-divider>
+  <a-drawer :width="300" :visible="useLayout().isSetting" title="布局设置" placement="right" :closable="true" :footer="false" :drawerStyle="{padding:'2%'}" @cancel="useLayout().setState('isSetting', false)">
+    <div class="drawer-body">
+      <a-divider orientation="center" class="setting-title" style="margin-top: 20px;">
+        <icon-layout/>
+        布局设置
+      </a-divider>
+      <a-col :span="24" class="mb-15 title">
+        导航栏
+      </a-col>
+      <a-space direction="vertical" :size="16" style="display: block;">
+        <a-row :gutter="24" justify="space-between">
+          <a-col :span="12">
+            <a-tooltip content="垂直">
+              <div :class="['layout-item shadow layout-vertical', { 'is-select': useLayout().layout === 'vertical' }]">
+                <div class="layout-dark"></div>
+                <div class="layout-container">
+                  <div class="layout-light"></div>
+                  <div class="layout-content"></div>
+                </div>
+                <icon-check-circle-fill v-if="useLayout().layout==='vertical'" size="20" class="icon-circle"/>
+              </div>
+            </a-tooltip>
+          </a-col>
 
-    <a-space direction="vertical" :size="16" style="display: block;">
-      <a-row :gutter="24" justify="space-between">
-        <a-col :span="12">
-          <a-tooltip content="纵向">
-            <div :class="['layout-item shadow layout-vertical', { 'is-select': useLayout().layout === 'vertical' }]">
-              <div class="layout-dark"></div>
-              <div class="layout-container">
+          <a-col :span="12">
+            <a-tooltip content="经典">
+              <div :class="['layout-item shadow layout-classic', { 'is-select': useLayout().layout === 'classic' }]">
+                <div class="layout-dark"></div>
+                <div class="layout-container">
+                  <div class="layout-light"></div>
+                  <div class="layout-content"></div>
+                </div>
+                <icon-check-circle-fill v-if="useLayout().layout==='classic'" size="20" class="icon-circle"/>
+              </div>
+            </a-tooltip>
+          </a-col>
+
+          <a-col :span="12">
+            <a-tooltip content="横向">
+              <div :class="['layout-item shadow layout-transverse', { 'is-select': useLayout().layout === 'transverse' }]">
+                <div class="layout-dark"></div>
+                <div class="layout-content"></div>
+                <icon-check-circle-fill v-if="useLayout().layout==='transverse'" size="20" class="icon-circle"/>
+              </div>
+            </a-tooltip>
+          </a-col>
+
+          <a-col :span="12">
+            <a-tooltip content="分栏">
+              <div :class="['layout-item shadow layout-columns', { 'is-select': useLayout().layout === 'transverse' }]">
+                <div class="layout-dark"></div>
                 <div class="layout-light"></div>
                 <div class="layout-content"></div>
+                <icon-check-circle-fill v-if="useLayout().layout==='transverse'" size="20" class="icon-circle"/>
               </div>
-              <icon-check-circle-fill v-if="useLayout().layout==='vertical'" size="20" class="icon-circle"/>
-            </div>
-          </a-tooltip>
-        </a-col>
+            </a-tooltip>
+          </a-col>
 
-        <a-col :span="12">
-          <a-tooltip content="经典">
-            <div :class="['layout-item shadow layout-classic', { 'is-select': useLayout().layout === 'classic' }]">
-              <div class="layout-dark"></div>
-              <div class="layout-container">
-                <div class="layout-light"></div>
-                <div class="layout-content"></div>
-              </div>
-              <icon-check-circle-fill v-if="useLayout().layout==='classic'" size="20" class="icon-circle"/>
-            </div>
-          </a-tooltip>
-        </a-col>
+          <a-col :span="24" class="mb-15 title">
+            侧边栏
+          </a-col>
+          <a-col :span="24" class="mb-15">
+            <a-row justify="space-between" align="center">
+              <a-col :span="10">
+                侧边栏深色
+              </a-col>
+              <a-col :span="5">
+                <a-switch v-model="useLayout().asideInverted" checked-value="yes" unchecked-value="no"/>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="24" class="mb-15">
+            <a-row justify="space-between" align="center">
+              <a-col :span="10">
+                手风琴模式
+              </a-col>
+              <a-col :span="5">
+                <a-switch v-model="useLayout().asideInverted" checked-value="yes" unchecked-value="no"/>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="24" class="mb-15">
+            <a-row justify="space-between" align="center">
+              <a-col :span="10">
+                宽度
+              </a-col>
+              <a-col :span="14">
+                <a-input-number placeholder="请输入" :min="100" :max="320"/>
+              </a-col>
+            </a-row>
+          </a-col>
 
-        <a-col :span="12">
-          <a-tooltip content="横向">
-            <div :class="['layout-item shadow layout-transverse', { 'is-select': useLayout().layout === 'transverse' }]">
-              <div class="layout-dark"></div>
-              <div class="layout-content"></div>
-              <icon-check-circle-fill v-if="useLayout().layout==='transverse'" size="20" class="icon-circle"/>
-            </div>
-          </a-tooltip>
-        </a-col>
+          <a-col :span="24" class="mb-15 title">
+            顶部栏
+          </a-col>
+          <a-col :span="24" class="mb-15">
+            <a-row justify="space-between" align="center">
+              <a-col :span="10">
+                <a-tooltip content="头部颜色变化深色模式">
+                  <span>头部反转色</span>
+                </a-tooltip>
+              </a-col>
+              <a-col :span="5">
+                <a-switch v-model="useLayout().headerInverted" checked-value="yes" unchecked-value="no"/>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="24" class="mb-15">
+            <a-row justify="space-between" align="center">
+              <a-col :span="10">
+                显示面包屑导航
+              </a-col>
+              <a-col :span="5">
+                <a-switch v-model="useLayout().headerInverted" checked-value="yes" unchecked-value="no"/>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="24" class="mb-15">
+            <a-row justify="space-between" align="center">
+              <a-col :span="10">
+                显示多语言
+              </a-col>
+              <a-col :span="5">
+                <a-switch v-model="useLayout().headerInverted" checked-value="yes" unchecked-value="no"/>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="24" class="mb-15">
+            <a-row justify="space-between" align="center">
+              <a-col :span="10">
+                显示全屏
+              </a-col>
+              <a-col :span="5">
+                <a-switch v-model="useLayout().headerInverted" checked-value="yes" unchecked-value="no"/>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="24" class="mb-15">
+            <a-row justify="space-between" align="center">
+              <a-col :span="10">
+                模式
+              </a-col>
+              <a-col :span="14">
+                <a-select placeholder="请选择">
+                  <a-option>禁止</a-option>
+                  <a-option>固定</a-option>
+                  <a-option>滚动隐藏和显示</a-option>
+                </a-select>
+              </a-col>
+            </a-row>
+          </a-col>
+        </a-row>
+      </a-space>
+      <a-col :span="24" class="mb-15 title">
+        标签栏
+      </a-col>
+      <a-col :span="24" class="mb-15">
+        <a-row justify="space-between" align="center">
+          <a-col :span="10">
+            显示标签栏
+          </a-col>
+          <a-col :span="5">
+            <a-switch v-model="useLayout().asideInverted" checked-value="yes" unchecked-value="no"/>
+          </a-col>
+        </a-row>
+      </a-col>
+      <a-col :span="24" class="mb-15">
+        <a-row justify="space-between" align="center">
+          <a-col :span="10">
+            是否显示图标
+          </a-col>
+          <a-col :span="5">
+            <a-switch v-model="useLayout().asideInverted" checked-value="yes" unchecked-value="no"/>
+          </a-col>
+        </a-row>
+      </a-col>
+      <a-col :span="24" class="mb-15">
+        <a-row justify="space-between" align="center">
+          <a-col :span="10">
+            启动拖拽排序
+          </a-col>
+          <a-col :span="5">
+            <a-switch v-model="useLayout().asideInverted" checked-value="yes" unchecked-value="no"/>
+          </a-col>
+        </a-row>
+      </a-col>
+      <a-col :span="24" class="mb-15 title">
+        底部栏
+      </a-col>
+      <a-col :span="24" class="mb-15">
+        <a-row justify="space-between" align="center">
+          <a-col :span="10">
+            显示底部栏
+          </a-col>
+          <a-col :span="5">
+            <a-switch v-model="useLayout().asideInverted" checked-value="yes" unchecked-value="no"/>
+          </a-col>
+        </a-row>
+      </a-col>
+      <a-col :span="24" class="mb-15">
+        <a-row justify="space-between" align="center">
+          <a-col :span="10">
+            底部文案
+          </a-col>
+          <a-col :span="14">
+            <a-input placeholder="请输入" allow-clear />
+          </a-col>
+        </a-row>
+      </a-col>
+      <a-divider orientation="center" class="setting-title">
+        <icon-dashboard/>
+        全局主题
+      </a-divider>
+      <a-col :span="24" class="mb-15">
+        <a-row justify="space-between" align="center">
+          <a-col :span="10">
+            主题颜色
+          </a-col>
+          <a-col :span="5">
+            <a-color-picker
+                :defaultValue="useLayout().primary"
+                :historyColors="history"
+                showHistory
+                showPreset
+                format="rgb"
+                @popup-visible-change="addHistory"
+            />
+          </a-col>
+        </a-row>
+      </a-col>
 
-        <a-col :span="12">
-          <a-tooltip content="分栏">
-            <div :class="['layout-item shadow layout-columns', { 'is-select': useLayout().layout === 'transverse' }]">
-              <div class="layout-dark"></div>
-              <div class="layout-light"></div>
-              <div class="layout-content"></div>
-              <icon-check-circle-fill v-if="useLayout().layout==='transverse'" size="20" class="icon-circle"/>
-            </div>
-          </a-tooltip>
-        </a-col>
+      <a-col :span="24" class="mb-15">
+        <a-row justify="space-between" align="center">
+          <a-col :span="10">
+            暗黑模式
+          </a-col>
+          <a-col :span="5">
+            <a-switch v-model="useLayout().isDark" checked-value="yes" unchecked-value="no"/>
+          </a-col>
+        </a-row>
+      </a-col>
 
-        <a-col :span="24" class="mb-15">
-          <a-row justify="space-between" align="center">
-            <a-col :span="10">
-              <a-tooltip content="侧边栏颜色变化深色模式">
-                <span>侧边栏深色</span>
-              </a-tooltip>
-            </a-col>
-            <a-col :span="5">
-              <a-switch v-model="useLayout().asideInverted" checked-value="yes" unchecked-value="no"/>
-            </a-col>
-          </a-row>
-        </a-col>
+      <a-col :span="24" class="mb-15">
+        <a-row justify="space-between" align="center">
+          <a-col :span="10">
+            色弱模式
+          </a-col>
+          <a-col :span="5">
+            <a-switch v-model="useLayout().isWeak" checked-value="yes" unchecked-value="no"/>
+          </a-col>
+        </a-row>
+      </a-col>
 
-        <a-col :span="24" class="mb-15">
-          <a-row justify="space-between" align="center">
-            <a-col :span="10">
-              <a-tooltip content="头部颜色变化深色模式">
-                <span>头部反转色</span>
-              </a-tooltip>
-            </a-col>
-            <a-col :span="5">
-              <a-switch v-model="useLayout().headerInverted" checked-value="yes" unchecked-value="no"/>
-            </a-col>
-          </a-row>
-        </a-col>
-      </a-row>
-    </a-space>
-
-    <a-divider orientation="center" class="setting-title" style="margin-bottom: 30px">
-      <icon-dashboard/>
-      全局主题
-    </a-divider>
-
-    <a-col :span="24" class="mb-15">
-      <a-row justify="space-between" align="center">
-        <a-col :span="10">
-          主题颜色
-        </a-col>
-        <a-col :span="5">
-          <a-color-picker
-              :defaultValue="useLayout().primary"
-              :historyColors="history"
-              showHistory
-              showPreset
-              format="rgb"
-              @popup-visible-change="addHistory"
-          />
-        </a-col>
-      </a-row>
-    </a-col>
+      <a-col :span="24" class="mb-15">
+        <a-row justify="space-between" align="center">
+          <a-col :span="10">
+            灰色模式
+          </a-col>
+          <a-col :span="5">
+            <a-switch v-model="useLayout().isGrey" checked-value="yes" unchecked-value="no"/>
+          </a-col>
+        </a-row>
+      </a-col>
+    </div>
   </a-drawer>
 </template>
 
@@ -253,5 +412,14 @@ const addHistory = (visible, color) => {
   border: 1px dashed rgb(var(--primary-6));
 }
 
+.title {
+  font-weight: bold;
+  letter-spacing: -.025em;
+  font-size: 1.17em;
+}
+
+.setting-title {
+  margin-bottom: 30px
+}
 
 </style>

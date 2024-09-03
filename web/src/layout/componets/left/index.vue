@@ -31,8 +31,8 @@ const onCancel = () => {
 
 <template>
   <!--手机菜单-->
-  <a-drawer v-if="useLayout().windowWidth<768" :width="250" :visible="useLayout().mobileVisible" placement="left" :closable="false" :header="false" :footer="false" :drawerStyle="{padding:'0px'}" @cancel="onCancel">
-    <a-layout-sider hide-trigger collapsible :collapsed="useLayout().isCollapse" :width="250" class="ant-left">
+  <a-drawer v-if="useLayout().windowWidth<768" :width="250" :visible="useLayout().mobileVisible" placement="left" :closable="false" :header="false" :footer="false" :drawerStyle="{padding:'0px'}" @cancel="onCancel" class="ant-left">
+    <a-layout-sider hide-trigger collapsible :collapsed="useLayout().isCollapse" :width="250" class="ant-menu">
       <!--logo-->
       <Logo></Logo>
       <!--菜单-->
@@ -40,7 +40,7 @@ const onCancel = () => {
     </a-layout-sider>
   </a-drawer>
   <!--PC菜单-->
-  <a-layout-sider v-if="useLayout().windowWidth>768" hide-trigger collapsible :collapsed="useLayout().isCollapse" :width="250" class="ant-left">
+  <a-layout-sider v-if="useLayout().windowWidth>768" hide-trigger collapsible :collapsed="useLayout().isCollapse" :width="250" class="ant-menu">
     <!--logo-->
     <Logo></Logo>
     <!--菜单-->
@@ -49,9 +49,10 @@ const onCancel = () => {
 </template>
 
 <style scoped>
-.ant-left {
+.ant-menu {
   box-shadow: 2px 0 8px 0 rgba(29, 35, 41, .05);
   background: #232324;
   height: 100vh;
 }
+
 </style>
