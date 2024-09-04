@@ -2,6 +2,7 @@
 import {useLayout} from "@/stores/layout.js";
 import {ref} from "vue";
 import {useTheme} from "@/utils/theme.js";
+import {IconMoon, IconSun, IconTranslate} from '@arco-design/web-vue/es/icon';
 
 const history = ref([useLayout().primary])
 const addHistory = (visible, color) => {
@@ -15,21 +16,30 @@ const addHistory = (visible, color) => {
     useTheme().changePrimary(color)
   }
 }
+
+const themeList = ref([{title: "浅色", icon: IconSun}, {title: "深色", icon: IconMoon}, {title: "跟随系统", icon: IconTranslate}])
 </script>
 
 <template>
-  <a-drawer :width="300" :visible="useLayout().isSetting" title="布局设置" placement="right" :closable="true" :footer="false" :drawerStyle="{padding:'2%'}" @cancel="useLayout().setState('isSetting', false)">
+  <a-drawer :width="350" :visible="useLayout().showSetting" title="布局设置" placement="right" :closable="true" :footer="false" :drawerStyle="{padding:'2%'}" @cancel="useLayout().setState('showSetting', false)">
     <div class="drawer-body">
+      <a-alert type="warning" closable banner center>
+        <template #title>
+          提示
+        </template>
+        应用配置可实时预览效果，但只是在当前浏览器使用,清楚缓存会导致失效。
+      </a-alert>
+      <!--布局设置-->
       <a-divider orientation="center" class="setting-title" style="margin-top: 20px;">
         <icon-layout/>
         布局设置
       </a-divider>
       <a-col :span="24" class="mb-15 title">
-        导航栏
+        布局
       </a-col>
       <a-space direction="vertical" :size="16" style="display: block;">
         <a-row :gutter="24" justify="space-between">
-          <a-col :span="12">
+          <a-col :span="12" @click="useLayout().setState('layout','vertical')">
             <a-tooltip content="垂直">
               <div :class="['layout-item shadow layout-vertical', { 'is-select': useLayout().layout === 'vertical' }]">
                 <div class="layout-dark"></div>
@@ -41,8 +51,7 @@ const addHistory = (visible, color) => {
               </div>
             </a-tooltip>
           </a-col>
-
-          <a-col :span="12">
+          <a-col :span="12" @click="useLayout().setState('layout','classic')">
             <a-tooltip content="经典">
               <div :class="['layout-item shadow layout-classic', { 'is-select': useLayout().layout === 'classic' }]">
                 <div class="layout-dark"></div>
@@ -54,8 +63,7 @@ const addHistory = (visible, color) => {
               </div>
             </a-tooltip>
           </a-col>
-
-          <a-col :span="12">
+          <a-col :span="12" @click="useLayout().setState('layout','transverse')">
             <a-tooltip content="横向">
               <div :class="['layout-item shadow layout-transverse', { 'is-select': useLayout().layout === 'transverse' }]">
                 <div class="layout-dark"></div>
@@ -64,14 +72,13 @@ const addHistory = (visible, color) => {
               </div>
             </a-tooltip>
           </a-col>
-
-          <a-col :span="12">
+          <a-col :span="12" @click="useLayout().setState('layout','columns')">
             <a-tooltip content="分栏">
-              <div :class="['layout-item shadow layout-columns', { 'is-select': useLayout().layout === 'transverse' }]">
+              <div :class="['layout-item shadow layout-columns', { 'is-select': useLayout().layout === 'columns' }]">
                 <div class="layout-dark"></div>
                 <div class="layout-light"></div>
                 <div class="layout-content"></div>
-                <icon-check-circle-fill v-if="useLayout().layout==='transverse'" size="20" class="icon-circle"/>
+                <icon-check-circle-fill v-if="useLayout().layout==='columns'" size="20" class="icon-circle"/>
               </div>
             </a-tooltip>
           </a-col>
@@ -85,7 +92,7 @@ const addHistory = (visible, color) => {
                 侧边栏深色
               </a-col>
               <a-col :span="5">
-                <a-switch v-model="useLayout().asideInverted" checked-value="yes" unchecked-value="no"/>
+                <a-switch v-model="useLayout().isDarkSidebar" :checked-value="true" :unchecked-value="false"/>
               </a-col>
             </a-row>
           </a-col>
@@ -95,7 +102,7 @@ const addHistory = (visible, color) => {
                 手风琴模式
               </a-col>
               <a-col :span="5">
-                <a-switch v-model="useLayout().asideInverted" checked-value="yes" unchecked-value="no"/>
+                <a-switch v-model="useLayout().isAccordion" :checked-value="true" :unchecked-value="false"/>
               </a-col>
             </a-row>
           </a-col>
@@ -105,7 +112,7 @@ const addHistory = (visible, color) => {
                 宽度
               </a-col>
               <a-col :span="14">
-                <a-input-number placeholder="请输入" :min="100" :max="320"/>
+                <a-input-number v-model="useLayout().sidebarWidth" placeholder="请输入" :precision="0" :step="1" :min="100" :max="320"/>
               </a-col>
             </a-row>
           </a-col>
@@ -117,11 +124,11 @@ const addHistory = (visible, color) => {
             <a-row justify="space-between" align="center">
               <a-col :span="10">
                 <a-tooltip content="头部颜色变化深色模式">
-                  <span>头部反转色</span>
+                  <span>头部深色</span>
                 </a-tooltip>
               </a-col>
               <a-col :span="5">
-                <a-switch v-model="useLayout().headerInverted" checked-value="yes" unchecked-value="no"/>
+                <a-switch v-model="useLayout().isDarkHeader" :checked-value="true" :unchecked-value="false"/>
               </a-col>
             </a-row>
           </a-col>
@@ -131,7 +138,7 @@ const addHistory = (visible, color) => {
                 显示面包屑导航
               </a-col>
               <a-col :span="5">
-                <a-switch v-model="useLayout().headerInverted" checked-value="yes" unchecked-value="no"/>
+                <a-switch v-model="useLayout().isBreadcrumb" :checked-value="true" :unchecked-value="false"/>
               </a-col>
             </a-row>
           </a-col>
@@ -141,7 +148,7 @@ const addHistory = (visible, color) => {
                 显示多语言
               </a-col>
               <a-col :span="5">
-                <a-switch v-model="useLayout().headerInverted" checked-value="yes" unchecked-value="no"/>
+                <a-switch v-model="useLayout().isLanguage" :checked-value="true" :unchecked-value="false"/>
               </a-col>
             </a-row>
           </a-col>
@@ -151,7 +158,27 @@ const addHistory = (visible, color) => {
                 显示全屏
               </a-col>
               <a-col :span="5">
-                <a-switch v-model="useLayout().headerInverted" checked-value="yes" unchecked-value="no"/>
+                <a-switch v-model="useLayout().isFullScreen" :checked-value="true" :unchecked-value="false"/>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="24" class="mb-15">
+            <a-row justify="space-between" align="center">
+              <a-col :span="10">
+                显示刷新
+              </a-col>
+              <a-col :span="5">
+                <a-switch v-model="useLayout().isRefresh" :checked-value="true" :unchecked-value="false"/>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="24" class="mb-15">
+            <a-row justify="space-between" align="center">
+              <a-col :span="10">
+                显示搜索
+              </a-col>
+              <a-col :span="5">
+                <a-switch v-model="useLayout().isSearch" :checked-value="true" :unchecked-value="false"/>
               </a-col>
             </a-row>
           </a-col>
@@ -161,10 +188,10 @@ const addHistory = (visible, color) => {
                 模式
               </a-col>
               <a-col :span="14">
-                <a-select placeholder="请选择">
-                  <a-option>禁止</a-option>
-                  <a-option>固定</a-option>
-                  <a-option>滚动隐藏和显示</a-option>
+                <a-select placeholder="请选择" v-model="useLayout().header">
+                  <a-option value="fixed">禁止</a-option>
+                  <a-option value="static">固定</a-option>
+                  <a-option val="adaptive">滚动隐藏和显示</a-option>
                 </a-select>
               </a-col>
             </a-row>
@@ -223,14 +250,35 @@ const addHistory = (visible, color) => {
             底部文案
           </a-col>
           <a-col :span="14">
-            <a-input placeholder="请输入" allow-clear />
+            <a-input placeholder="请输入" allow-clear/>
           </a-col>
         </a-row>
       </a-col>
+
+      <!--全局主题-->
       <a-divider orientation="center" class="setting-title">
         <icon-dashboard/>
         全局主题
       </a-divider>
+      <a-col :span="24" class="mb-15">
+        <a-row justify="center" align="center">
+          <a-radio-group>
+            <template v-for="item in themeList" :key="item">
+              <a-radio :value="item">
+                <template #radio="{ checked }">
+                  <a-tag size="large" :checked="checked" bordered checkable>
+                    <template #icon>
+                      <component :is="item.icon"></component>
+                    </template>
+                    {{ item.title }}
+                  </a-tag>
+                </template>
+              </a-radio>
+            </template>
+          </a-radio-group>
+        </a-row>
+      </a-col>
+
       <a-col :span="24" class="mb-15">
         <a-row justify="space-between" align="center">
           <a-col :span="10">
@@ -248,18 +296,6 @@ const addHistory = (visible, color) => {
           </a-col>
         </a-row>
       </a-col>
-
-      <a-col :span="24" class="mb-15">
-        <a-row justify="space-between" align="center">
-          <a-col :span="10">
-            暗黑模式
-          </a-col>
-          <a-col :span="5">
-            <a-switch v-model="useLayout().isDark" checked-value="yes" unchecked-value="no"/>
-          </a-col>
-        </a-row>
-      </a-col>
-
       <a-col :span="24" class="mb-15">
         <a-row justify="space-between" align="center">
           <a-col :span="10">
@@ -270,7 +306,6 @@ const addHistory = (visible, color) => {
           </a-col>
         </a-row>
       </a-col>
-
       <a-col :span="24" class="mb-15">
         <a-row justify="space-between" align="center">
           <a-col :span="10">
@@ -419,7 +454,45 @@ const addHistory = (visible, color) => {
 }
 
 .setting-title {
-  margin-bottom: 30px
+  margin-bottom: 30px;
+  margin-top: 30px;
 }
 
+.custom-radio-card {
+  //padding: 10px 16px;
+  border: 1px solid var(--color-border-2);
+  border-radius: 4px;
+  width: 80px;
+  box-sizing: border-box;
+}
+
+
+.custom-radio-card-title {
+  color: var(--color-text-1);
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.custom-radio-card:hover,
+.custom-radio-card-checked,
+.custom-radio-card:hover .custom-radio-card-mask,
+.custom-radio-card-checked .custom-radio-card-mask {
+  border-color: rgb(var(--primary-6));
+}
+
+.custom-radio-card-checked {
+  //background-color: var(--color-primary-light-1);
+}
+
+.custom-radio-card:hover .custom-radio-card-title,
+.custom-radio-card-checked .custom-radio-card-title {
+  color: rgb(var(--primary-6));
+}
+
+.custom-radio-card-checked .custom-radio-card-mask-dot {
+  background-color: rgb(var(--primary-6));
+}
 </style>

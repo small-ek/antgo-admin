@@ -89,7 +89,7 @@ const onFullscreen = () => {
           </template>
         </a-dropdown>
         <a-tooltip content="设置" v-if="useLayout().windowWidth>768">
-          <a-button class="btn-icon shadow" shape="circle" @click="useLayout().setState('isSetting',true)">
+          <a-button class="btn-icon shadow" shape="circle" @click="useLayout().setState('showSetting',true)">
             <icon-settings size="19"/>
           </a-button>
         </a-tooltip>

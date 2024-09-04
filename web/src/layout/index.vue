@@ -1,21 +1,25 @@
 <script setup>
 //纵向布局
-import Vertical from '@/layout/vertical/index.vue'
+import vertical from '@/layout/vertical/index.vue'
 //经典布局
-import Classic from '@/layout/classic/index.vue'
+import classic from '@/layout/classic/index.vue'
 //横向布局
-import Transverse from '@/layout/transverse/index.vue'
+import transverse from '@/layout/transverse/index.vue'
+//分栏布局
+import columns from '@/layout/columns/index.vue'
+import {useLayout} from "@/stores/layout.js";
 
 //布局组件
 const Layout = {
-  Vertical,
-  Classic,
-  Transverse
+  vertical,
+  classic,
+  transverse,
+  columns
 }
 </script>
 
 <template>
-  <component :is="Layout['Vertical']"/>
+  <component :is="Layout[useLayout().layout]"/>
 </template>
 
 <style scoped>

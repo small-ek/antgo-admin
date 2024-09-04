@@ -4,48 +4,54 @@ import {defineStore} from 'pinia';
 export const useLayout = defineStore('useLayout', {
     state: () => {
         return {
+            //是否显示设置
+            setting: true,
             // 布局模式 (纵向：vertical | 经典：classic | 横向：transverse | 分栏：columns)
             layout: "vertical",
-            // element 组件大小
-            assemblySize: "default",
-            // 当前系统语言
-            language: null,
-            // 当前页面是否全屏
-            maximize: false,
+            // 侧边栏深色
+            isDarkSidebar: false,
+            // 菜单手风琴
+            isAccordion: true,
+            // 侧边栏宽度
+            sidebarWidth: 240,
+            // 头部深色
+            isDarkHeader: false,
+            // 面包屑导航
+            isBreadcrumb: true,
+            // 显示多语言
+            isLanguage: true,
+            // 显示全屏
+            isFullScreen: false,
+            // 显示刷新
+            isRefresh: true,
+            //显示搜索
+            isSearch: true,
+            // 头部模式 (禁止：fixed | 固定：static | 自适应：adaptive)
+            header: "adaptive",
+            // 显示标签栏
+            isTabs: true,
+            // 标签栏是否显示图标
+            isTabsIcon: true,
+            // 标签是否可拖拽
+            isTabsStretch: true,
+            // 显示底部栏
+            isFooter: true,
+            // 底部文案
+            footerText: "技术支持 © 2021",
+            // 主题模式 (auto | dark | light)
+            theme: "auto",
             // 主题颜色
-            primary: "#009688",
-            // 深色模式
-            isDark: false,
-            // 灰色模式
-            isGrey: false,
+            primary: "rgb(24, 144, 255)",
             // 色弱模式
             isWeak: false,
-            // 侧边栏反转
-            asideInverted: false,
-            // 头部反转
-            headerInverted: false,
-            // 折叠菜单
-            isCollapse: false,
-            // 菜单手风琴
-            accordion: true,
-            // 面包屑导航
-            breadcrumb: true,
-            // 面包屑导航图标
-            breadcrumbIcon: true,
-            // 标签页
-            tabs: true,
-            // 标签页图标
-            tabsIcon: true,
-            // 页脚
-            footer: true,
-            //手机端是否可见
-            mobileVisible: false,
+            // 灰色模式
+            isGrey: false,
             //显示区宽度
             windowWidth: window.innerWidth,
             //显示区高度
             windowHeight: window.innerHeight,
-            //是否显示设置
-            isSetting: false
+            //是否显示设置面板
+            showSetting: false,
         };
     },
     getters: {},
@@ -64,7 +70,7 @@ export const useLayout = defineStore('useLayout', {
         strategies: [
             {
                 storage: localStorage,
-                paths: ["windowWidth", "windowHeight", "primary"]
+                paths: ["windowWidth", "windowHeight", "layout", "primary", "isDarkSidebar"]
             }
         ]
     }
