@@ -9,11 +9,11 @@ export const useLayout = defineStore('useLayout', {
             // 布局模式 (纵向：vertical | 经典：classic | 横向：transverse | 分栏：columns)
             layout: "vertical",
             // 侧边栏深色
-            isDarkSidebar: false,
+            isDarkSidebar: true,
             // 菜单手风琴
-            isAccordion: true,
+            isAccordion: false,
             // 侧边栏宽度
-            sidebarWidth: 240,
+            sidebarWidth: 250,
             // 头部深色
             isDarkHeader: false,
             // 面包屑导航
@@ -21,7 +21,7 @@ export const useLayout = defineStore('useLayout', {
             // 显示多语言
             isLanguage: true,
             // 显示全屏
-            isFullScreen: false,
+            isFullScreen: true,
             // 显示刷新
             isRefresh: true,
             //显示搜索

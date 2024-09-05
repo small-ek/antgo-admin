@@ -49,7 +49,7 @@ const onFullscreen = () => {
 </script>
 
 <template>
-  <a-layout-header >
+  <a-layout-header :class="[{'dark':useLayout().isDarkHeader===true}]">
     <a-row justify="space-between" align="center" :wrap="false">
       <a-col flex="auto">
         <a-tooltip content="收缩菜单">
@@ -59,7 +59,7 @@ const onFullscreen = () => {
           </a-button>
         </a-tooltip>
 
-        <a-tooltip content="刷新页面">
+        <a-tooltip content="刷新页面" v-if="useLayout().isRefresh">
           <a-button @click="onRefresh" class="btn-icon shadow" shape="circle">
             <icon-refresh size="19"/>
           </a-button>
@@ -68,18 +68,21 @@ const onFullscreen = () => {
       </a-col>
 
       <a-col :flex="useLayout().windowWidth>768?'320px':'250px'">
-        <a-tooltip content="全屏开关" v-if="useLayout().windowWidth>768">
-          <a-button @click="onFullscreen" class="btn-icon shadow" shape="circle">
-            <icon-fullscreen size="19" v-if="!isFullscreen"/>
-            <icon-fullscreen-exit size="19" v-else/>
-          </a-button>
-        </a-tooltip>
-        <a-tooltip content="搜索菜单内容">
+        <template v-if="useLayout().isFullScreen">
+          <a-tooltip content="全屏开关" v-if="useLayout().windowWidth>768">
+            <a-button @click="onFullscreen" class="btn-icon shadow" shape="circle">
+              <icon-fullscreen size="19" v-if="!isFullscreen"/>
+              <icon-fullscreen-exit size="19" v-else/>
+            </a-button>
+          </a-tooltip>
+        </template>
+
+        <a-tooltip content="搜索菜单内容" v-if="useLayout().isSearch">
           <a-button class="btn-icon shadow" shape="circle">
             <icon-search size="19"/>
           </a-button>
         </a-tooltip>
-        <a-dropdown trigger="hover">
+        <a-dropdown trigger="hover" v-if="useLayout().isLanguage">
           <a-button class="btn-icon shadow" shape="circle">
             <icon-language size="19"/>
           </a-button>
@@ -88,11 +91,14 @@ const onFullscreen = () => {
             <a-doption>English</a-doption>
           </template>
         </a-dropdown>
-        <a-tooltip content="设置" v-if="useLayout().windowWidth>768">
-          <a-button class="btn-icon shadow" shape="circle" @click="useLayout().setState('showSetting',true)">
-            <icon-settings size="19"/>
-          </a-button>
-        </a-tooltip>
+        <template v-if="useLayout().setting">
+          <a-tooltip content="设置" v-if="useLayout().windowWidth>768">
+            <a-button class="btn-icon shadow" shape="circle" @click="useLayout().setState('showSetting',true)">
+              <icon-settings size="19"/>
+            </a-button>
+          </a-tooltip>
+        </template>
+
 
         <span class="head-row">
           <a-avatar class="head-img">
@@ -120,8 +126,13 @@ const onFullscreen = () => {
 }
 
 .dark {
-  background: black;
-  color: white;
+  background: black !important;
+  color: white !important;
+
+  .btn-icon {
+    background: #313132;
+    color: white;
+  }
 }
 
 .btn-icon {

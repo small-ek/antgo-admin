@@ -1,7 +1,7 @@
 <template>
   <a-space direction="vertical" :size="16" class="ant-tabs-space">
     <a-row justify="space-between" align="center" :wrap="false">
-      <a-col :span="20">
+      <a-col :xs="21" :sm="21" :md="21" :lg="22" :xl="23" :xxl="23">
         <a-tabs type="card-gutter" class="ant-tabs" size="large" :editable="true" @delete="onDelete" @tab-click="onClick" auto-switch lazy-load :active-key="activeKey">
           <a-tab-pane v-for="(item, index) of data" :key="item.key" :closable="index!==0">
             <template #title>
@@ -11,7 +11,7 @@
           </a-tab-pane>
         </a-tabs>
       </a-col>
-      <a-col flex="45px">
+      <a-col flex="44px">
         <div class="tabs-switch">
           <a-dropdown :popup-max-height="false">
             <a-button class="tabs-btn" size="mini">
@@ -69,7 +69,27 @@ const data = ref([
     key: '3',
     title: 'Tab 3',
     content: 'Content of Tab Panel 3'
-  }
+  },
+  {
+    key: '4',
+    title: 'Tab 4',
+    content: 'Content of Tab Panel 4'
+  },
+  {
+    key: '5',
+    title: 'Tab 5',
+    content: 'Content of Tab Panel 5'
+  },
+  {
+    key: '6',
+    title: 'Tab 6',
+    content: 'Content of Tab Panel 6'
+  },
+  {
+    key: '7',
+    title: 'Tab 7',
+    content: 'Content of Tab Panel 7'
+  },
 ]);
 
 const onClick = (key) => {
@@ -103,10 +123,9 @@ const onClose = (key) => {
 }
 </script>
 <style scoped>
-/*background: #F5F5F5;*/
 .ant-tabs-space {
   display: block;
-  background: rgb(var(--color-bg-3));
+  background: rgb(var(--gray-1));
   position: relative;
   top: -1px
 }
@@ -123,7 +142,7 @@ const onClose = (key) => {
 }
 
 .tabs-switch {
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 .tabs-btn {
@@ -131,5 +150,17 @@ const onClose = (key) => {
   width: 32px;
   height: 32px;
   color: black;
+}
+
+:deep(.arco-tabs-nav-button-right) {
+  color: var(--color-text-1);
+}
+
+:deep(.arco-tabs-nav-button-disabled) {
+  color: var(--color-text-4) !important;
+}
+
+:deep(.arco-tabs-nav-button-left) {
+  color: var(--color-text-1);
 }
 </style>
