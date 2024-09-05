@@ -9,7 +9,7 @@ const handleResize = () => {
   useLayout().setState("windowWidth", window.innerWidth)
   useLayout().setState("windowHeight", window.innerHeight)
   if (useLayout().windowWidth < 768) {
-    useLayout().setState("isCollapse", false)
+    useLayout().setState("isCollapsed", false)
   } else {
     useLayout().setState("mobileVisible", false)
   }
@@ -25,14 +25,14 @@ onUnmounted(() => {
 
 
 const onCancel = () => {
-  useLayout().setState("mobileVisible", false)
+  useLayout().setState("showMobileMenu", false)
 }
 </script>
 
 <template>
   <!--手机菜单-->
-  <a-drawer v-if="useLayout().windowWidth<768" :width="250" :visible="useLayout().mobileVisible" placement="left" :closable="false" :header="false" :footer="false" :drawerStyle="{padding:'0px'}" @cancel="onCancel" class="ant-left">
-    <a-layout-sider hide-trigger collapsible :collapsed="useLayout().isCollapse" :width="250" class="ant-menu">
+  <a-drawer v-if="useLayout().windowWidth<768" :width="useLayout().sidebarWidth" :visible="useLayout().showMobileMenu" placement="left" :closable="false" :header="false" :footer="false" :drawerStyle="{padding:'0px'}" @cancel="onCancel" class="ant-left">
+    <a-layout-sider hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth" :theme="useLayout().isDarkSidebar===true?'dark':'light'" :class="['ant-menu',]">
       <!--logo-->
       <Logo></Logo>
       <!--菜单-->
@@ -40,7 +40,7 @@ const onCancel = () => {
     </a-layout-sider>
   </a-drawer>
   <!--PC菜单-->
-  <a-layout-sider v-if="useLayout().windowWidth>768" hide-trigger collapsible :collapsed="useLayout().isCollapse" :width="250" class="ant-menu">
+  <a-layout-sider v-if="useLayout().windowWidth>768" hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth" :theme="useLayout().isDarkSidebar===true?'dark':'light'" :class="['ant-menu',]">
     <!--logo-->
     <Logo></Logo>
     <!--菜单-->
@@ -51,8 +51,11 @@ const onCancel = () => {
 <style scoped>
 .ant-menu {
   box-shadow: 2px 0 8px 0 rgba(29, 35, 41, .05);
-  background: #232324;
+
   height: 100vh;
 }
 
+.ant-menu-dark {
+  background: #232324;
+}
 </style>

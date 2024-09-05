@@ -5,15 +5,15 @@ import {useNavigation} from "@/utils/base.js";
 </script>
 
 <template>
-  <a-row justify="center" class="logo-container" align="center" v-if="!useLayout().isCollapse" @click="useNavigation().jump('user')">
+  <a-row justify="center" class="logo-container" align="center" v-if="!useLayout().isCollapsed" @click="useNavigation().jump('user')">
     <a-col :span="5">
       <img :src="logo" alt=""/>
     </a-col>
     <a-col :span="12">
-      <span class="logo-text">Antgo admin</span>
+      <span :class="['logo-text',{'white':useLayout().isDarkSidebar===true}]">Antgo admin</span>
     </a-col>
   </a-row>
-  <a-row justify="center" class="logo-container" align="center" v-if="useLayout().isCollapse">
+  <a-row justify="center" class="logo-container" align="center" v-if="useLayout().isCollapsed">
     <a-col :span="20">
       <img :src="logo" alt=""/>
     </a-col>
@@ -34,6 +34,9 @@ import {useNavigation} from "@/utils/base.js";
   .logo-text {
     font-size: 16px;
     font-weight: bold;
+  }
+
+  .white {
     color: white;
   }
 }

@@ -1,8 +1,23 @@
 // 用于界面设置修改
 import {useLayout} from "@/stores/layout.js";
-import {getLightColor, rgbToHex} from "@/utils/color.js";
+import {getLightColor} from "@/utils/color.js";
 
 export function useTheme() {
+    /**
+     * 切换暗黑模式
+     */
+    const updateDark = () => {
+        console.log(111)
+        if (useLayout().theme === 'dark') {
+            document.body.setAttribute('arco-theme', 'dark')
+        }
+        if (useLayout().theme === 'light') {
+            document.body.setAttribute('arco-theme', 'arco-theme')
+        }
+        if (useLayout().theme === 'auto') {
+            document.body.setAttribute('arco-theme', 'arco-theme')
+        }
+    };
     /**
      * changePrimary 修改主题颜色
      * @param val
@@ -19,11 +34,11 @@ export function useTheme() {
         //     isDark.value ? `${getLightColor(val, 0.2)}` : `${getDarkColor(val, 0.3)}`
         // );
         for (let i = 5; i >= 1; i--) {
-            document.body.style.setProperty(`--primary-${i}`, getLightColor(colorRgb[0].split(",")  , i / 10));
+            document.body.style.setProperty(`--primary-${i}`, getLightColor(colorRgb[0].split(","), i / 10));
         }
         // globalStore.setGlobalState("primary", val);
     }
     return {
-        changePrimary
+        changePrimary,updateDark
     }
 }

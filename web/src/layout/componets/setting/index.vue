@@ -17,7 +17,7 @@ const addHistory = (visible, color) => {
   }
 }
 
-const themeList = ref([{title: "浅色", icon: IconSun}, {title: "深色", icon: IconMoon}, {title: "跟随系统", icon: IconTranslate}])
+const themeList = ref([{title: "浅色", value: "light", icon: IconSun}, {title: "深色", value: "dark", icon: IconMoon}, {title: "跟随系统", value: "auto", icon: IconTranslate}])
 </script>
 
 <template>
@@ -112,7 +112,7 @@ const themeList = ref([{title: "浅色", icon: IconSun}, {title: "深色", icon:
                 宽度
               </a-col>
               <a-col :span="14">
-                <a-input-number v-model="useLayout().sidebarWidth" placeholder="请输入" :precision="0" :step="1" :min="100" :max="320"/>
+                <a-input-number v-model="useLayout().sidebarWidth" placeholder="请输入" :precision="0" :step="1" :min="200" :max="320"/>
               </a-col>
             </a-row>
           </a-col>
@@ -189,9 +189,9 @@ const themeList = ref([{title: "浅色", icon: IconSun}, {title: "深色", icon:
               </a-col>
               <a-col :span="14">
                 <a-select placeholder="请选择" v-model="useLayout().header">
-                  <a-option value="fixed">禁止</a-option>
-                  <a-option value="static">固定</a-option>
-                  <a-option val="adaptive">滚动隐藏和显示</a-option>
+                  <a-option value="static">静止</a-option>
+                  <a-option value="fixed">固定</a-option>
+                  <a-option value="adaptive">滚动隐藏和显示</a-option>
                 </a-select>
               </a-col>
             </a-row>
@@ -207,7 +207,7 @@ const themeList = ref([{title: "浅色", icon: IconSun}, {title: "深色", icon:
             显示标签栏
           </a-col>
           <a-col :span="5">
-            <a-switch v-model="useLayout().asideInverted" checked-value="yes" unchecked-value="no"/>
+            <a-switch v-model="useLayout().isTabs" :checked-value="true" :unchecked-value="false"/>
           </a-col>
         </a-row>
       </a-col>
@@ -217,7 +217,7 @@ const themeList = ref([{title: "浅色", icon: IconSun}, {title: "深色", icon:
             是否显示图标
           </a-col>
           <a-col :span="5">
-            <a-switch v-model="useLayout().asideInverted" checked-value="yes" unchecked-value="no"/>
+            <a-switch v-model="useLayout().isTabsIcon" :checked-value="true" :unchecked-value="false"/>
           </a-col>
         </a-row>
       </a-col>
@@ -227,7 +227,7 @@ const themeList = ref([{title: "浅色", icon: IconSun}, {title: "深色", icon:
             启动拖拽排序
           </a-col>
           <a-col :span="5">
-            <a-switch v-model="useLayout().asideInverted" checked-value="yes" unchecked-value="no"/>
+            <a-switch v-model="useLayout().isTabsStretch" :checked-value="true" :unchecked-value="false"/>
           </a-col>
         </a-row>
       </a-col>
@@ -240,7 +240,7 @@ const themeList = ref([{title: "浅色", icon: IconSun}, {title: "深色", icon:
             显示底部栏
           </a-col>
           <a-col :span="5">
-            <a-switch v-model="useLayout().asideInverted" checked-value="yes" unchecked-value="no"/>
+            <a-switch v-model="useLayout().isFooter" :checked-value="true" :unchecked-value="false"/>
           </a-col>
         </a-row>
       </a-col>
@@ -250,7 +250,7 @@ const themeList = ref([{title: "浅色", icon: IconSun}, {title: "深色", icon:
             底部文案
           </a-col>
           <a-col :span="14">
-            <a-input placeholder="请输入" allow-clear/>
+            <a-input placeholder="请输入" v-model="useLayout().footerText"/>
           </a-col>
         </a-row>
       </a-col>
@@ -262,9 +262,9 @@ const themeList = ref([{title: "浅色", icon: IconSun}, {title: "深色", icon:
       </a-divider>
       <a-col :span="24" class="mb-15">
         <a-row justify="center" align="center">
-          <a-radio-group>
+          <a-radio-group v-model="useLayout().theme" @change="useTheme().updateDark()">
             <template v-for="item in themeList" :key="item">
-              <a-radio :value="item">
+              <a-radio :value="item.value">
                 <template #radio="{ checked }">
                   <a-tag size="large" :checked="checked" bordered checkable>
                     <template #icon>
@@ -302,7 +302,7 @@ const themeList = ref([{title: "浅色", icon: IconSun}, {title: "深色", icon:
             色弱模式
           </a-col>
           <a-col :span="5">
-            <a-switch v-model="useLayout().isWeak" checked-value="yes" unchecked-value="no"/>
+            <a-switch v-model="useLayout().isColorBlind" :checked-value="true" :unchecked-value="false"/>
           </a-col>
         </a-row>
       </a-col>
@@ -312,7 +312,7 @@ const themeList = ref([{title: "浅色", icon: IconSun}, {title: "深色", icon:
             灰色模式
           </a-col>
           <a-col :span="5">
-            <a-switch v-model="useLayout().isGrey" checked-value="yes" unchecked-value="no"/>
+            <a-switch v-model="useLayout().isGrey" :checked-value="true" :unchecked-value="false"/>
           </a-col>
         </a-row>
       </a-col>
@@ -459,7 +459,6 @@ const themeList = ref([{title: "浅色", icon: IconSun}, {title: "深色", icon:
 }
 
 .custom-radio-card {
-  //padding: 10px 16px;
   border: 1px solid var(--color-border-2);
   border-radius: 4px;
   width: 80px;
@@ -483,9 +482,6 @@ const themeList = ref([{title: "浅色", icon: IconSun}, {title: "深色", icon:
   border-color: rgb(var(--primary-6));
 }
 
-.custom-radio-card-checked {
-  //background-color: var(--color-primary-light-1);
-}
 
 .custom-radio-card:hover .custom-radio-card-title,
 .custom-radio-card-checked .custom-radio-card-title {

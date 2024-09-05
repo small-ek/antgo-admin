@@ -8,10 +8,10 @@ const leftWidth = ref("300px")
 
 const onCollapse = () => {
   if (useLayout().windowWidth < 768) {
-    useLayout().setState("isCollapse", false)
-    useLayout().setState("mobileVisible", !useLayout().mobileVisible)
+    useLayout().setState("isCollapsed", false)
+    useLayout().setState("showMobileMenu", !useLayout().showMobileMenu)
   } else {
-    useLayout().setState("isCollapse", !useLayout().isCollapse)
+    useLayout().setState("isCollapsed", !useLayout().isCollapsed)
   }
 }
 
@@ -49,7 +49,7 @@ const onFullscreen = () => {
 </script>
 
 <template>
-  <a-layout-header style="padding-left: 20px;position: relative;top:-1px">
+  <a-layout-header >
     <a-row justify="space-between" align="center" :wrap="false">
       <a-col flex="auto">
         <a-tooltip content="收缩菜单">
@@ -114,8 +114,18 @@ const onFullscreen = () => {
 </template>
 
 <style scoped>
-.btn-icon {
+.light {
   background: white;
+  color: black;
+}
+
+.dark {
+  background: black;
+  color: white;
+}
+
+.btn-icon {
+  background: var(--color-bg-4);
   margin-top: 16px;
   margin-left: 7px;
 }

@@ -26,7 +26,7 @@ export const useLayout = defineStore('useLayout', {
             isRefresh: true,
             //显示搜索
             isSearch: true,
-            // 头部模式 (禁止：fixed | 固定：static | 自适应：adaptive)
+            // 头部模式 (固定：fixed | 静止：static | 自适应：adaptive)
             header: "adaptive",
             // 显示标签栏
             isTabs: true,
@@ -43,7 +43,7 @@ export const useLayout = defineStore('useLayout', {
             // 主题颜色
             primary: "rgb(24, 144, 255)",
             // 色弱模式
-            isWeak: false,
+            isColorBlind: false,
             // 灰色模式
             isGrey: false,
             //显示区宽度
@@ -52,6 +52,10 @@ export const useLayout = defineStore('useLayout', {
             windowHeight: window.innerHeight,
             //是否显示设置面板
             showSetting: false,
+            //菜单收缩
+            isCollapsed: false,
+            //显示手机菜单
+            showMobileMenu: false
         };
     },
     getters: {},
@@ -70,7 +74,32 @@ export const useLayout = defineStore('useLayout', {
         strategies: [
             {
                 storage: localStorage,
-                paths: ["windowWidth", "windowHeight", "layout", "primary", "isDarkSidebar"]
+                paths: [
+                    "setting",
+                    "layout",
+                    "isDarkSidebar",
+                    "isAccordion",
+                    "sidebarWidth",
+                    "isDarkHeader",
+                    "isBreadcrumb",
+                    "isLanguage",
+                    "isFullScreen",
+                    "isRefresh",
+                    "isSearch",
+                    "header",
+                    "isTabs",
+                    "isTabsIcon",
+                    "isTabsStretch",
+                    "isFooter",
+                    "footerText",
+                    "theme",
+                    "primary",
+                    "isColorBlind",
+                    "isGrey",
+                    "windowWidth",
+                    "windowHeight",
+                    "showSetting"
+                ]
             }
         ]
     }

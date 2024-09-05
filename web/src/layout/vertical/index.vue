@@ -10,7 +10,7 @@
       <a-affix :offsetTop="65">
         <Tags></Tags>
       </a-affix>
-      <a-layout style="padding: 0 1vw;">
+      <a-layout style="padding: 0 0.6vw;">
 
         <a-layout-content>
           <router-view></router-view>
@@ -33,29 +33,32 @@ import Setting from "@/layout/componets/setting/index.vue"
 <style scoped>
 .ant-layout {
   height: 100vh;
-  background: var(--color-fill-2);
+  background: var(--color-neutral-1);
 }
 
 .ant-layout :deep(.arco-layout-header) {
   height: 64px;
   line-height: 64px;
-  background: var(--color-bg-3);
-  padding-left: 5px !important;
+  padding-left: 20px;
+  position: relative;
+  top: -1px;
+  background: var(--color-bg-4);
+  color: var(--color-text-1);
 }
 
 .ant-layout :deep(.arco-layout-footer) {
-  height: 48px;
-  color: var(--color-text-2);
+  height: 30px;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 48px;
+  font-size: 13px;
+  line-height: 30px;
+  color: var(--color-text-3);
 }
 
 .ant-layout :deep(.arco-layout-content) {
-  color: var(--color-text-2);
   font-weight: 400;
   font-size: 14px;
-  background: var(--color-bg-3);
+  background: var(--color-bg-4);
+  color: var(--color-text-1);
 }
 
 .ant-layout :deep(.arco-layout-footer),
@@ -63,7 +66,6 @@ import Setting from "@/layout/componets/setting/index.vue"
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: black;
   font-stretch: condensed;
   text-align: center;
 }

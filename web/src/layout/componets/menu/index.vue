@@ -7,18 +7,19 @@ const onClickMenuItem = (key) => {
 }
 const onCollapse = (val, type) => {
   const content = type === 'responsive' ? '触发响应式收缩' : '点击触发收缩';
-  useLayout().setState("isCollapse",val)
+  useLayout().setState("isCollapsed", val)
 }
 </script>
 
 <template>
   <a-menu
-      theme="dark"
+      :theme="useLayout().isDarkSidebar?'dark':'light'"
+      :accordion="useLayout().isAccordion"
       :defaultOpenKeys="['1']"
       :defaultSelectedKeys="['0_3']"
       :style="{ width: '100%' }"
       breakpoint="lg"
-      :collapsed="useLayout().isCollapse"
+      :collapsed="useLayout().isCollapsed"
       @menuItemClick="onClickMenuItem"
       @collapse="onCollapse"
   >

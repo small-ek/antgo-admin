@@ -1,9 +1,10 @@
 <script setup>
 
+import {useLayout} from "@/stores/layout.js";
 </script>
 
 <template>
-  <a-layout-footer>Antgo admin</a-layout-footer>
+  <a-layout-footer>{{ useLayout().footerText }}</a-layout-footer>
 </template>
 
 <style scoped>

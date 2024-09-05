@@ -1,5 +1,5 @@
 <template>
-  <a-space direction="vertical" :size="16" style="display: block;background: #F5F5F5;position: relative;top: -1px">
+  <a-space direction="vertical" :size="16" class="ant-tabs-space">
     <a-row justify="space-between" align="center" :wrap="false">
       <a-col :span="20">
         <a-tabs type="card-gutter" class="ant-tabs" size="large" :editable="true" @delete="onDelete" @tab-click="onClick" auto-switch lazy-load :active-key="activeKey">
@@ -103,6 +103,14 @@ const onClose = (key) => {
 }
 </script>
 <style scoped>
+/*background: #F5F5F5;*/
+.ant-tabs-space {
+  display: block;
+  background: rgb(var(--color-bg-3));
+  position: relative;
+  top: -1px
+}
+
 .ant-tabs {
   width: 96%;
   height: 33px;
