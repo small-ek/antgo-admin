@@ -2,21 +2,17 @@
   <a-layout class="ant-layout">
     <!--左侧-->
     <Left></Left>
-    <a-layout>
+    <a-layout @scroll="handleScroll" class="ant-container">
       <!--头部-->
-      <a-affix :offsetTop="1">
-        <Header></Header>
-      </a-affix>
-      <a-affix :offsetTop="65">
-        <Tags></Tags>
-      </a-affix>
+      <Header></Header>
+      <Tags></Tags>
       <a-layout style="padding: 0 0.6vw;">
 
         <a-layout-content>
           <router-view></router-view>
         </a-layout-content>
         <!--底部-->
-        <Footer></Footer>
+        <Footer v-if="useLayout().isFooter"></Footer>
       </a-layout>
     </a-layout>
     <!--布局设置-->
@@ -29,6 +25,24 @@ import Header from "@/layout/componets/header/index.vue";
 import Footer from "@/layout/componets/fooder/index.vue";
 import Tags from "@/layout/componets/tabs/index.vue"
 import Setting from "@/layout/componets/setting/index.vue"
+import {useLayout} from "@/stores/layout.js";
+
+let lastScrollTop = 0;
+const handleScroll = (event) => {
+  if (useLayout().header !== 'adaptive') return;
+  const container = event.target;
+  const scrollTop = container.scrollTop;
+
+  if (scrollTop > lastScrollTop) {
+    console.log('Scrolling down');
+    useLayout().setState("showHeader", false)
+  } else {
+    console.log('Scrolling up');
+    useLayout().setState("showHeader", true)
+  }
+
+  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+};
 </script>
 <style scoped>
 .ant-layout {

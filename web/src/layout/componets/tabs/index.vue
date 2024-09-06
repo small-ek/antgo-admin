@@ -1,52 +1,54 @@
 <template>
-  <a-space direction="vertical" :size="16" class="ant-tabs-space">
-    <a-row justify="space-between" align="center" :wrap="false">
-      <a-col :xs="21" :sm="21" :md="21" :lg="22" :xl="23" :xxl="23">
-        <a-tabs type="card-gutter" class="ant-tabs" size="large" :editable="true" @delete="onDelete" @tab-click="onClick" auto-switch lazy-load :active-key="activeKey">
-          <a-tab-pane v-for="(item, index) of data" :key="item.key" :closable="index!==0">
-            <template #title>
-              <icon-apps/>
-              <text class="tags-text">{{ item.title }}</text>
-            </template>
-          </a-tab-pane>
-        </a-tabs>
-      </a-col>
-      <a-col flex="44px">
-        <div class="tabs-switch">
-          <a-dropdown :popup-max-height="false">
-            <a-button class="tabs-btn" size="mini">
-              <icon-down/>
-            </a-button>
-            <template #content>
-              <a-doption @click="onClose(0)">
-                <icon-double-left/>
-                关闭左侧
-              </a-doption>
-              <a-doption @click="onClose(1)">
-                <icon-double-right/>
-                关闭右侧
-              </a-doption>
-              <a-doption @click="onClose(2)">
-                <icon-close/>
-                关闭其他
-              </a-doption>
-              <a-doption @click="onClose(3)">
-                <icon-close-circle/>
-                全部关闭
-              </a-doption>
-            </template>
-          </a-dropdown>
-        </div>
-      </a-col>
-    </a-row>
+  <a-affix :offsetTop="useLayout().header==='static'?0:64" v-if="useLayout().isTabs">
+    <a-space direction="vertical" :size="16" class="ant-tabs-space">
+      <a-row justify="space-between" align="center" :wrap="false">
+        <a-col :xs="21" :sm="21" :md="21" :lg="22" :xl="23" :xxl="23">
+          <a-tabs type="card-gutter" class="ant-tabs" size="large" :editable="true" @delete="onDelete" @tab-click="onClick" auto-switch lazy-load :active-key="activeKey">
+            <a-tab-pane v-for="(item, index) of data" :key="item.key" :closable="index!==0">
+              <template #title>
+                <icon-apps v-if="useLayout().isTabsIcon"/>
+                <text class="tags-text">{{ item.title }}</text>
+              </template>
+            </a-tab-pane>
+          </a-tabs>
+        </a-col>
+        <a-col flex="44px">
+          <div class="tabs-switch">
+            <a-dropdown :popup-max-height="false">
+              <a-button class="tabs-btn" size="mini">
+                <icon-down/>
+              </a-button>
+              <template #content>
+                <a-doption @click="onClose(0)">
+                  <icon-double-left/>
+                  关闭左侧
+                </a-doption>
+                <a-doption @click="onClose(1)">
+                  <icon-double-right/>
+                  关闭右侧
+                </a-doption>
+                <a-doption @click="onClose(2)">
+                  <icon-close/>
+                  关闭其他
+                </a-doption>
+                <a-doption @click="onClose(3)">
+                  <icon-close-circle/>
+                  全部关闭
+                </a-doption>
+              </template>
+            </a-dropdown>
+          </div>
+        </a-col>
+      </a-row>
 
 
-  </a-space>
-
+    </a-space>
+  </a-affix>
 </template>
 
 <script setup>
 import {ref} from 'vue';
+import {useLayout} from "@/stores/layout.js";
 
 const activeKey = ref('1');
 const data = ref([
@@ -146,10 +148,11 @@ const onClose = (key) => {
 }
 
 .tabs-btn {
-  background: white;
+  background: var(--color-bg-5);
   width: 32px;
   height: 32px;
-  color: black;
+  color: var(--color-text-2);
+
 }
 
 :deep(.arco-tabs-nav-button-right) {

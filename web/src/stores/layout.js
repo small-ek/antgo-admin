@@ -55,7 +55,9 @@ export const useLayout = defineStore('useLayout', {
             //菜单收缩
             isCollapsed: false,
             //显示手机菜单
-            showMobileMenu: false
+            showMobileMenu: false,
+            //显示标签
+            showHeader: true
         };
     },
     getters: {},

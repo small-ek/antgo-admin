@@ -18,6 +18,10 @@ const addHistory = (visible, color) => {
 }
 
 const themeList = ref([{title: "浅色", value: "light", icon: IconSun}, {title: "深色", value: "dark", icon: IconMoon}, {title: "跟随系统", value: "auto", icon: IconTranslate}])
+
+const onUpdateHeader = (value) => {
+
+}
 </script>
 
 <template>
@@ -188,7 +192,7 @@ const themeList = ref([{title: "浅色", value: "light", icon: IconSun}, {title:
                 模式
               </a-col>
               <a-col :span="14">
-                <a-select placeholder="请选择" v-model="useLayout().header">
+                <a-select placeholder="请选择" v-model="useLayout().header" @change="onUpdateHeader">
                   <a-option value="static">静止</a-option>
                   <a-option value="fixed">固定</a-option>
                   <a-option value="adaptive">滚动隐藏和显示</a-option>
@@ -302,7 +306,7 @@ const themeList = ref([{title: "浅色", value: "light", icon: IconSun}, {title:
             色弱模式
           </a-col>
           <a-col :span="5">
-            <a-switch v-model="useLayout().isColorBlind" :checked-value="true" :unchecked-value="false"/>
+            <a-switch v-model="useLayout().isColorBlind" @change="useTheme().changeGreyOrWeak('weak',useLayout().isColorBlind)" :checked-value="true" :unchecked-value="false"/>
           </a-col>
         </a-row>
       </a-col>
@@ -312,7 +316,7 @@ const themeList = ref([{title: "浅色", value: "light", icon: IconSun}, {title:
             灰色模式
           </a-col>
           <a-col :span="5">
-            <a-switch v-model="useLayout().isGrey" :checked-value="true" :unchecked-value="false"/>
+            <a-switch v-model="useLayout().isGrey" @change="useTheme().changeGreyOrWeak('grey',useLayout().isGrey)" :checked-value="true" :unchecked-value="false"/>
           </a-col>
         </a-row>
       </a-col>
