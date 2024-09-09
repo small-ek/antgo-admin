@@ -1,56 +1,58 @@
 <template>
-  <a-affix :offsetTop="useLayout().header==='static'?0:64" v-if="useLayout().isTabs">
-    <a-space direction="vertical" :size="16" class="ant-tabs-space">
-      <a-row justify="space-between" align="center" :wrap="false">
-        <a-col :xs="21" :sm="21" :md="21" :lg="22" :xl="23" :xxl="23">
-          <a-tabs type="card-gutter" class="ant-tabs" size="large" :editable="true" @delete="onDelete" @tab-click="onClick" auto-switch lazy-load :active-key="activeKey">
+  <a-space direction="vertical" v-if="useLayout().isTabs" :size="16" class="ant-tabs-space">
+    <a-row justify="space-between" align="center" :wrap="false">
+      <a-col :xs="21" :sm="21" :md="21" :lg="22" :xl="23" :xxl="23">
+        <a-tabs type="card-gutter" class="ant-tabs" size="large" :editable="true" @delete="onDelete" @tab-click="onClick" auto-switch lazy-load :active-key="activeKey">
+          <section ref="el">
             <a-tab-pane v-for="(item, index) of data" :key="item.key" :closable="index!==0">
               <template #title>
-                <icon-apps v-if="useLayout().isTabsIcon"/>
+                <icon-apps v-if="useLayout().isTabsIcon" class="cursor-move handle"/>
                 <text class="tags-text">{{ item.title }}</text>
               </template>
             </a-tab-pane>
-          </a-tabs>
-        </a-col>
-        <a-col flex="44px">
-          <div class="tabs-switch">
-            <a-dropdown :popup-max-height="false">
-              <a-button class="tabs-btn" size="mini">
-                <icon-down/>
-              </a-button>
-              <template #content>
-                <a-doption @click="onClose(0)">
-                  <icon-double-left/>
-                  关闭左侧
-                </a-doption>
-                <a-doption @click="onClose(1)">
-                  <icon-double-right/>
-                  关闭右侧
-                </a-doption>
-                <a-doption @click="onClose(2)">
-                  <icon-close/>
-                  关闭其他
-                </a-doption>
-                <a-doption @click="onClose(3)">
-                  <icon-close-circle/>
-                  全部关闭
-                </a-doption>
-              </template>
-            </a-dropdown>
-          </div>
-        </a-col>
-      </a-row>
+          </section>
+        </a-tabs>
+      </a-col>
+      <a-col flex="44px">
+        <div class="tabs-switch">
+          <a-dropdown :popup-max-height="false">
+            <a-button class="tabs-btn" size="mini">
+              <icon-down/>
+            </a-button>
+            <template #content>
+              <a-doption @click="onClose(0)">
+                <icon-double-left/>
+                关闭左侧
+              </a-doption>
+              <a-doption @click="onClose(1)">
+                <icon-double-right/>
+                关闭右侧
+              </a-doption>
+              <a-doption @click="onClose(2)">
+                <icon-close/>
+                关闭其他
+              </a-doption>
+              <a-doption @click="onClose(3)">
+                <icon-close-circle/>
+                全部关闭
+              </a-doption>
+            </template>
+          </a-dropdown>
+        </div>
+      </a-col>
+    </a-row>
 
 
-    </a-space>
-  </a-affix>
+  </a-space>
 </template>
 
 <script setup>
 import {ref} from 'vue';
 import {useLayout} from "@/stores/layout.js";
-
+import { useDraggable } from 'vue-draggable-plus'
 const activeKey = ref('1');
+const el = ref()
+
 const data = ref([
   {
     key: '0',
@@ -94,6 +96,7 @@ const data = ref([
   },
 ]);
 
+useDraggable(el, data, { animation: 150, handle: '.handle' })
 const onClick = (key) => {
   activeKey.value = key
 }
@@ -125,6 +128,16 @@ const onClose = (key) => {
 }
 </script>
 <style scoped>
+.cursor-move {
+  cursor: move;
+}
+
+.affix {
+  position: sticky;
+  top: 44px;
+  z-index: 999;
+}
+
 .ant-tabs-space {
   display: block;
   background: rgb(var(--gray-1));

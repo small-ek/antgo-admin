@@ -57,7 +57,9 @@ export const useLayout = defineStore('useLayout', {
             //显示手机菜单
             showMobileMenu: false,
             //显示标签
-            showHeader: true
+            showHeader: true,
+            //头部是否固定
+            isFixedHeader: true,
         };
     },
     getters: {},
@@ -100,7 +102,8 @@ export const useLayout = defineStore('useLayout', {
                     "isGrey",
                     "windowWidth",
                     "windowHeight",
-                    "showSetting"
+                    "showSetting",
+                    "isFixedHeader"
                 ]
             }
         ]

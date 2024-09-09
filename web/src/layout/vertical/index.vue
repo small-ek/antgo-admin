@@ -4,8 +4,10 @@
     <Left></Left>
     <a-layout @scroll="handleScroll" class="ant-container">
       <!--头部-->
-      <Header></Header>
-      <Tags></Tags>
+      <div :class="[{'affix':useLayout().isFixedHeader}]">
+        <Header></Header>
+        <Tags></Tags>
+      </div>
       <a-layout style="padding: 0 0.6vw;">
 
         <a-layout-content>
@@ -26,25 +28,30 @@ import Footer from "@/layout/componets/fooder/index.vue";
 import Tags from "@/layout/componets/tabs/index.vue"
 import Setting from "@/layout/componets/setting/index.vue"
 import {useLayout} from "@/stores/layout.js";
+import throttle from "@/utils/throttle.js";
 
 let lastScrollTop = 0;
 const handleScroll = (event) => {
-  if (useLayout().header !== 'adaptive') return;
-  const container = event.target;
-  const scrollTop = container.scrollTop;
-
-  if (scrollTop > lastScrollTop) {
-    console.log('Scrolling down');
-    useLayout().setState("showHeader", false)
-  } else {
-    console.log('Scrolling up');
-    useLayout().setState("showHeader", true)
-  }
-
-  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+  throttle(() => {
+    if (useLayout().header !== 'adaptive') return;
+    const container = event.target;
+    const scrollTop = container.scrollTop;
+    if (scrollTop > lastScrollTop) {
+      useLayout().setState("isFixedHeader", false)
+    } else {
+      useLayout().setState("isFixedHeader", true)
+    }
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+  }, 600);
 };
 </script>
 <style scoped>
+.affix {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
 .ant-layout {
   height: 100vh;
   background: var(--color-neutral-1);
