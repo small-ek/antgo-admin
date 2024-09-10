@@ -3,11 +3,12 @@
     <a-row justify="space-between" align="center" :wrap="false">
       <a-col :xs="21" :sm="21" :md="21" :lg="22" :xl="23" :xxl="23">
         <a-tabs type="card-gutter" class="ant-tabs" size="large" :editable="true" @delete="onDelete" @tab-click="onClick" auto-switch lazy-load :active-key="activeKey">
-          <section ref="el">
-            <a-tab-pane v-for="(item, index) of data" :key="item.key" :closable="index!==0">
+          <section class="flex flex-col gap-2 p-4 w-300px h-300px m-auto bg-gray-500/5 rounded overflow-auto" ref="el">
+<!--            <span v-for="(item, index) in data" class="cursor-move handle">{{item.title}}</span>-->
+            <a-tab-pane v-for="(item, index) in data" :key="item.key" :closable="index!==0">
               <template #title>
                 <icon-apps v-if="useLayout().isTabsIcon" class="cursor-move handle"/>
-                <text class="tags-text">{{ item.title }}</text>
+                <span >{{ item.title }}</span>
               </template>
             </a-tab-pane>
           </section>
@@ -20,22 +21,11 @@
               <icon-down/>
             </a-button>
             <template #content>
-              <a-doption @click="onClose(0)">
-                <icon-double-left/>
-                关闭左侧
+              <a-doption @click="onClose(item.key)" v-for="item in closeText">
+                <component :is="item.icon"></component>
+                {{ item.title }}
               </a-doption>
-              <a-doption @click="onClose(1)">
-                <icon-double-right/>
-                关闭右侧
-              </a-doption>
-              <a-doption @click="onClose(2)">
-                <icon-close/>
-                关闭其他
-              </a-doption>
-              <a-doption @click="onClose(3)">
-                <icon-close-circle/>
-                全部关闭
-              </a-doption>
+
             </template>
           </a-dropdown>
         </div>
@@ -49,9 +39,21 @@
 <script setup>
 import {ref} from 'vue';
 import {useLayout} from "@/stores/layout.js";
-import { useDraggable } from 'vue-draggable-plus'
-const activeKey = ref('1');
+import {useDraggable} from 'vue-draggable-plus'
+import {IconClose, IconCloseCircle, IconDoubleLeft, IconDoubleRight} from '@arco-design/web-vue/es/icon'
+
 const el = ref()
+
+
+
+const activeKey = ref('1');
+//右侧关闭文字
+const closeText = ref([
+  {key: 0, title: '关闭左侧', icon: IconDoubleLeft},
+  {key: 1, title: '关闭右侧', icon: IconDoubleRight},
+  {key: 2, title: '关闭其他', icon: IconClose},
+  {key: 3, title: '关闭所有', icon: IconCloseCircle}
+])
 
 const data = ref([
   {
@@ -96,7 +98,23 @@ const data = ref([
   },
 ]);
 
-useDraggable(el, data, { animation: 150, handle: '.handle' })
+useDraggable(el, data, {
+  animation: 150,
+  draggable: '.arco-tabs-tab-closable',
+  direction: 'vertical',
+  handle: '.arco-tabs-tab',
+  group: 'people',
+  onUpdate: () => {
+    console.log('update list1')
+  },
+  onAdd: () => {
+    console.log('add list1')
+  },
+  remove: () => {
+    console.log('remove list1')
+  }
+})
+
 const onClick = (key) => {
   activeKey.value = key
 }
@@ -127,6 +145,7 @@ const onClose = (key) => {
   }
 }
 </script>
+
 <style scoped>
 .cursor-move {
   cursor: move;
