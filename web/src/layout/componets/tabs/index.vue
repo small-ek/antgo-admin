@@ -3,16 +3,17 @@
     <a-row justify="space-between" align="center" :wrap="false">
       <a-col :xs="21" :sm="21" :md="21" :lg="22" :xl="23" :xxl="23">
         <a-tabs type="card-gutter" class="ant-tabs" size="large" :editable="true" @delete="onDelete" @tab-click="onClick" auto-switch lazy-load :active-key="activeKey">
-          <section class="flex flex-col gap-2 p-4 w-300px h-300px m-auto bg-gray-500/5 rounded overflow-auto" ref="el">
-<!--            <span v-for="(item, index) in data" class="cursor-move handle">{{item.title}}</span>-->
-            <a-tab-pane v-for="(item, index) in data" :key="item.key" :closable="index!==0">
+          <div id="my-container">
+
+            <a-tab-pane v-for="(item, index) in list" :key="item.key" :closable="index!==0">
               <template #title>
                 <icon-apps v-if="useLayout().isTabsIcon" class="cursor-move handle"/>
-                <span >{{ item.title }}</span>
+                <span class="no-select">{{ item.title }}</span>
               </template>
             </a-tab-pane>
-          </section>
+          </div>
         </a-tabs>
+
       </a-col>
       <a-col flex="44px">
         <div class="tabs-switch">
@@ -37,13 +38,12 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import {useLayout} from "@/stores/layout.js";
-import {useDraggable} from 'vue-draggable-plus'
+import { useDraggable } from 'vue-draggable-plus'
 import {IconClose, IconCloseCircle, IconDoubleLeft, IconDoubleRight} from '@arco-design/web-vue/es/icon'
 
 const el = ref()
-
 
 
 const activeKey = ref('1');
@@ -55,7 +55,7 @@ const closeText = ref([
   {key: 3, title: '关闭所有', icon: IconCloseCircle}
 ])
 
-const data = ref([
+const list = ref([
   {
     key: '0',
     title: 'Tab 0',
@@ -98,28 +98,30 @@ const data = ref([
   },
 ]);
 
-useDraggable(el, data, {
-  animation: 150,
-  draggable: '.arco-tabs-tab-closable',
-  direction: 'vertical',
-  handle: '.arco-tabs-tab',
-  group: 'people',
-  onUpdate: () => {
-    console.log('update list1')
-  },
-  onAdd: () => {
-    console.log('add list1')
-  },
-  remove: () => {
-    console.log('remove list1')
-  }
+onMounted(() => {
+  useDraggable(document.getElementsByClassName("arco-tabs-nav-tab-list")[0], list, {
+    animation: 150,
+    // dragClass: '.arco-tabs-nav-tab-list',
+    direction: 'vertical',
+    handle: '.handle',
+    group: 'people',
+    onUpdate: () => {
+      console.log('update list1')
+    },
+    onAdd: () => {
+      console.log('add list1')
+    },
+    remove: () => {
+      console.log('remove list1')
+    }
+  })
 })
 
 const onClick = (key) => {
   activeKey.value = key
 }
 const onDelete = (key) => {
-  data.value = data.value.filter(item => item.key !== key)
+  list.value = list.value.filter(item => item.key !== key)
 };
 
 //onClose(0) 关闭左侧
@@ -133,15 +135,15 @@ const onClose = (key) => {
     }
   }
   if (key === 1) {
-    for (let i = data.value.length - 1; i > Number(activeKey.value); i--) {
+    for (let i = list.value.length - 1; i > Number(activeKey.value); i--) {
       onDelete(i.toString())
     }
   }
   if (key === 2) {
-    data.value = data.value.filter(item => item.key === activeKey.value || item.key === "0")
+    list.value = list.value.filter(item => item.key === activeKey.value || item.key === "0")
   }
   if (key === 3) {
-    data.value = [data.value[0]]
+    list.value = [list.value[0]]
   }
 }
 </script>
