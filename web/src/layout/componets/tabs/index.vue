@@ -2,18 +2,18 @@
   <a-space direction="vertical" v-if="useLayout().isTabs" :size="16" class="ant-tabs-space">
     <a-row justify="space-between" align="center" :wrap="false">
       <a-col :xs="21" :sm="21" :md="21" :lg="22" :xl="23" :xxl="23">
-        <a-tabs type="card-gutter" class="ant-tabs" size="large" :editable="true" @delete="onDelete" @tab-click="onClick" auto-switch lazy-load :active-key="activeKey">
-          <div id="my-container">
-
-            <a-tab-pane v-for="(item, index) in list" :key="item.key" :closable="index!==0">
+        <VueDraggable v-model="list" :animation="150" target=".arco-tabs-nav-tab-list" direction="horizontal" :disabled="!useLayout().isTabsDraggable">
+          <a-tabs :type="useLayout().tabsType" class="ant-tabs" size="large" :editable="true" @delete="onDelete" @tab-click="onClick" auto-switch lazy-load :active-key="activeKey">
+            <a-tab-pane v-for="(item, index) in list" :key="item.key" :closable="index!==0" :class="[{'tab0':index===0}]">
               <template #title>
-                <icon-apps v-if="useLayout().isTabsIcon" class="cursor-move handle"/>
+                <icon-apps v-if="useLayout().isTabsIcon" class="cursor-move"/>
                 <span class="no-select">{{ item.title }}</span>
               </template>
             </a-tab-pane>
-          </div>
-        </a-tabs>
 
+
+          </a-tabs>
+        </VueDraggable>
       </a-col>
       <a-col flex="44px">
         <div class="tabs-switch">
@@ -38,12 +38,10 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import {ref} from 'vue';
 import {useLayout} from "@/stores/layout.js";
-import { useDraggable } from 'vue-draggable-plus'
+import {VueDraggable} from 'vue-draggable-plus'
 import {IconClose, IconCloseCircle, IconDoubleLeft, IconDoubleRight} from '@arco-design/web-vue/es/icon'
-
-const el = ref()
 
 
 const activeKey = ref('1');
@@ -95,27 +93,20 @@ const list = ref([
     key: '7',
     title: 'Tab 7',
     content: 'Content of Tab Panel 7'
+  },{
+    key: '8',
+    title: 'Tab 8',
+    content: 'Content of Tab Panel 8'
+  },{
+    key: '9',
+    title: 'Tab 9',
+    content: 'Content of Tab Panel 9'
+  },{
+    key: '10',
+    title: 'Tab 10',
+    content: 'Content of Tab Panel 10'
   },
 ]);
-
-onMounted(() => {
-  useDraggable(document.getElementsByClassName("arco-tabs-nav-tab-list")[0], list, {
-    animation: 150,
-    // dragClass: '.arco-tabs-nav-tab-list',
-    direction: 'vertical',
-    handle: '.handle',
-    group: 'people',
-    onUpdate: () => {
-      console.log('update list1')
-    },
-    onAdd: () => {
-      console.log('add list1')
-    },
-    remove: () => {
-      console.log('remove list1')
-    }
-  })
-})
 
 const onClick = (key) => {
   activeKey.value = key

@@ -33,7 +33,9 @@ export const useLayout = defineStore('useLayout', {
             // 标签栏是否显示图标
             isTabsIcon: true,
             // 标签是否可拖拽
-            isTabsStretch: true,
+            isTabsDraggable: true,
+            // Tabs样式('line' | 'card' | 'card-gutter' | 'text' | 'rounded' | 'capsule')
+            tabsType: 'card-gutter',
             // 显示底部栏
             isFooter: true,
             // 底部文案
@@ -93,7 +95,7 @@ export const useLayout = defineStore('useLayout', {
                     "header",
                     "isTabs",
                     "isTabsIcon",
-                    "isTabsStretch",
+                    "isTabsDraggable",
                     "isFooter",
                     "footerText",
                     "theme",

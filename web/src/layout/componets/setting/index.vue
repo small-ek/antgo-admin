@@ -235,7 +235,24 @@ const onUpdateHeader = (value) => {
             启动拖拽排序
           </a-col>
           <a-col :span="5">
-            <a-switch v-model="useLayout().isTabsStretch" :checked-value="true" :unchecked-value="false"/>
+            <a-switch v-model="useLayout().isTabsDraggable" :checked-value="true" :unchecked-value="false"/>
+          </a-col>
+        </a-row>
+      </a-col>
+      <a-col :span="24" class="mb-15">
+        <a-row justify="space-between" align="center">
+          <a-col :span="10">
+            选项卡的样式
+          </a-col>
+          <a-col :span="14">
+            <a-select placeholder="请选择" v-model="useLayout().tabsType">
+              <a-option value="line">线条</a-option>
+              <a-option value="card">卡片</a-option>
+              <a-option value="card-gutter">卡片间隙</a-option>
+              <a-option value="text">文本</a-option>
+              <a-option value="rounded">圆角</a-option>
+              <a-option value="capsule">胶囊居中</a-option>
+            </a-select>
           </a-col>
         </a-row>
       </a-col>
