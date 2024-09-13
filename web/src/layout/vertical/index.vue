@@ -2,14 +2,14 @@
   <a-layout class="ant-layout">
     <!--左侧-->
     <Left></Left>
-    <a-layout @scroll="handleScroll" class="ant-container">
+    <a-layout @scroll="useTheme().handleScroll" class="ant-container">
       <!--头部-->
-      <div :class="[{'affix':useLayout().isFixedHeader}]">
+      <div :class="{'affix': useLayout().isFixedHeader, 'affix-hidden': !useLayout().isFixedHeader&&useLayout().header==='adaptive'}">
         <Header></Header>
         <Tags></Tags>
       </div>
+      <!--内容-->
       <a-layout style="padding: 0 0.6vw;">
-
         <a-layout-content>
           <router-view></router-view>
         </a-layout-content>
@@ -28,30 +28,9 @@ import Footer from "@/layout/componets/fooder/index.vue";
 import Tags from "@/layout/componets/tabs/index.vue"
 import Setting from "@/layout/componets/setting/index.vue"
 import {useLayout} from "@/stores/layout.js";
-import throttle from "@/utils/throttle.js";
-
-let lastScrollTop = 0;
-const handleScroll = (event) => {
-  throttle(() => {
-    if (useLayout().header !== 'adaptive') return;
-    const container = event.target;
-    const scrollTop = container.scrollTop;
-    if (scrollTop > lastScrollTop) {
-      useLayout().setState("isFixedHeader", false)
-    } else {
-      useLayout().setState("isFixedHeader", true)
-    }
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
-  }, 600);
-};
+import {useTheme} from "@/utils/theme.js";
 </script>
 <style scoped>
-.affix {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
-
 .ant-layout {
   height: 100vh;
   background: var(--color-neutral-1);

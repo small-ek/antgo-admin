@@ -1,13 +1,26 @@
 // 用于界面设置修改
 import {useLayout} from "@/stores/layout.js";
 import {getLightColor} from "@/utils/color.js";
+import throttle from "@/utils/throttle.js";
+
+let lastScrollTop = 0;
 
 export function useTheme() {
+    // 默认主题设置
+    const defaultTheme = () => {
+        updateDark();
+        if (useLayout().isColorBlind) {
+            changeGreyOrWeak('weak', useLayout().isColorBlind)
+        }
+        if (useLayout().isGrey) {
+            changeGreyOrWeak('grey', useLayout().isGrey)
+        }
+        changePrimary()
+    }
     /**
      * 切换暗黑模式
      */
     const updateDark = () => {
-        console.log(111)
         if (useLayout().theme === 'dark') {
             document.body.setAttribute('arco-theme', 'dark')
         }
@@ -47,10 +60,22 @@ export function useTheme() {
             weak: "filter: invert(80%)"
         };
         body.setAttribute("style", styles[type]);
-        // const propName = type === "grey" ? "isWeak" : "isGrey";
-
     };
+
+    const handleScroll = (event) => {
+        throttle(() => {
+            if (useLayout().header !== 'adaptive') return;
+            const container = event.target;
+            const scrollTop = container.scrollTop;
+            if (scrollTop > lastScrollTop) {
+                useLayout().setState("isFixedHeader", false)
+            } else {
+                useLayout().setState("isFixedHeader", true)
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+        }, 400);
+    }
     return {
-        changePrimary, updateDark, changeGreyOrWeak
+        defaultTheme, changePrimary, updateDark, changeGreyOrWeak, handleScroll
     }
 }

@@ -50,7 +50,17 @@ html {
   user-select: none;
 }
 
+.affix {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
 
+.affix-hidden {
+  opacity: 0;
+  transform: translateY(-20px);
+}
 
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1) !important;

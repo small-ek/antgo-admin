@@ -51,8 +51,7 @@ const onCancel = () => {
 <style scoped>
 .ant-menu {
   box-shadow: 2px 0 8px 0 rgba(29, 35, 41, .05);
-
-  height: 100vh;
+  /*height: 100vh;*/
 }
 
 .ant-menu-dark {

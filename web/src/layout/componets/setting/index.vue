@@ -17,7 +17,7 @@ const addHistory = (visible, color) => {
   }
 }
 
-const themeList = ref([{title: "浅色", value: "light", icon: IconSun}, {title: "深色", value: "dark", icon: IconMoon}, {title: "跟随系统", value: "auto", icon: IconTranslate}])
+const themeList = [{title: "浅色", value: "light", icon: IconSun}, {title: "深色", value: "dark", icon: IconMoon}, {title: "跟随系统", value: "auto", icon: IconTranslate}]
 
 const onUpdateHeader = (value) => {
   if (value === 'static') {
