@@ -42,7 +42,7 @@ const onCancel = () => {
   <!--PC菜单-->
   <a-layout-sider v-if="useLayout().windowWidth>768" hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth" :theme="useLayout().isDarkSidebar===true?'dark':'light'" :class="['ant-menu',]">
     <!--logo-->
-    <Logo></Logo>
+    <Logo v-if="useLayout().layout==='vertical'"></Logo>
     <!--菜单-->
     <Menu></Menu>
   </a-layout-sider>
@@ -51,7 +51,7 @@ const onCancel = () => {
 <style scoped>
 .ant-menu {
   box-shadow: 2px 0 8px 0 rgba(29, 35, 41, .05);
-  /*height: 100vh;*/
+  height: 100vh;
 }
 
 .ant-menu-dark {

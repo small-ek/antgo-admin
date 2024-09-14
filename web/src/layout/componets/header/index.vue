@@ -2,6 +2,7 @@
 import Breadcrumbs from '@/layout/componets/breadcrumbs/index.vue'
 import {ref} from "vue";
 import {useLayout} from '@/stores/layout.js'
+import headerLogo from "@/layout/componets/headerLogo/index.vue";
 
 const isFullscreen = ref(false)
 
@@ -52,9 +53,12 @@ const onFullscreen = () => {
 <template>
   <a-layout-header :class="[{'dark':useLayout().isDarkHeader===true}]">
     <a-row justify="space-between" align="center" :wrap="false">
+      <a-col :flex="useLayout().sidebarWidth+'px'" v-if="useLayout().layout==='classic'">
+        <headerLogo></headerLogo>
+      </a-col>
       <a-col flex="auto">
         <a-tooltip content="收缩菜单">
-          <a-button @click="onCollapse" class="btn-icon shadow" shape="circle">
+          <a-button @click="onCollapse" class="btn-icon shadow first-icon" shape="circle">
             <icon-menu-unfold size="19" v-if="useLayout().isCollapse"/>
             <icon-menu-fold size="19" v-else/>
           </a-button>
@@ -121,6 +125,9 @@ const onFullscreen = () => {
 </template>
 
 <style scoped>
+.first-icon {
+  margin-left: 1vw;
+}
 
 .dark {
   background: black !important;

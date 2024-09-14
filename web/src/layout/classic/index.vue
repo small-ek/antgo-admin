@@ -2,11 +2,11 @@
   <a-layout class="ant-layout">
     <!--头部-->
     <Header></Header>
-    <a-layout>
-      <a-layout>
+    <a-layout class="ant-container">
+
         <!--左侧-->
         <Left></Left>
-        <a-layout @scroll="useTheme().handleScroll" class="ant-container">
+        <a-layout @scroll="useTheme().handleScroll">
           <!--头部标签-->
           <div :class="{'affix': useLayout().isFixedHeader, 'affix-hidden': !useLayout().isFixedHeader&&useLayout().header==='adaptive'}">
             <Tags></Tags>
@@ -20,7 +20,6 @@
 
           <!--底部-->
           <Footer v-if="useLayout().isFooter"></Footer>
-        </a-layout>
 
       </a-layout>
 
@@ -39,6 +38,10 @@ import {useLayout} from "@/stores/layout.js";
 import {useTheme} from "@/utils/theme.js";
 </script>
 <style scoped>
+.ant-container {
+  margin-top: -1px;
+}
+
 .ant-layout {
   height: 100vh;
   background: var(--color-neutral-1);
@@ -48,7 +51,6 @@ import {useTheme} from "@/utils/theme.js";
 .ant-layout :deep(.arco-layout-header) {
   height: 64px;
   line-height: 64px;
-  padding-left: 20px;
   position: relative;
   top: -1px;
   background: var(--color-bg-4);

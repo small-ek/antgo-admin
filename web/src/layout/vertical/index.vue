@@ -39,9 +39,7 @@ import {useTheme} from "@/utils/theme.js";
 .ant-layout :deep(.arco-layout-header) {
   height: 64px;
   line-height: 64px;
-  padding-left: 20px;
   position: relative;
-  top: -1px;
   background: var(--color-bg-4);
   color: var(--color-text-1);
 }
