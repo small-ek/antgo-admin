@@ -52,8 +52,8 @@ const onFullscreen = () => {
 
 <template>
   <a-layout-header :class="[{'dark':useLayout().isDarkHeader===true}]">
-    <a-row justify="space-between" align="center" :wrap="false">
-      <a-col :flex="useLayout().sidebarWidth+'px'" v-if="useLayout().layout==='classic'">
+    <a-row justify="space-between" align="center" :wrap="true">
+      <a-col :flex="useLayout().sidebarWidth+'px'" v-if="useLayout().layout!=='vertical'&&useLayout().windowWidth>992">
         <headerLogo></headerLogo>
       </a-col>
       <a-col flex="auto">

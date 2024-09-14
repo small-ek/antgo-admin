@@ -47,7 +47,7 @@ const onUpdateHeader = (value) => {
       </a-col>
       <a-space direction="vertical" :size="16" style="display: block;">
         <a-row :gutter="24" justify="space-between">
-          <a-col :span="12" @click="useLayout().setState('layout','vertical')">
+          <a-col :span="12" @click="useLayout().setLayout('vertical')">
             <a-tooltip content="垂直">
               <div :class="['layout-item shadow layout-vertical', { 'is-select': useLayout().layout === 'vertical' }]">
                 <div class="layout-dark"></div>
@@ -59,7 +59,7 @@ const onUpdateHeader = (value) => {
               </div>
             </a-tooltip>
           </a-col>
-          <a-col :span="12" @click="useLayout().setState('layout','classic')">
+          <a-col :span="12" @click="useLayout().setLayout('classic')">
             <a-tooltip content="经典">
               <div :class="['layout-item shadow layout-classic', { 'is-select': useLayout().layout === 'classic' }]">
                 <div class="layout-dark"></div>
@@ -71,7 +71,7 @@ const onUpdateHeader = (value) => {
               </div>
             </a-tooltip>
           </a-col>
-          <a-col :span="12" @click="useLayout().setState('layout','transverse')">
+          <a-col :span="12" @click="useLayout().setLayout('layout','transverse')">
             <a-tooltip content="横向">
               <div :class="['layout-item shadow layout-transverse', { 'is-select': useLayout().layout === 'transverse' }]">
                 <div class="layout-dark"></div>
@@ -80,7 +80,7 @@ const onUpdateHeader = (value) => {
               </div>
             </a-tooltip>
           </a-col>
-          <a-col :span="12" @click="useLayout().setState('layout','columns')">
+          <a-col :span="12" @click="useLayout().setLayout('columns')">
             <a-tooltip content="分栏">
               <div :class="['layout-item shadow layout-columns', { 'is-select': useLayout().layout === 'columns' }]">
                 <div class="layout-dark"></div>

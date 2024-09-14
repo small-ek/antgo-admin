@@ -73,7 +73,7 @@ export function useTheme() {
                 useLayout().setState("isFixedHeader", true)
             }
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
-        }, 400);
+        }, 100);
     }
     return {
         defaultTheme, changePrimary, updateDark, changeGreyOrWeak, handleScroll

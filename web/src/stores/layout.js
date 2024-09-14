@@ -69,6 +69,18 @@ export const useLayout = defineStore('useLayout', {
         setState(...args) {
             this.$patch({[args[0]]: args[1]});
         },
+        setLayout(value) {
+            if (value === 'vertical') {
+                this.setState('isDarkSidebar', true);
+                this.setState('isDarkHeader', false);
+            }
+            if (value === 'classic') {
+                this.setState('isDarkSidebar', false);
+                this.setState('isDarkHeader', true);
+            }
+            this.setState('isFixedHeader', true)
+            this.$patch({'layout': value});
+        },
         resetData() {
             this.$reset();
         }
