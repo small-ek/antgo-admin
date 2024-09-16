@@ -1,0 +1,349 @@
+basePath: /api
+definitions:
+  models.SysAdminUsers:
+    properties:
+      email:
+        description: 电子邮件
+        type: string
+      id:
+        description: 标识
+        type: integer
+      nick_name:
+        description: 昵称
+        type: string
+      password:
+        description: 密码
+        type: string
+      phone:
+        description: 手机
+        type: string
+      status:
+        description: 状态:1=成功;2=失败
+        type: integer
+      username:
+        description: 用户名
+        type: string
+    type: object
+  request.SysAdminUsersLoginRequestForm:
+    properties:
+      code:
+        description: 验证码
+        type: string
+      id:
+        description: 验证码标识
+        type: string
+      password:
+        description: 密码
+        type: string
+      username:
+        description: 用户名
+        type: string
+    required:
+    - code
+    - id
+    - password
+    - username
+    type: object
+  request.SysAdminUsersRequestForm:
+    properties:
+      email:
+        description: 电子邮件
+        type: string
+      id:
+        description: 标识
+        type: integer
+      nick_name:
+        description: 昵称
+        type: string
+      password:
+        description: 密码
+        type: string
+      phone:
+        description: 手机
+        type: string
+      status:
+        description: 状态:1=成功;2=失败
+        type: integer
+      username:
+        description: 用户名
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  response.Page:
+    properties:
+      items:
+        description: Data set of the current page 数据集合
+      total:
+        description: Total pages 总数量
+        type: integer
+    type: object
+  response.Write:
+    properties:
+      code:
+        description: Status Code 业务逻辑的状态码
+        type: integer
+      data:
+        description: Data 实际数据
+      error:
+        description: Error message 错误相关的信息
+      message:
+        description: Msg Prompt message 简短描述
+        type: string
+    type: object
+  vo.ResponseCaptcha:
+    properties:
+      id:
+        description: 验证码标识
+        type: string
+      pic:
+        description: 验证码图片
+        type: string
+    type: object
+host: 127.0.0.1:9001
+info:
+  contact:
+    email: 56494565@qq.com
+    name: antgo
+    url: https://github.com/small-ek/antgo
+  description: server project
+  title: Swagger server API
+  version: "1.0"
+paths:
+  /captcha:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Write'
+            - properties:
+                data:
+                  $ref: '#/definitions/vo.ResponseCaptcha'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Write'
+      summary: 获取验证码
+      tags:
+      - 系统
+  /login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 登录参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.SysAdminUsersLoginRequestForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Write'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Write'
+      summary: 用户登录
+      tags:
+      - 系统
+  /sys-admin-users:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 当前页
+        in: query
+        name: current_page
+        type: integer
+      - collectionFormat: csv
+        description: 排序方式 true 降序 false 升序
+        in: query
+        items:
+          type: boolean
+        name: desc
+        type: array
+      - description: 电子邮件
+        in: query
+        name: email
+        type: string
+      - collectionFormat: csv
+        description: 过滤条件
+        in: query
+        items:
+          type: string
+        name: filter
+        type: array
+      - description: 标识
+        in: query
+        name: id
+        type: integer
+      - description: 昵称
+        in: query
+        name: nick_name
+        type: string
+      - description: 忽略字段
+        in: query
+        name: omit
+        type: string
+      - collectionFormat: csv
+        description: 排序字段
+        in: query
+        items:
+          type: string
+        name: order
+        type: array
+      - description: 每页显示数量
+        in: query
+        name: page_size
+        type: integer
+      - description: 密码
+        in: query
+        name: password
+        type: string
+      - description: 手机
+        in: query
+        name: phone
+        type: string
+      - collectionFormat: csv
+        description: 选择字段
+        in: query
+        items:
+          type: string
+        name: select
+        type: array
+      - description: 状态:1=成功;2=失败
+        in: query
+        name: status
+        type: integer
+      - description: 用户名
+        in: query
+        name: username
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Write'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/response.Page'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/models.SysAdminUsers'
+                        type: array
+                    type: object
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Write'
+      summary: 获取管理员用户分页数据
+      tags:
+      - 管理员用户
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.SysAdminUsersRequestForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Write'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Write'
+      summary: 创建管理员用户数据
+      tags:
+      - 管理员用户
+  /sys-admin-users/:id:
+    delete:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Write'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Write'
+      summary: 删除管理员用户数据
+      tags:
+      - 管理员用户
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Write'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.SysAdminUsers'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Write'
+      summary: 获取管理员用户详情数据
+      tags:
+      - 管理员用户
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 更新参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.SysAdminUsersRequestForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Write'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Write'
+      summary: 修改管理员用户数据
+      tags:
+      - 管理员用户
+swagger: "2.0"
