@@ -75,14 +75,18 @@ const onCollapse = (val, type) => {
 <style scoped>
 .arco-menu-dark .arco-menu-item.arco-menu-selected{
   background: rgb(var(--primary-6));
-  border-radius: 5px;
+  border-radius: 10px;
+
 }
 .arco-menu-light .arco-menu-item.arco-menu-selected{
   background: rgb(var(--primary-6));
-  border-radius: 5px;
+  border-radius: 10px;
   color: white;
 }
-.arco-menu-light .arco-menu-item.arco-menu-selected .arco-icon, .arco-menu-light .arco-menu-group-title.arco-menu-selected .arco-icon, .arco-menu-light .arco-menu-pop-header.arco-menu-selected .arco-icon, .arco-menu-light .arco-menu-inline-header.arco-menu-selected .arco-icon, .arco-menu-light .arco-menu-item.arco-menu-selected .arco-menu-icon, .arco-menu-light .arco-menu-group-title.arco-menu-selected .arco-menu-icon, .arco-menu-light .arco-menu-pop-header.arco-menu-selected .arco-menu-icon, .arco-menu-light .arco-menu-inline-header.arco-menu-selected .arco-menu-icon{
-  color: white;
+
+
+.arco-menu-item:hover{
+  background: rgb(var(--primary-1));
+  border-radius: 10px;
 }
 </style>
