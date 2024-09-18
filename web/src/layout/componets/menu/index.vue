@@ -1,13 +1,22 @@
 <script setup>
 import {Message} from "@arco-design/web-vue";
 import {useLayout} from "@/stores/layout.js";
+import {defineProps} from "vue";
 
 const onClickMenuItem = (key) => {
   Message.info({content: `You select ${key}`, showIcon: true});
 }
+const props = defineProps({
+  mode: {
+    type: String,
+    default: 'vertical'
+  }
+});
 const onCollapse = (val, type) => {
   const content = type === 'responsive' ? '触发响应式收缩' : '点击触发收缩';
-  useLayout().setState("isCollapsed", val)
+  if (useLayout().layout === 'vertical' || useLayout().layout === 'classic') {
+    useLayout().setState("isCollapsed", val)
+  }
 }
 </script>
 
@@ -22,6 +31,7 @@ const onCollapse = (val, type) => {
       :collapsed="useLayout().isCollapsed"
       @menuItemClick="onClickMenuItem"
       @collapse="onCollapse"
+      :mode="props.mode"
   >
     <a-menu-item key="0_1" disabled>
       <IconHome/>

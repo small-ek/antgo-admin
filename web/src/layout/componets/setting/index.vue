@@ -26,6 +26,16 @@ const onUpdateHeader = (value) => {
     useLayout().setState("isFixedHeader", true)
   }
 }
+
+const setHeaderDark = () => {
+  if(useLayout().layout==='transverse'){
+    if(useLayout().isDarkHeader===true){
+      useLayout().setState("isDarkSidebar", true)
+    }else{
+      useLayout().setState("isDarkSidebar", false)
+    }
+  }
+}
 </script>
 
 <template>
@@ -71,7 +81,7 @@ const onUpdateHeader = (value) => {
               </div>
             </a-tooltip>
           </a-col>
-          <a-col :span="12" @click="useLayout().setLayout('layout','transverse')">
+          <a-col :span="12" @click="useLayout().setLayout('transverse')">
             <a-tooltip content="横向">
               <div :class="['layout-item shadow layout-transverse', { 'is-select': useLayout().layout === 'transverse' }]">
                 <div class="layout-dark"></div>
@@ -91,39 +101,42 @@ const onUpdateHeader = (value) => {
             </a-tooltip>
           </a-col>
 
-          <a-col :span="24" class="mb-15 title">
-            侧边栏
-          </a-col>
-          <a-col :span="24" class="mb-15">
-            <a-row justify="space-between" align="center">
-              <a-col :span="10">
-                侧边栏深色
-              </a-col>
-              <a-col :span="5">
-                <a-switch v-model="useLayout().isDarkSidebar" :checked-value="true" :unchecked-value="false"/>
-              </a-col>
-            </a-row>
-          </a-col>
-          <a-col :span="24" class="mb-15">
-            <a-row justify="space-between" align="center">
-              <a-col :span="10">
-                手风琴模式
-              </a-col>
-              <a-col :span="5">
-                <a-switch v-model="useLayout().isAccordion" :checked-value="true" :unchecked-value="false"/>
-              </a-col>
-            </a-row>
-          </a-col>
-          <a-col :span="24" class="mb-15">
-            <a-row justify="space-between" align="center">
-              <a-col :span="10">
-                宽度
-              </a-col>
-              <a-col :span="14">
-                <a-input-number v-model="useLayout().sidebarWidth" placeholder="请输入" :precision="0" :step="1" :min="200" :max="320"/>
-              </a-col>
-            </a-row>
-          </a-col>
+          <template v-if="useLayout().layout!=='transverse'">
+            <a-col :span="24" class="mb-15 title">
+              侧边栏
+            </a-col>
+            <a-col :span="24" class="mb-15">
+              <a-row justify="space-between" align="center">
+                <a-col :span="10">
+                  侧边栏深色
+                </a-col>
+                <a-col :span="5">
+                  <a-switch v-model="useLayout().isDarkSidebar" :checked-value="true" :unchecked-value="false"/>
+                </a-col>
+              </a-row>
+            </a-col>
+            <a-col :span="24" class="mb-15">
+              <a-row justify="space-between" align="center">
+                <a-col :span="10">
+                  手风琴模式
+                </a-col>
+                <a-col :span="5">
+                  <a-switch v-model="useLayout().isAccordion" :checked-value="true" :unchecked-value="false"/>
+                </a-col>
+              </a-row>
+            </a-col>
+            <a-col :span="24" class="mb-15">
+              <a-row justify="space-between" align="center">
+                <a-col :span="10">
+                  宽度
+                </a-col>
+                <a-col :span="14">
+                  <a-input-number v-model="useLayout().sidebarWidth" placeholder="请输入" :precision="0" :step="1" :min="200" :max="320"/>
+                </a-col>
+              </a-row>
+            </a-col>
+          </template>
+
 
           <a-col :span="24" class="mb-15 title">
             顶部栏
@@ -136,7 +149,7 @@ const onUpdateHeader = (value) => {
                 </a-tooltip>
               </a-col>
               <a-col :span="5">
-                <a-switch v-model="useLayout().isDarkHeader" :checked-value="true" :unchecked-value="false"/>
+                <a-switch v-model="useLayout().isDarkHeader" @change="setHeaderDark" :checked-value="true" :unchecked-value="false"/>
               </a-col>
             </a-row>
           </a-col>

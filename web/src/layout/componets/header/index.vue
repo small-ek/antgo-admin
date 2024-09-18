@@ -1,8 +1,10 @@
 <script setup>
 import Breadcrumbs from '@/layout/componets/breadcrumbs/index.vue'
-import {ref} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 import {useLayout} from '@/stores/layout.js'
 import headerLogo from "@/layout/componets/headerLogo/index.vue";
+import {useTheme} from "@/utils/theme.js";
+import Menu from "@/layout/componets/menu/index.vue";
 
 const isFullscreen = ref(false)
 
@@ -47,7 +49,14 @@ const onFullscreen = () => {
   isFullscreen.value = !isFullscreen.value
 }
 
+//控制屏幕宽度
+onMounted(() => {
+  window.addEventListener('resize', useTheme().handleResize);
+});
 
+onUnmounted(() => {
+  window.removeEventListener('resize', useTheme().handleResize);
+});
 </script>
 
 <template>
@@ -57,7 +66,7 @@ const onFullscreen = () => {
         <headerLogo></headerLogo>
       </a-col>
       <a-col flex="auto">
-        <a-tooltip content="收缩菜单">
+        <a-tooltip content="收缩菜单" v-if="useLayout().layout==='vertical'||useLayout().layout==='classic'">
           <a-button @click="onCollapse" class="btn-icon shadow first-icon" shape="circle">
             <icon-menu-unfold size="19" v-if="useLayout().isCollapse"/>
             <icon-menu-fold size="19" v-else/>
@@ -69,9 +78,13 @@ const onFullscreen = () => {
             <icon-refresh size="19"/>
           </a-button>
         </a-tooltip>
-        <Breadcrumbs v-if="useLayout().windowWidth>768"></Breadcrumbs>
+        <template v-if="useLayout().layout==='vertical'||useLayout().layout==='classic'">
+          <Breadcrumbs v-if="useLayout().windowWidth>768"></Breadcrumbs>
+        </template>
       </a-col>
-
+      <a-col flex="700px" v-if="useLayout().layout==='transverse'&&useLayout().windowWidth>992">
+        <Menu mode="horizontal"></Menu>
+      </a-col>
       <a-col :flex="useLayout().windowWidth>768?'320px':'250px'">
         <template v-if="useLayout().isFullScreen">
           <a-tooltip content="全屏开关" v-if="useLayout().windowWidth>768">
@@ -130,7 +143,7 @@ const onFullscreen = () => {
 }
 
 .dark {
-  background: black !important;
+  background: var(--color-menu-dark-bg) !important;
   color: white !important;
 
   .btn-icon {

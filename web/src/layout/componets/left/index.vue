@@ -1,28 +1,7 @@
 <script setup>
 import Menu from "@/layout/componets/menu/index.vue";
 import Logo from "@/layout/componets/logo/index.vue";
-import {onMounted, onUnmounted} from "vue";
 import {useLayout} from '@/stores/layout.js'
-
-
-const handleResize = () => {
-  useLayout().setState("windowWidth", window.innerWidth)
-  useLayout().setState("windowHeight", window.innerHeight)
-  if (useLayout().windowWidth < 768) {
-    useLayout().setState("isCollapsed", false)
-  } else {
-    useLayout().setState("mobileVisible", false)
-  }
-};
-
-onMounted(() => {
-  window.addEventListener('resize', handleResize);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
-});
-
 
 const onCancel = () => {
   useLayout().setState("showMobileMenu", false)

@@ -6,7 +6,7 @@ export const useLayout = defineStore('useLayout', {
         return {
             //是否显示设置
             setting: true,
-            // 布局模式 (纵向：vertical | 经典：classic | 横向：transverse | 分栏：columns)
+            // 布局模式 (垂直：vertical | 经典：classic | 横向：transverse | 分栏：columns)
             layout: "vertical",
             // 侧边栏深色
             isDarkSidebar: true,
@@ -76,6 +76,10 @@ export const useLayout = defineStore('useLayout', {
             }
             if (value === 'classic') {
                 this.setState('isDarkSidebar', false);
+                this.setState('isDarkHeader', true);
+            }
+            if(value==='transverse'){
+                this.setState('isDarkSidebar', true)
                 this.setState('isDarkHeader', true);
             }
             this.setState('isFixedHeader', true)

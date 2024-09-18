@@ -75,7 +75,16 @@ export function useTheme() {
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
         }, 100);
     }
+    const handleResize = () => {
+        useLayout().setState("windowWidth", window.innerWidth)
+        useLayout().setState("windowHeight", window.innerHeight)
+        if (useLayout().windowWidth < 768) {
+            useLayout().setState("isCollapsed", false)
+        } else {
+            useLayout().setState("mobileVisible", false)
+        }
+    };
     return {
-        defaultTheme, changePrimary, updateDark, changeGreyOrWeak, handleScroll
+        defaultTheme, changePrimary, updateDark, changeGreyOrWeak, handleScroll, handleResize
     }
 }
