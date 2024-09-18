@@ -61,18 +61,23 @@ onUnmounted(() => {
 
 <template>
   <a-layout-header :class="[{'dark':useLayout().isDarkHeader===true}]">
-    <a-row justify="space-between" align="center" :wrap="true">
+    <a-row justify="space-between" align="center" :wrap="false">
       <a-col :flex="useLayout().sidebarWidth+'px'" v-if="useLayout().layout!=='vertical'&&useLayout().windowWidth>992">
         <headerLogo></headerLogo>
       </a-col>
-      <a-col flex="auto">
+      <a-col :flex="useLayout().layout==='transverse'?'80px':'auto'">
         <a-tooltip content="收缩菜单" v-if="useLayout().layout==='vertical'||useLayout().layout==='classic'">
           <a-button @click="onCollapse" class="btn-icon shadow first-icon" shape="circle">
             <icon-menu-unfold size="19" v-if="useLayout().isCollapse"/>
             <icon-menu-fold size="19" v-else/>
           </a-button>
         </a-tooltip>
-
+        <a-tooltip content="收缩菜单" v-if="useLayout().layout==='transverse'&&useLayout().windowWidth<992">
+          <a-button @click="onCollapse" class="btn-icon shadow first-icon" shape="circle">
+            <icon-menu-unfold size="19" v-if="useLayout().isCollapse"/>
+            <icon-menu-fold size="19" v-else/>
+          </a-button>
+        </a-tooltip>
         <a-tooltip content="刷新页面" v-if="useLayout().isRefresh">
           <a-button @click="onRefresh" class="btn-icon shadow" shape="circle">
             <icon-refresh size="19"/>
@@ -82,8 +87,10 @@ onUnmounted(() => {
           <Breadcrumbs v-if="useLayout().windowWidth>768"></Breadcrumbs>
         </template>
       </a-col>
-      <a-col flex="700px" v-if="useLayout().layout==='transverse'&&useLayout().windowWidth>992">
-        <Menu mode="horizontal"></Menu>
+      <a-col flex="auto" v-if="useLayout().layout==='transverse'&&useLayout().windowWidth>992">
+        <div style="width: 100%">
+          <Menu mode="horizontal"></Menu>
+        </div>
       </a-col>
       <a-col :flex="useLayout().windowWidth>768?'320px':'250px'">
         <template v-if="useLayout().isFullScreen">
@@ -120,7 +127,8 @@ onUnmounted(() => {
 
         <span class="head-row">
           <a-avatar class="head-img">
-          <img alt="avatar" src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"/>
+          <img alt="avatar"
+               src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"/>
         </a-avatar>
         <a-dropdown :popup-max-height="false" trigger="hover">
           <span class="head-text">Antgo Admin</span>

@@ -10,8 +10,6 @@
                 <span class="no-select">{{ item.title }}</span>
               </template>
             </a-tab-pane>
-
-
           </a-tabs>
         </VueDraggable>
       </a-col>
@@ -26,14 +24,11 @@
                 <component :is="item.icon"></component>
                 {{ item.title }}
               </a-doption>
-
             </template>
           </a-dropdown>
         </div>
       </a-col>
     </a-row>
-
-
   </a-space>
 </template>
 
@@ -41,8 +36,7 @@
 import {ref} from 'vue';
 import {useLayout} from "@/stores/layout.js";
 import {VueDraggable} from 'vue-draggable-plus'
-import {IconClose, IconCloseCircle, IconDoubleLeft, IconDoubleRight} from '@arco-design/web-vue/es/icon'
-
+import {IconClose, IconCloseCircle, IconDoubleLeft, IconDoubleRight, IconRefresh} from '@arco-design/web-vue/es/icon'
 
 const activeKey = ref('1');
 //右侧关闭文字
@@ -50,7 +44,8 @@ const closeText = ref([
   {key: 0, title: '关闭左侧', icon: IconDoubleLeft},
   {key: 1, title: '关闭右侧', icon: IconDoubleRight},
   {key: 2, title: '关闭其他', icon: IconClose},
-  {key: 3, title: '关闭所有', icon: IconCloseCircle}
+  {key: 3, title: '关闭所有', icon: IconCloseCircle},
+  {key: 4, title: '刷新', icon: IconRefresh}
 ])
 
 const list = ref([
@@ -111,6 +106,7 @@ const list = ref([
 const onClick = (key) => {
   activeKey.value = key
 }
+
 const onDelete = (key) => {
   list.value = list.value.filter(item => item.key !== key)
 };
@@ -135,6 +131,9 @@ const onClose = (key) => {
   }
   if (key === 3) {
     list.value = [list.value[0]]
+  }
+  if (key === 4) {
+    window.location.reload()
   }
 }
 </script>

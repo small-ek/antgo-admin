@@ -4,7 +4,7 @@ import {useLayout} from "@/stores/layout.js";
 import {defineProps} from "vue";
 
 const onClickMenuItem = (key) => {
-  Message.info({content: `You select ${key}`, showIcon: true});
+  // Message.info({content: `You select ${key}`, showIcon: true});
 }
 const props = defineProps({
   mode: {
