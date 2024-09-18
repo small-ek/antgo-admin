@@ -5,7 +5,7 @@
     <a-layout class="ant-container">
 
       <!--左侧-->
-<!--      <Left></Left>-->
+      <Left></Left>
       <a-layout @scroll="useTheme().handleScroll">
         <!--头部标签-->
         <div :class="{'affix': useLayout().isFixedHeader, 'affix-hidden': !useLayout().isFixedHeader&&useLayout().header==='adaptive'}">

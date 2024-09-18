@@ -11,7 +11,7 @@ const onCancel = () => {
 <template>
   <!--手机菜单-->
   <a-drawer v-if="useLayout().windowWidth<768" :width="useLayout().sidebarWidth" :visible="useLayout().showMobileMenu" placement="left" :closable="false" :header="false" :footer="false" :drawerStyle="{padding:'0px'}" @cancel="onCancel" class="ant-left">
-    <a-layout-sider hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth" :theme="useLayout().isDarkSidebar===true?'dark':'light'" :class="['ant-menu',]">
+    <a-layout-sider hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth" :theme="useLayout().isDarkSidebar===true?'dark':'light'" :class="['ant-menu']">
       <!--logo-->
       <Logo></Logo>
       <!--菜单-->
@@ -19,7 +19,7 @@ const onCancel = () => {
     </a-layout-sider>
   </a-drawer>
   <!--PC菜单-->
-  <a-layout-sider v-if="useLayout().windowWidth>768" hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth" :theme="useLayout().isDarkSidebar===true?'dark':'light'" :class="['ant-menu',]">
+  <a-layout-sider v-if="useLayout().windowWidth>768&&(useLayout().layout==='vertical'||useLayout().layout==='classic')" hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth" :theme="useLayout().isDarkSidebar===true?'dark':'light'" :class="['ant-menu',]">
     <!--logo-->
     <Logo v-if="useLayout().layout==='vertical'"></Logo>
     <!--菜单-->
