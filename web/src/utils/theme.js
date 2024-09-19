@@ -63,7 +63,9 @@ export function useTheme() {
     };
 
     const handleScroll = (event) => {
+        console.log(222)
         throttle(() => {
+            console.log(useLayout().header)
             if (useLayout().header !== 'adaptive') return;
             const container = event.target;
             const scrollTop = container.scrollTop;
@@ -72,6 +74,7 @@ export function useTheme() {
             } else {
                 useLayout().setState("isFixedHeader", true)
             }
+            console.log(111)
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
         }, 100);
     }

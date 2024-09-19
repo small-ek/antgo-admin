@@ -8,6 +8,7 @@ import Menu from "@/layout/componets/menu/index.vue";
 
 const isFullscreen = ref(false)
 
+//收缩菜单
 const onCollapse = () => {
   if (useLayout().windowWidth < 768) {
     useLayout().setState("isCollapsed", false)
@@ -72,7 +73,7 @@ onUnmounted(() => {
             <icon-menu-fold size="19" v-else/>
           </a-button>
         </a-tooltip>
-        <a-tooltip content="收缩菜单" v-if="useLayout().layout==='transverse'&&useLayout().windowWidth<992">
+        <a-tooltip content="收缩菜单" v-if="useLayout().layout==='transverse'&&useLayout().windowWidth<765">
           <a-button @click="onCollapse" class="btn-icon shadow first-icon" shape="circle">
             <icon-menu-unfold size="19" v-if="useLayout().isCollapse"/>
             <icon-menu-fold size="19" v-else/>
@@ -87,7 +88,7 @@ onUnmounted(() => {
           <Breadcrumbs v-if="useLayout().windowWidth>768"></Breadcrumbs>
         </template>
       </a-col>
-      <a-col flex="auto" v-if="useLayout().layout==='transverse'&&useLayout().windowWidth>992">
+      <a-col flex="auto" v-if="useLayout().layout==='transverse'&&useLayout().windowWidth>765">
         <div style="width: 100%">
           <Menu mode="horizontal"></Menu>
         </div>

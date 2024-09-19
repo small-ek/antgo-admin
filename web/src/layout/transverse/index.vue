@@ -1,7 +1,7 @@
 <template>
   <a-layout class="ant-layout">
     <!--头部-->
-    <Header></Header>
+
     <a-layout class="ant-container">
 
       <!--左侧-->
@@ -9,6 +9,7 @@
       <a-layout @scroll="useTheme().handleScroll">
         <!--头部标签-->
         <div :class="{'affix': useLayout().isFixedHeader, 'affix-hidden': !useLayout().isFixedHeader&&useLayout().header==='adaptive'}">
+          <Header></Header>
           <Tags></Tags>
         </div>
         <!--内容-->
