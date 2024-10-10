@@ -1,30 +1,33 @@
 <template>
   <a-layout class="ant-layout">
     <!--头部-->
+    <a-scrollbar style="height: 100vh;overflow: auto;" @scroll="useTheme().handleScroll">
+      <a-layout class="ant-container">
 
-    <a-layout class="ant-container">
+        <!--左侧-->
+        <Left></Left>
+        <a-layout>
+          <!--头部标签-->
+          <div :class="{'affix': useLayout().isFixedHeader, 'affix-hidden': !useLayout().isFixedHeader&&useLayout().header==='adaptive'}">
+            <Header></Header>
+            <Tags></Tags>
+          </div>
+          <!--内容-->
+          <div style="padding: 0 0.6vw;">
+            <a-layout-content>
 
-      <!--左侧-->
-      <Left></Left>
-      <a-layout @scroll="useTheme().handleScroll">
-        <!--头部标签-->
-        <div :class="{'affix': useLayout().isFixedHeader, 'affix-hidden': !useLayout().isFixedHeader&&useLayout().header==='adaptive'}">
-          <Header></Header>
-          <Tags></Tags>
-        </div>
-        <!--内容-->
-        <div style="padding: 0 0.6vw;">
-          <a-layout-content>
-            <router-view></router-view>
-          </a-layout-content>
-        </div>
+              <router-view></router-view>
 
-        <!--底部-->
-        <Footer v-if="useLayout().isFooter"></Footer>
+            </a-layout-content>
+          </div>
+
+          <!--底部-->
+          <Footer v-if="useLayout().isFooter"></Footer>
+
+        </a-layout>
 
       </a-layout>
-
-    </a-layout>
+    </a-scrollbar>
     <!--布局设置-->
     <Setting></Setting>
   </a-layout>

@@ -25,12 +25,20 @@ const onCancel = () => {
     <!--菜单-->
     <Menu></Menu>
   </a-layout-sider>
+
+  <!--PC菜单-->
+  <a-layout-sider v-if="useLayout().windowWidth>768&&(useLayout().layout==='columns')" hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth" :theme="useLayout().isDarkSidebar===true?'dark':'light'" :class="['ant-menu',]">
+    <!--logo-->
+    <Logo v-if="useLayout().layout==='vertical'"></Logo>
+    <!--菜单-->
+    <Menu></Menu>
+  </a-layout-sider>
 </template>
 
 <style scoped>
 .ant-menu {
   box-shadow: 2px 0 8px 0 rgba(29, 35, 41, .05);
-  height: 100vh;
+  height: 100%;
 }
 
 .ant-menu-dark {

@@ -1,18 +1,19 @@
 <template>
-  <a-layout class="ant-layout">
+  <div class="ant-layout">
     <!--头部-->
     <Header></Header>
     <a-layout class="ant-container">
 
-        <!--左侧-->
-        <Left></Left>
-        <a-layout @scroll="useTheme().handleScroll">
+      <!--左侧-->
+      <Left></Left>
+      <a-layout>
+        <a-scrollbar style="height: calc(100vh - 69px);overflow: auto;" @scroll="useTheme().handleScroll">
           <!--头部标签-->
           <div :class="{'affix': useLayout().isFixedHeader, 'affix-hidden': !useLayout().isFixedHeader&&useLayout().header==='adaptive'}">
             <Tags></Tags>
           </div>
           <!--内容-->
-          <div style="padding: 0 0.6vw;">
+          <div style="padding: 0 0.2vw;">
             <a-layout-content>
               <router-view></router-view>
             </a-layout-content>
@@ -20,13 +21,13 @@
 
           <!--底部-->
           <Footer v-if="useLayout().isFooter"></Footer>
-
+        </a-scrollbar>
       </a-layout>
 
     </a-layout>
     <!--布局设置-->
     <Setting></Setting>
-  </a-layout>
+  </div>
 </template>
 <script setup>
 import Left from "@/layout/componets/left/index.vue";
