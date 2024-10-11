@@ -1,5 +1,4 @@
 <script setup>
-
 import {useLayout} from "@/stores/layout.js";
 </script>
 

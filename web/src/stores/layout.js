@@ -70,6 +70,7 @@ export const useLayout = defineStore('useLayout', {
             this.$patch({[args[0]]: args[1]});
         },
         setLayout(value) {
+            this.setState('sidebarWidth', 250);
             if (value === 'vertical') {
                 this.setState('isDarkSidebar', true);
                 this.setState('isDarkHeader', false);
@@ -82,6 +83,12 @@ export const useLayout = defineStore('useLayout', {
                 this.setState('isDarkSidebar', true)
                 this.setState('isDarkHeader', true);
             }
+            if(value==='columns'){
+                this.setState('isDarkSidebar', false)
+                this.setState('isDarkHeader', false);
+                this.setState('sidebarWidth', 220);
+            }
+
             this.setState('isFixedHeader', true)
             this.$patch({'layout': value});
         },

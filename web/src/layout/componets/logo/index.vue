@@ -11,7 +11,7 @@ import logoImg from "@/layout/componets/logoImg/index.vue"
       <logoImg></logoImg>
     </a-col>
     <a-col :span="12">
-      <span :class="['logo-text',{'white':useLayout().isDarkSidebar===true}]">
+      <span :class="['logo-text',{'white':useLayout().isDarkSidebar===true||useLayout().theme==='dark'}]">
         <logoText></logoText>
       </span>
     </a-col>
