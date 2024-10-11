@@ -1,7 +1,7 @@
 <script setup>
 import Menu from "@/layout/componets/menu/index.vue";
 import Logo from "@/layout/componets/logo/index.vue";
-import { useLayout } from '@/stores/layout.js';
+import {useLayout} from '@/stores/layout.js';
 import LogoImg from "@/layout/componets/logoImg/index.vue";
 
 const onCancel = () => {
@@ -16,17 +16,18 @@ const onCancel = () => {
             @cancel="onCancel" class="drawer-left">
     <a-layout-sider hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth"
                     :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">
-      <Logo />
-      <Menu />
+      <Logo/>
+      <Menu/>
     </a-layout-sider>
   </a-drawer>
 
   <!-- PC Menu -->
-  <a-layout-sider v-if="useLayout().windowWidth > 768 && (useLayout().layout === 'vertical' || useLayout().layout === 'classic')"
-                  hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth"
-                  :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">
-    <Logo v-if="useLayout().layout === 'vertical'" />
-    <Menu />
+  <a-layout-sider
+      v-if="useLayout().windowWidth > 768 && (useLayout().layout === 'vertical' || useLayout().layout === 'classic')"
+      hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth"
+      :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">
+    <Logo v-if="useLayout().layout === 'vertical'"/>
+    <Menu/>
   </a-layout-sider>
 
   <div class="columns-menu" v-if="useLayout().windowWidth > 768 && useLayout().layout === 'columns'">
@@ -37,7 +38,7 @@ const onCancel = () => {
         </div>
       </a-col>
       <a-col :span="20" v-for="row in 30" :key="row">
-        <div class="menu-item">
+        <div class="menu-item hand">
           <div class="icon">
             <font-awesome-icon icon="fa-solid fa-house"/>
           </div>
@@ -96,5 +97,10 @@ const onCancel = () => {
 
 .logo-container {
   margin: 10px 0 25px;
+}
+
+.menu-item:hover {
+  transform: scale(1.15);
+  transition: transform 0.5s;
 }
 </style>
