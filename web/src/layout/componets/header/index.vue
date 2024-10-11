@@ -63,7 +63,7 @@ onUnmounted(() => {
 <template>
   <a-layout-header :class="[{'dark':useLayout().isDarkHeader===true}]">
     <a-row justify="space-between" align="center" :wrap="false">
-      <a-col :flex="useLayout().sidebarWidth+'px'" v-if="useLayout().layout!=='vertical'&&useLayout().windowWidth>992">
+      <a-col :flex="useLayout().sidebarWidth+'px'" v-if="useLayout().layout!=='columns'&&useLayout().layout!=='vertical'&&useLayout().windowWidth>992">
         <headerLogo></headerLogo>
       </a-col>
       <a-col :flex="useLayout().layout==='transverse'?'80px':'auto'">
@@ -73,7 +73,7 @@ onUnmounted(() => {
             <icon-menu-fold size="19" v-else/>
           </a-button>
         </a-tooltip>
-        <a-tooltip content="收缩菜单" v-if="useLayout().layout==='transverse'&&useLayout().windowWidth<765">
+        <a-tooltip content="收缩菜单" v-if="(useLayout().layout==='transverse'||useLayout().layout==='columns')&&useLayout().windowWidth<765">
           <a-button @click="onCollapse" class="btn-icon shadow first-icon" shape="circle">
             <icon-menu-unfold size="19" v-if="useLayout().isCollapse"/>
             <icon-menu-fold size="19" v-else/>
@@ -84,7 +84,7 @@ onUnmounted(() => {
             <icon-refresh size="19"/>
           </a-button>
         </a-tooltip>
-        <template v-if="useLayout().layout==='vertical'||useLayout().layout==='classic'">
+        <template v-if="useLayout().layout==='vertical'||useLayout().layout==='classic'||useLayout().layout==='columns'">
           <Breadcrumbs v-if="useLayout().windowWidth>768"></Breadcrumbs>
         </template>
       </a-col>

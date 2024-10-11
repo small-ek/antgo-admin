@@ -19,8 +19,17 @@ export function useNavigation(router) {
     const openUrl = (url) => {
         window.open(url)
     }
+    /**
+     * 获取资源
+     * @param url
+     * @returns {*}
+     */
+    const getAssets = (url) => {
+        const modules = import.meta.glob('../static/*', {eager: true});
+        return modules["../assets/" + url].default
+    };
     // 通过返回值暴露所管理的状态
     return {
-        jump, openUrl
+        jump, openUrl, getAssets
     }
 }

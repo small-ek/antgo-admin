@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@arco-themes/vue-ant-admin": "^0.0.2",
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
     "axios": "^1.7.2",
     "clientjs": "^0.2.1",
     "nprogress": "^0.2.0",

@@ -13,7 +13,6 @@
         </div>
         <!--内容-->
         <a-layout style="padding: 0 0.6vw;">
-
           <a-layout-content>
             <router-view></router-view>
           </a-layout-content>
