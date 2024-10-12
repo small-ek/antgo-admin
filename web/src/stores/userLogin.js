@@ -8,7 +8,8 @@ export const useUserLoginStore = defineStore('userLogin', {
             authorization: "",
             userInfo: {},
             expiresAt: "",
-            deviceId: ""
+            deviceId: "",
+            menu: []
         };
     },
     getters: {
@@ -39,6 +40,9 @@ export const useUserLoginStore = defineStore('userLogin', {
         setExpiresAt(expiresAt) {
             this.expiresAt = expiresAt;
         },
+        setMenu(menu) {
+            this.menu = menu;
+        },
         // 登录
         login(userInfo) {
             this.setUserInfo(userInfo.user);
@@ -60,7 +64,7 @@ export const useUserLoginStore = defineStore('userLogin', {
         strategies: [
             {
                 storage: localStorage,
-                paths: ['authorization', 'userInfo', 'expiresAt', 'deviceId']
+                paths: ['authorization', 'userInfo', 'expiresAt', 'deviceId','menu']
             }
         ]
     }

@@ -38,9 +38,10 @@ func Router() *gin.Engine {
 func Load() *gin.Engine {
 	app := Router()
 	//添加路由组前缀
-	Group := app.Group("api")
+	Group := app.Group("admin")
 	//注册路由
 	routes.IndexRoute(Group)
+	routes.SysMenuRoute(Group)
 
 	return app
 }

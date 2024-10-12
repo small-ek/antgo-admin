@@ -1,11 +1,27 @@
 <script setup>
+import {ref} from 'vue';
 import Menu from "@/layout/componets/menu/index.vue";
 import Logo from "@/layout/componets/logo/index.vue";
 import {useLayout} from '@/stores/layout.js';
 import LogoImg from "@/layout/componets/logoImg/index.vue";
+import {getMenu} from "@/api/menu.js";
+import {useTree} from "@/utils/tree.js";
+import {useUserLoginStore} from "@/stores/userLogin.js";
 
+const menuRef=ref();
+const parentMenu=ref([]);
 const onCancel = () => {
   useLayout().setState("showMobileMenu", false);
+};
+
+getMenu().then((res) => {
+  parentMenu.value = useTree().buildTree(res.data.items);
+  useUserLoginStore().setMenu(parentMenu.value)
+});
+
+const onParentMenu = (row) => {
+  console.log('onParentMenu');
+  menuRef.value.setList(row.children)
 };
 </script>
 
@@ -27,7 +43,7 @@ const onCancel = () => {
       hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth"
       :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">
     <Logo v-if="useLayout().layout === 'vertical'"/>
-    <Menu/>
+    <Menu ref="menuRef"/>
   </a-layout-sider>
   <a-layout-sider :width="80" v-if="useLayout().windowWidth > 768 && useLayout().layout === 'columns'">
     <div class="columns-menu">
@@ -37,12 +53,15 @@ const onCancel = () => {
           <LogoImg/>
         </div>
       </a-col>
-      <a-col :span="20" v-for="row in 30" :key="row">
-        <div class="menu-item hand">
-          <div class="icon">
-            <font-awesome-icon icon="fa-solid fa-house"/>
+      <a-col :span="20" v-for="row in parentMenu" :key="row">
+        <div class="menu-item hand" @click="onParentMenu(row)">
+          <div class="icon" v-show="row.icon!==''">
+            <font-awesome-icon :icon="row.icon" size="xl"/>
           </div>
-          <div>首页首页</div>
+          <div class="icon" v-show="row.icon===''">
+            <font-awesome-icon icon="fa-solid fa-table-list" />
+          </div>
+          <div>{{ row.title }}</div>
         </div>
       </a-col>
     </a-row>
@@ -52,7 +71,7 @@ const onCancel = () => {
                   :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth"
                   :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">
     <Logo v-if="useLayout().layout === 'vertical' || useLayout().layout === 'columns'"/>
-    <Menu/>
+    <Menu ref="menuRef"/>
   </a-layout-sider>
 </template>
 
@@ -82,7 +101,7 @@ const onCancel = () => {
   color: #f5f5f5;
   text-align: center;
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 11px;
   padding: 20px 5px;
 }
 
@@ -92,7 +111,7 @@ const onCancel = () => {
 }
 
 .icon {
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 }
 
 .logo-container {

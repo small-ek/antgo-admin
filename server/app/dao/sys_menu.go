@@ -6,11 +6,10 @@ import (
 	"github.com/small-ek/antgo/utils/page"
 	"gorm.io/gorm"
 	"server/app/entity/models"
-	
 )
 
 type SysMenuDao struct {
-	db    *gorm.DB
+	db     *gorm.DB
 	models *models.SysMenu
 }
 
@@ -47,7 +46,8 @@ func (dao *SysMenuDao) GetList() (list []models.SysMenu) {
 // GetPage
 func (dao *SysMenuDao) GetPage(page page.PageParam, filter models.SysMenu) (list []models.SysMenu, total int64, err error) {
 	err = dao.db.Model(&dao.models).Scopes(
-		sql.Where("title", "LIKE", filter.Title),sql.Where("path", "LIKE", filter.Path),
+		sql.Where("title", "LIKE", filter.Title),
+		sql.Where("path", "LIKE", filter.Path),
 		sql.Filters(page.Filter),
 		sql.Order(page.Order, page.Desc),
 		sql.Paginate(page.PageSize, page.CurrentPage),
