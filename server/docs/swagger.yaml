@@ -24,6 +24,30 @@ definitions:
         description: 用户名
         type: string
     type: object
+  models.SysMenu:
+    properties:
+      icon:
+        description: 图标
+        type: string
+      id:
+        description: 标识
+        type: integer
+      parent_id:
+        description: 父级标识
+        type: integer
+      path:
+        description: 菜单跳转地址
+        type: string
+      sort:
+        description: 排序
+        type: integer
+      status:
+        description: 是否隐藏0=禁用;1=启用
+        type: integer
+      title:
+        description: 菜单名称
+        type: string
+    type: object
   request.SysAdminUsersLoginRequestForm:
     properties:
       code:
@@ -70,6 +94,32 @@ definitions:
     required:
     - password
     - username
+    type: object
+  request.SysMenuRequestForm:
+    properties:
+      icon:
+        description: 图标
+        type: string
+      id:
+        description: 标识
+        type: integer
+      parent_id:
+        description: 父级标识
+        type: integer
+      path:
+        description: 菜单跳转地址
+        type: string
+      sort:
+        description: 排序
+        type: integer
+      status:
+        description: 是否隐藏0=禁用;1=启用
+        type: integer
+      title:
+        description: 菜单名称
+        type: string
+    required:
+    - title
     type: object
   response.Page:
     properties:
@@ -346,4 +396,191 @@ paths:
       summary: 修改管理员用户数据
       tags:
       - 管理员用户
+  /sys-menu:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 当前页
+        in: query
+        name: current_page
+        type: integer
+      - collectionFormat: csv
+        description: 排序方式 true 降序 false 升序
+        in: query
+        items:
+          type: boolean
+        name: desc
+        type: array
+      - collectionFormat: csv
+        description: 过滤条件
+        in: query
+        items:
+          type: string
+        name: filter
+        type: array
+      - description: 图标
+        in: query
+        name: icon
+        type: string
+      - description: 标识
+        in: query
+        name: id
+        type: integer
+      - description: 忽略字段
+        in: query
+        name: omit
+        type: string
+      - collectionFormat: csv
+        description: 排序字段
+        in: query
+        items:
+          type: string
+        name: order
+        type: array
+      - description: 每页显示数量
+        in: query
+        name: page_size
+        type: integer
+      - description: 父级标识
+        in: query
+        name: parent_id
+        type: integer
+      - description: 菜单跳转地址
+        in: query
+        name: path
+        type: string
+      - collectionFormat: csv
+        description: 选择字段
+        in: query
+        items:
+          type: string
+        name: select
+        type: array
+      - description: 排序
+        in: query
+        name: sort
+        type: integer
+      - description: 是否隐藏0=禁用;1=启用
+        in: query
+        name: status
+        type: integer
+      - description: 菜单名称
+        in: query
+        name: title
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Write'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/response.Page'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/models.SysMenu'
+                        type: array
+                    type: object
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Write'
+      summary: 获取后台菜单分页数据
+      tags:
+      - 后台菜单
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.SysMenuRequestForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Write'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Write'
+      summary: 创建后台菜单数据
+      tags:
+      - 后台菜单
+  /sys-menu/:id:
+    delete:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Write'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Write'
+      summary: 删除后台菜单数据
+      tags:
+      - 后台菜单
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Write'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.SysMenu'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Write'
+      summary: 获取后台菜单详情数据
+      tags:
+      - 后台菜单
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 更新参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.SysMenuRequestForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Write'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Write'
+      summary: 修改后台菜单数据
+      tags:
+      - 后台菜单
 swagger: "2.0"

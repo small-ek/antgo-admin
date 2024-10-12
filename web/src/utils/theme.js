@@ -16,6 +16,7 @@ export function useTheme() {
             changeGreyOrWeak('grey', useLayout().isGrey)
         }
         changePrimary()
+        useLayout().setState("isFixedHeader", true)
     }
     /**
      * 切换暗黑模式

@@ -29,8 +29,8 @@ const onCancel = () => {
     <Logo v-if="useLayout().layout === 'vertical'"/>
     <Menu/>
   </a-layout-sider>
-
-  <div class="columns-menu" v-if="useLayout().windowWidth > 768 && useLayout().layout === 'columns'">
+  <a-layout-sider :width="80" v-if="useLayout().windowWidth > 768 && useLayout().layout === 'columns'">
+    <div class="columns-menu">
     <a-row justify="center" align="center">
       <a-col :span="12">
         <div class="logo-container">
@@ -47,7 +47,7 @@ const onCancel = () => {
       </a-col>
     </a-row>
   </div>
-
+  </a-layout-sider>
   <a-layout-sider v-if="useLayout().windowWidth > 768 && useLayout().layout === 'columns'" hide-trigger collapsible
                   :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth"
                   :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">

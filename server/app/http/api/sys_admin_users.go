@@ -43,7 +43,7 @@ func (ctrl *SysAdminUsersController) Index(c *gin.Context) {
 		ctrl.Fail(c, vo.FAILED, err.Error())
 		return
 	}
-	ctrl.SetCode(102).Success(c, vo.SUCCESS, ctrl.Page(total, list))
+	ctrl.Success(c, vo.SUCCESS, ctrl.Page(total, list))
 }
 
 //	@Tags			管理员用户

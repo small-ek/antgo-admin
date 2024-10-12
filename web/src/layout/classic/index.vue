@@ -1,19 +1,19 @@
 <template>
   <div class="ant-layout">
     <!--头部-->
-    <Header></Header>
+    <Header/>
     <a-layout class="ant-container">
 
       <!--左侧-->
-      <Left></Left>
+      <Left/>
       <a-layout>
         <a-scrollbar style="height: calc(100vh - 69px);overflow: auto;" @scroll="useTheme().handleScroll">
           <!--头部标签-->
           <div :class="{'affix': useLayout().isFixedHeader, 'affix-hidden': !useLayout().isFixedHeader&&useLayout().header==='adaptive'}">
-            <Tags></Tags>
+            <Tags/>
           </div>
           <!--内容-->
-          <div style="padding: 0 0.2vw;">
+          <div class="content-layout">
             <a-layout-content>
               <router-view></router-view>
             </a-layout-content>

@@ -6,7 +6,7 @@
           <div class="card-form">
             <a-row :gutter="10">
               <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="text-center">
-                <span style="font-size: 23px;font-weight:bold">后台登录</span>
+                <span class="login-title">后台登录</span>
               </a-col>
               <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" style="margin-top: 35px">
                 <a-form :model="form" :rules="rules" layout="vertical" feedback @submit-success="onSubmit">
