@@ -51,7 +51,7 @@ defineExpose({
   </a-menu>
 </template>
 
-<style scoped>
+<style>
 .arco-menu-dark .arco-menu-item.arco-menu-selected{
   background: rgb(var(--primary-6));
   border-radius: 10px;
