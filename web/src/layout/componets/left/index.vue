@@ -8,8 +8,9 @@ import {getMenu} from "@/api/menu.js";
 import {useTree} from "@/utils/tree.js";
 import {useUserLoginStore} from "@/stores/userLogin.js";
 
-const menuRef=ref();
-const parentMenu=ref([]);
+const menuRef = ref();
+const rightMenu = ref([]);
+const parentMenu = ref([]);
 const onCancel = () => {
   useLayout().setState("showMobileMenu", false);
 };
@@ -17,11 +18,18 @@ const onCancel = () => {
 getMenu().then((res) => {
   parentMenu.value = useTree().buildTree(res.data.items);
   useUserLoginStore().setMenu(parentMenu.value)
+  if(useLayout().layout !== 'columns'){
+    menuRef.value.setList(parentMenu.value)
+    rightMenu.value = parentMenu.value
+  }
 });
 
 const onParentMenu = (row) => {
   console.log('onParentMenu');
   menuRef.value.setList(row.children)
+  rightMenu.value = row.children
+  console.log(rightMenu.value)
+  console.log(rightMenu.value.length)
 };
 </script>
 
@@ -33,7 +41,7 @@ const onParentMenu = (row) => {
     <a-layout-sider hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth"
                     :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">
       <Logo/>
-      <Menu/>
+      <Menu ref="menuRef"/>
     </a-layout-sider>
   </a-drawer>
 
@@ -45,34 +53,40 @@ const onParentMenu = (row) => {
     <Logo v-if="useLayout().layout === 'vertical'"/>
     <Menu ref="menuRef"/>
   </a-layout-sider>
+
+  <!--分栏左侧菜单-->
   <a-layout-sider :width="80" v-if="useLayout().windowWidth > 768 && useLayout().layout === 'columns'">
     <div class="columns-menu">
-    <a-row justify="center" align="center">
-      <a-col :span="12">
-        <div class="logo-container">
-          <LogoImg/>
-        </div>
-      </a-col>
-      <a-col :span="20" v-for="row in parentMenu" :key="row">
-        <div class="menu-item hand" @click="onParentMenu(row)">
-          <div class="icon" v-show="row.icon!==''">
-            <font-awesome-icon :icon="row.icon" size="xl"/>
+      <a-row justify="center" align="center">
+        <a-col :span="12">
+          <div class="logo-container">
+            <LogoImg/>
           </div>
-          <div class="icon" v-show="row.icon===''">
-            <font-awesome-icon icon="fa-solid fa-table-list" />
+        </a-col>
+        <a-col :span="20" v-for="row in parentMenu" :key="row">
+          <div class="menu-item hand" @click="onParentMenu(row)">
+            <div class="icon" v-show="row.icon!==''">
+              <font-awesome-icon :icon="row.icon" size="xl"/>
+            </div>
+            <div class="icon" v-show="row.icon===''">
+              <font-awesome-icon icon="fa-solid fa-table-list"/>
+            </div>
+            <div>{{ row.title }}</div>
           </div>
-          <div>{{ row.title }}</div>
-        </div>
-      </a-col>
-    </a-row>
+        </a-col>
+      </a-row>
+    </div>
+  </a-layout-sider>
+  <!--分栏右侧菜单-->
+  <div v-show="rightMenu.length > 0">
+    <a-layout-sider v-if="useLayout().windowWidth > 768 && useLayout().layout === 'columns'" hide-trigger collapsible
+                    :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth"
+                    :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">
+      <Logo v-if="useLayout().layout === 'vertical' || useLayout().layout === 'columns'"/>
+      <Menu ref="menuRef"/>
+    </a-layout-sider>
   </div>
-  </a-layout-sider>
-  <a-layout-sider v-if="useLayout().windowWidth > 768 && useLayout().layout === 'columns'" hide-trigger collapsible
-                  :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth"
-                  :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">
-    <Logo v-if="useLayout().layout === 'vertical' || useLayout().layout === 'columns'"/>
-    <Menu ref="menuRef"/>
-  </a-layout-sider>
+
 </template>
 
 <style scoped>
