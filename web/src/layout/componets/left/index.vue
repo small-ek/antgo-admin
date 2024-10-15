@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import Menu from "@/layout/componets/menu/index.vue";
 import Logo from "@/layout/componets/logo/index.vue";
 import {useLayout} from '@/stores/layout.js';
@@ -9,20 +9,24 @@ import {useTree} from "@/utils/tree.js";
 import {useUserLoginStore} from "@/stores/userLogin.js";
 
 const menuRef = ref();
+const mobileMenuRef = ref();
 const rightMenu = ref([]);
 const parentMenu = ref([]);
 const onCancel = () => {
   useLayout().setState("showMobileMenu", false);
 };
 
-getMenu().then((res) => {
-  parentMenu.value = useTree().buildTree(res.data.items);
-  useUserLoginStore().setMenu(parentMenu.value)
-  if(useLayout().layout !== 'columns'){
-    menuRef.value.setList(parentMenu.value)
-    rightMenu.value = parentMenu.value
-  }
-});
+onMounted(async () => {
+  getMenu().then((res) => {
+    parentMenu.value = useTree().buildTree(res.data.items);
+    useUserLoginStore().setMenu(parentMenu.value)
+    if (useLayout().layout !== 'columns') {
+      menuRef.value.setList(parentMenu.value)
+      mobileMenuRef.value.setList(parentMenu.value)
+      rightMenu.value = parentMenu.value
+    }
+  });
+})
 
 const onParentMenu = (row) => {
   console.log('onParentMenu');
@@ -41,7 +45,7 @@ const onParentMenu = (row) => {
     <a-layout-sider hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth"
                     :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">
       <Logo/>
-      <Menu ref="menuRef"/>
+      <Menu ref="mobileMenuRef"/>
     </a-layout-sider>
   </a-drawer>
 
