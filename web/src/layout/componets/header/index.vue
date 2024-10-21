@@ -5,9 +5,19 @@ import {useLayout} from '@/stores/layout.js'
 import headerLogo from "@/layout/componets/headerLogo/index.vue";
 import {useTheme} from "@/utils/theme.js";
 import Menu from "@/layout/componets/menu/index.vue";
+import {getMenu} from "@/api/menu.js";
+import {useTree} from "@/utils/tree.js";
 
 const isFullscreen = ref(false)
+const menuRef=ref()
 
+onMounted(async () => {
+  if(useLayout().layout==='transverse'){
+    getMenu().then((res) => {
+      menuRef.value.setList(useTree().buildTree(res.data.items))
+    });
+  }
+})
 //收缩菜单
 const onCollapse = () => {
   if (useLayout().windowWidth < 768) {
@@ -88,9 +98,9 @@ onUnmounted(() => {
           <Breadcrumbs v-if="useLayout().windowWidth>768"></Breadcrumbs>
         </template>
       </a-col>
-      <a-col flex="auto" v-if="useLayout().layout==='transverse'&&useLayout().windowWidth>765">
+      <a-col flex="auto" v-show="useLayout().layout==='transverse'&&useLayout().windowWidth>765">
         <div style="width: 100%">
-          <Menu mode="horizontal"></Menu>
+          <Menu ref="menuRef" mode="horizontal"></Menu>
         </div>
       </a-col>
       <a-col :flex="useLayout().windowWidth>768?'320px':'250px'">

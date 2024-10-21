@@ -1,5 +1,4 @@
 //用于树形结构的操作
-
 export function useTree() {
     /**
      * 一维转树形结构
@@ -17,7 +16,7 @@ export function useTree() {
     };
 
 
-// 通过返回值暴露所管理的状态
+    // 通过返回值暴露所管理的状态
     return {
         buildTree
     }

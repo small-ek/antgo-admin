@@ -1,6 +1,6 @@
 <script setup>
 import {defineProps} from 'vue';
-
+import MenuItem from "@/layout/componets/menuItem/index.vue"
 const props = defineProps({
   item: {
     type: Object,

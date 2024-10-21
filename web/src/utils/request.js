@@ -11,9 +11,9 @@ const http = axios.create({
 http.interceptors.request.use(
     config => {
         if (useUserLoginStore().authorization !== "") {
-            config.headers['x-token'] = useUserLoginStore().authorization
+            config.headers['Authorization'] = "Bearer "+useUserLoginStore().authorization
         }
-        config.headers['device-id'] = useUserLoginStore().getDeviceId
+        config.headers['Device-ID'] = useUserLoginStore().getDeviceId
         return config;
     },
     error => {

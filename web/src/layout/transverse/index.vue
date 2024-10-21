@@ -1,17 +1,19 @@
 <template>
   <a-layout class="ant-layout">
     <!--头部-->
-    <a-scrollbar class="scrollbar" @scroll="useTheme().handleScroll">
+
       <a-layout class="ant-container">
 
         <!--左侧-->
         <Left/>
         <a-layout>
+          <a-scrollbar class="scrollbar" @scroll="useTheme().handleScroll">
           <!--头部标签-->
           <div :class="{'affix': useLayout().isFixedHeader, 'affix-hidden': !useLayout().isFixedHeader&&useLayout().header==='adaptive'}">
             <Header/>
             <Tags/>
           </div>
+
           <!--内容-->
           <a-layout class="content-layout">
             <a-layout-content>
@@ -23,11 +25,11 @@
 
           <!--底部-->
           <Footer v-if="useLayout().isFooter"></Footer>
-
+          </a-scrollbar>
         </a-layout>
 
       </a-layout>
-    </a-scrollbar>
+
     <!--布局设置-->
     <Setting></Setting>
   </a-layout>
@@ -86,7 +88,7 @@ import {useTheme} from "@/utils/theme.js";
 }
 
 .ant-container {
-  height: calc(100vh - 64px);
+  height: 100vh;
 }
 
 </style>

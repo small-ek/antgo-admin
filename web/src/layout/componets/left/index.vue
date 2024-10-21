@@ -9,6 +9,7 @@ import {useTree} from "@/utils/tree.js";
 import {useUserLoginStore} from "@/stores/userLogin.js";
 
 const menuRef = ref();
+const pcMenuRef=ref()
 const mobileMenuRef = ref();
 const rightMenu = ref([]);
 const parentMenu = ref([]);
@@ -21,21 +22,16 @@ onMounted(async () => {
     parentMenu.value = useTree().buildTree(res.data.items);
     useUserLoginStore().setMenu(parentMenu.value)
     mobileMenuRef.value.setList(parentMenu.value)
-    menuRef.value.setList(parentMenu.value)
-    console.log(parentMenu.value)
+    pcMenuRef.value.setList(parentMenu.value)
     if (useLayout().layout !== 'columns') {
-
       rightMenu.value = parentMenu.value
     }
   });
 })
 
 const onParentMenu = (row) => {
-  console.log('onParentMenu');
   menuRef.value.setList(row.children)
   rightMenu.value = row.children
-  console.log(rightMenu.value)
-  console.log(rightMenu.value.length)
 };
 </script>
 
@@ -57,7 +53,7 @@ const onParentMenu = (row) => {
       hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth"
       :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">
     <Logo v-if="useLayout().layout === 'vertical'"/>
-    <Menu ref="menuRef"/>
+    <Menu ref="pcMenuRef"/>
   </a-layout-sider>
 
   <!--分栏左侧菜单-->

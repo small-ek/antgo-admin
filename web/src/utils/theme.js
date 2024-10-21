@@ -75,7 +75,7 @@ export function useTheme() {
                 useLayout().setState("isFixedHeader", true)
             }
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
-        }, 200);
+        }, 100);
     }
     const handleResize = () => {
         useLayout().setState("windowWidth", window.innerWidth)
