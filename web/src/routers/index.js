@@ -3,7 +3,24 @@ import routes from "./basic_routes.js"
 import NProgress from '@/utils/nprogress';
 import {useUserLoginStore} from "@/stores/userLogin.js";
 import config from "@/utils/config.js";
+import {getMenu} from "@/api/menu.js";
 
+getMenu().then((res) => {
+    for (let i = 0; i < res.data.items.length; i++) {
+        const row=res.data.items[i]
+        routes[1].children.push({
+            path: row.path,
+            component: () => import(`@/views${row.path}/index.vue`),
+            meta: {
+                title: row.title,
+                keywords: row.title,
+                description: row.title
+            },
+        });
+    }
+
+    console.log(routes);
+});
 //创建路由
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),

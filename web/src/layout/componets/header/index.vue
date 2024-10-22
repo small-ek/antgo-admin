@@ -7,15 +7,14 @@ import {useTheme} from "@/utils/theme.js";
 import Menu from "@/layout/componets/menu/index.vue";
 import {getMenu} from "@/api/menu.js";
 import {useTree} from "@/utils/tree.js";
+import {useUserLoginStore} from "@/stores/userLogin.js";
 
 const isFullscreen = ref(false)
 const menuRef=ref()
 
 onMounted(async () => {
   if(useLayout().layout==='transverse'){
-    getMenu().then((res) => {
-      menuRef.value.setList(useTree().buildTree(res.data.items))
-    });
+    menuRef.value.setList(useTree().buildTree(useUserLoginStore().menu))
   }
 })
 //收缩菜单

@@ -22,7 +22,7 @@ const props = defineProps({
       <MenuItem :item="child"/>
     </template>
   </a-sub-menu>
-  <a-menu-item v-else :key="item.id">
+  <a-menu-item v-if="item.children&&item.children.length===0" :key="item.id">
     <template #icon>
       <font-awesome-icon v-if="item.icon!==''" :icon="item.icon"/>
       <font-awesome-icon v-if="item.icon===''" icon="fa-solid fa-table-list"/>

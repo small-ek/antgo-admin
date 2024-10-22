@@ -16,24 +16,16 @@ const routes = [
         children: [
             {
                 path: '/',
-                component: () => import('@/views/user/index.vue'),
+                component: () => import('@/views/home/index.vue'),
                 meta: {
-                    title: '关于我们33',
-                    keywords: '关键词44, 关键词55',
-                    description: '关于我们描述4666'
+                    title: '首页',
+                    keywords: '首页',
+                    description: '首页'
                 },
-            },
+            }
         ],
     },
-    {
-        path: '/user',
-        component: () => import('@/views/user/index.vue'),
-        meta: {
-            title: '关于我们33',
-            keywords: '关键词44, 关键词55',
-            description: '关于我们描述4666'
-        },
-    },
+
 ]
 
 
