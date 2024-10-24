@@ -8,8 +8,7 @@ export const useUserLoginStore = defineStore('userLogin', {
             authorization: "",
             userInfo: {},
             expiresAt: "",
-            deviceId: "",
-            menu: []
+            deviceId: ""
         };
     },
     getters: {
@@ -40,9 +39,7 @@ export const useUserLoginStore = defineStore('userLogin', {
         setExpiresAt(expiresAt) {
             this.expiresAt = expiresAt;
         },
-        setMenu(menu) {
-            this.menu = menu;
-        },
+
         // 登录
         login(userInfo) {
             this.setUserInfo(userInfo.user);

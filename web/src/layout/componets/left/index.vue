@@ -6,14 +6,14 @@ import {useLayout} from '@/stores/layout.js';
 import LogoImg from "@/layout/componets/logoImg/index.vue";
 import {getMenu} from "@/api/menu.js";
 import {useTree} from "@/utils/tree.js";
-import {useUserLoginStore} from "@/stores/userLogin.js";
+import {useMenu} from "@/stores/menu.js";
 
 const menuRef = ref();
-const pcMenuRef=ref()
+const pcMenuRef = ref()
 const mobileMenuRef = ref();
 const rightMenu = ref([]);
 const parentMenu = ref([]);
-const checkIndex=ref()
+const checkIndex = ref()
 const onCancel = () => {
   useLayout().setState("showMobileMenu", false);
 };
@@ -21,7 +21,8 @@ const onCancel = () => {
 onMounted(async () => {
   getMenu().then((res) => {
     parentMenu.value = useTree().buildTree(res.data.items);
-    useUserLoginStore().setMenu(res.data.items)
+    useMenu().setState('menu', res.data.items)
+    useMenu().setState('menuTree', parentMenu.value)
     mobileMenuRef.value.setList(parentMenu.value)
     pcMenuRef.value.setList(parentMenu.value)
     if (useLayout().layout !== 'columns') {
@@ -30,7 +31,7 @@ onMounted(async () => {
   });
 })
 
-const onParentMenu = (row,index) => {
+const onParentMenu = (row, index) => {
   menuRef.value.setList(row.children)
   rightMenu.value = row.children
   checkIndex.value = index

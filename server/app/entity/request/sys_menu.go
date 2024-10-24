@@ -12,6 +12,6 @@ type SysMenuRequest struct {
 
 type SysMenuRequestForm struct {
 	models.SysMenu
-        Title string `json:"title" form:"title" binding:"required" comment:"菜单名称"`//菜单名称
+	Title string `json:"title" form:"title" binding:"required" comment:"菜单名称"` //菜单名称
 
 }
