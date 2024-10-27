@@ -11,6 +11,7 @@ const router = createRouter({
     routes: routes
 });
 
+
 //setDynamicRouter 设置动态路由
 const setDynamicRouter = () => {
     const modules = import.meta.glob(['../views/*/*.vue', '../views/*/*/*.vue'])
@@ -19,11 +20,10 @@ const setDynamicRouter = () => {
         const children = []
         for (let i = 0; i < res.data.items.length; i++) {
             const row = res.data.items[i]
-            if (row.path !== "index") {
-                router.addRoute({
-                    name: row.path,
-                    path: row.path,
-                    component: () => modules[`../views${row.component}`],
+            if (row.path !== "index" && row.path !== "/" && row.path !== "") {
+                router.addRoute("admin", {
+                    path: "/" + row.path,
+                    component: () => import('@/views/home/index.vue'),
                     meta: {
                         title: row.title,
                         keywords: row.title,
@@ -33,22 +33,21 @@ const setDynamicRouter = () => {
 
             }
         }
-        // router.addRoute('index', {
-        //     name: 'index',
-        //     path: '/',
-        //     component: () => import('@/layout/index.vue'),
-        //     children: children,
-        // })
-        // console.log(children)
+        router.addRoute("admin", {
+            path: "/tt",
+            component: () => import('@/views/home/index.vue'),
+            meta: {},
+        })
+
         console.log(router.getRoutes())
         console.log(routes);
     });
 }
-
+setDynamicRouter()
 //全局前置守卫
 router.beforeEach(async (to, from, next) => {
     NProgress.start();
-    setDynamicRouter()
+    // setDynamicRouter()
     const isLogin = useUserLoginStore().getAuthorization === ""
     const isLoginUrl = config.noLoginUrls.includes(to.path)
     if (isLogin && !isLoginUrl) {

@@ -11,7 +11,7 @@ const routes = [
     },
     {
         path: '/',
-        name: 'index',
+        name: 'admin',
         component: () => import('@/layout/index.vue'),
         children: [
             {
