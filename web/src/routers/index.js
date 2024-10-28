@@ -4,6 +4,7 @@ import NProgress from '@/utils/nprogress';
 import {useUserLoginStore} from "@/stores/userLogin.js";
 import config from "@/utils/config.js";
 import {getMenu} from "@/api/menu.js";
+import {useMenu} from "@/stores/menu.js";
 
 //创建路由
 const router = createRouter({
@@ -13,41 +14,34 @@ const router = createRouter({
 
 
 //setDynamicRouter 设置动态路由
-const setDynamicRouter = () => {
+const setDynamicRouter = async() => {
     const modules = import.meta.glob(['../views/*/*.vue', '../views/*/*/*.vue'])
-    getMenu().then((res) => {
-        console.log(router)
-        const children = []
-        for (let i = 0; i < res.data.items.length; i++) {
-            const row = res.data.items[i]
-            if (row.path !== "index" && row.path !== "/" && row.path !== "") {
-                router.addRoute("admin", {
-                    path: "/" + row.path,
-                    component: () => import('@/views/home/index.vue'),
-                    meta: {
-                        title: row.title,
-                        keywords: row.title,
-                        description: row.title
-                    },
-                })
 
-            }
+    const res=await getMenu()
+    useMenu().setState("menu",res.data.items)
+    // const children = []
+    for (let i = 0; i < res.data.items.length; i++) {
+        const row = res.data.items[i]
+        if (row.path !== "index" && row.path !== "/" && row.path !== "") {
+            router.addRoute("admin", {
+                path: "/" + row.path,
+                component: () => modules[`../views/${row.path}/index.vue`](),
+                meta: {
+                    title: row.title,
+                    keywords: row.title,
+                    description: row.title
+                },
+            })
+
         }
-        router.addRoute("admin", {
-            path: "/tt",
-            component: () => import('@/views/home/index.vue'),
-            meta: {},
-        })
-
-        console.log(router.getRoutes())
-        console.log(routes);
-    });
+    }
+    useMenu().setState("router",router.getRoutes())
 }
 setDynamicRouter()
 //全局前置守卫
 router.beforeEach(async (to, from, next) => {
     NProgress.start();
-    // setDynamicRouter()
+
     const isLogin = useUserLoginStore().getAuthorization === ""
     const isLoginUrl = config.noLoginUrls.includes(to.path)
     if (isLogin && !isLoginUrl) {

@@ -16,7 +16,7 @@ const list = ref([])
 const onClickMenuItem = (key) => {
   const item = useMenu().menu.find(item => item.id === key);
   if (item && item.path) {
-    router.push({name: item.path});
+    router.push({path: "/"+item.path});
   } else {
     Message.error("当前菜单路径设置不正确,无法跳转")
   }
