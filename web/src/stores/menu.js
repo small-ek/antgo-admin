@@ -4,7 +4,6 @@ import {defineStore} from 'pinia';
 export const useMenu = defineStore('useMenu', {
     state: () => {
         return {
-            router: [],
             menu: [],
             menuTree: []
         };
@@ -22,7 +21,7 @@ export const useMenu = defineStore('useMenu', {
         strategies: [
             {
                 storage: localStorage,
-                paths: ['router', 'menu','menuTree']
+                paths: ['menu','menuTree']
             }
         ]
     }

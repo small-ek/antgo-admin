@@ -3,7 +3,6 @@ import routes from "./basic_routes.js"
 import NProgress from '@/utils/nprogress';
 import {useUserLoginStore} from "@/stores/userLogin.js";
 import config from "@/utils/config.js";
-import {getMenu} from "@/api/menu.js";
 import {useMenu} from "@/stores/menu.js";
 
 //创建路由
@@ -14,43 +13,93 @@ const router = createRouter({
 
 
 //setDynamicRouter 设置动态路由
-const setDynamicRouter = async() => {
-    const modules = import.meta.glob(['../views/*/*.vue', '../views/*/*/*.vue'])
+const setDynamicRouter = async () => {
+    const modules = import.meta.glob(['../views/*/*.vue'])
+    const menu = useMenu().menu
+    if (menu.length > 0) {
+        for (let i = 0; i < menu.length; i++) {
+            const row = menu[i]
+            if (row.path !== "index" && row.path !== "/" && row.path !== "" && row.component) {
+                if (!router.hasRoute(row.path)) {
+                    router.addRoute("admin", {
+                        name: row.path,
+                        path: "/" + row.path,
+                        component: () => modules[`../${row.component}`](),
+                        meta: {
+                            title: row.title,
+                            keywords: row.title,
+                            description: row.title
+                        },
+                    })
+                }
 
-    const res=await getMenu()
-    useMenu().setState("menu",res.data.items)
-    // const children = []
-    for (let i = 0; i < res.data.items.length; i++) {
-        const row = res.data.items[i]
-        if (row.path !== "index" && row.path !== "/" && row.path !== "") {
-            router.addRoute("admin", {
-                path: "/" + row.path,
-                component: () => modules[`../views/${row.path}/index.vue`](),
-                meta: {
-                    title: row.title,
-                    keywords: row.title,
-                    description: row.title
-                },
-            })
 
+            }
         }
     }
-    useMenu().setState("router",router.getRoutes())
+    // getMenu().then(res=>{
+    //     useMenu().setState("menu",res.data.items)
+    //     // const children = []
+    //     for (let i = 0; i < res.data.items.length; i++) {
+    //         const row = res.data.items[i]
+    //         if (row.path !== "index" && row.path !== "/" && row.path !== "") {
+    //             router.addRoute("admin", {
+    //                 path: "/" + row.path,
+    //                 component: () => modules[`../${row.component}`](),
+    //                 meta: {
+    //                     title: row.title,
+    //                     keywords: row.title,
+    //                     description: row.title
+    //                 },
+    //             })
+    //
+    //         }
+    //     }
+    // })
 }
-setDynamicRouter()
-//全局前置守卫
+
+// 全局前置守卫
 router.beforeEach(async (to, from, next) => {
     NProgress.start();
 
-    const isLogin = useUserLoginStore().getAuthorization === ""
-    const isLoginUrl = config.noLoginUrls.includes(to.path)
+    // 确保动态路由设置完成
+    await setDynamicRouter();
+
+    console.log(to.fullPath);
+    console.log(router.hasRoute("admin"));
+
+    // 添加一个静态路由用于测试
+    if (!router.hasRoute("tttt")) {
+        router.addRoute("admin", {
+            path: "/tttt",
+            name: "tttt",
+            component: () => import('@/views/home/index.vue'),
+            meta: {
+                title: '首页',
+                keywords: '首页',
+                description: '首页'
+            }
+        });
+        router.push({ ...to, replace: true })
+
+    }
+    // next({...to, replace: true});
+    console.log(router.getRoutes());
+
+    const isLogin = useUserLoginStore().getAuthorization === "";
+    const isLoginUrl = config.noLoginUrls.includes(to.path);
+
     if (isLogin && !isLoginUrl) {
         next({path: '/login', query: {redirect: to.fullPath}});
     } else {
+        console.log(to);
+        // next({ path: to.fullPath });
         next();
     }
-    return true
-})
+
+    NProgress.done();
+    return {...to, replace: true}
+});
 
 //全局后置钩子
 router.afterEach((to) => {
