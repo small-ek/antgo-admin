@@ -28,11 +28,11 @@ max_age = 180
 #分割大小(MB)
 max_size = 10
 #保留30个备份(个)
-max_backups = 5000
+max_backups = 1000
 #是否需要压缩
 compress = false
 #header 白名单
-header_whitelist = ["Device-Id", "Authorization"]
+header_whitelist = ["Device-Id", "Authorization", "Accept", "Accept-Language", "Origin", "Referer", "User-Agent"]
 
 #数据库设置
 [[connections]]
@@ -46,7 +46,8 @@ hostname = "127.0.0.1"
 port = "3306"
 #数据库用户名
 username = "root"
-#数据库密码
+#数据库密码000000.
+
 password = "root"
 #数据库名
 database = "antgo"

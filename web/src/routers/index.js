@@ -61,39 +61,12 @@ const setDynamicRouter = async () => {
 // 全局前置守卫
 router.beforeEach(async (to, from, next) => {
     NProgress.start();
-
-    // 确保动态路由设置完成
-    await setDynamicRouter();
-
-    console.log(to.fullPath);
-    console.log(router.hasRoute("admin"));
-
-    // 添加一个静态路由用于测试
-    if (!router.hasRoute("tttt")) {
-        router.addRoute("admin", {
-            path: "/tttt",
-            name: "tttt",
-            component: () => import('@/views/home/index.vue'),
-            meta: {
-                title: '首页',
-                keywords: '首页',
-                description: '首页'
-            }
-        });
-        router.push({ ...to, replace: true })
-
-    }
-    // next({...to, replace: true});
-    console.log(router.getRoutes());
-
     const isLogin = useUserLoginStore().getAuthorization === "";
     const isLoginUrl = config.noLoginUrls.includes(to.path);
 
     if (isLogin && !isLoginUrl) {
         next({path: '/login', query: {redirect: to.fullPath}});
     } else {
-        console.log(to);
-        // next({ path: to.fullPath });
         next();
     }
 

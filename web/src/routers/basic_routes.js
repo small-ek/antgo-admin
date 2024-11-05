@@ -1,6 +1,7 @@
 // 基础路由
 const routes = [
     {
+        name: "login",
         path: '/login',
         component: () => import('@/views/login/index.vue'),
         meta: {

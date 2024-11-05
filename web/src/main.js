@@ -8,6 +8,7 @@ import i18n from '@/utils/i18n.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { fas } from '@fortawesome/free-solid-svg-icons'
+import {initRouter} from "@/utils/permission.js";
 
 /* add icons to the library */
 library.add(fas)
@@ -15,6 +16,13 @@ library.add(fas)
 const pinia = createPinia()
 pinia.use(piniaPersist)
 const app = createApp(App)
-
 app.component('font-awesome-icon', FontAwesomeIcon)
-app.use(pinia).use(i18n).use(router).mount('#app')
+
+const boot = async () => {
+    app.use(pinia)
+    await initRouter()
+    app.use(i18n).use(router).mount('#app')
+}
+
+boot()
+
