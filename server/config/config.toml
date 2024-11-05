@@ -14,7 +14,7 @@ app_name = "antgo"
 #路径
 path = "./log/app.log"
 #输出格式 支持(json、console)
-format = "console"
+format = "json"
 #日志服务名称
 service_name = "admin"
 #日志输出等级 all、info、warn、error、debug、dpanic、panic、fatal
@@ -31,6 +31,8 @@ max_size = 10
 max_backups = 5000
 #是否需要压缩
 compress = false
+#header 白名单
+header_whitelist = ["Device-Id", "Authorization"]
 
 #数据库设置
 [[connections]]
