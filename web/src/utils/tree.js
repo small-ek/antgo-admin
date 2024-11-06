@@ -14,10 +14,43 @@ export function useTree() {
                 children: buildTree(items, item.id)
             }));
     };
+    /**
+     * findKeys 查找菜单树中的默认展开项和默认选中项
+     * @param tree
+     * @param path
+     * @returns {{defaultOpenKeys: *[], defaultSelectedKey: null}}
+     */
+    const findKeys = (tree, path) => {
+        let openKeys = [];
+        let selectedKeys = [];
 
+        const traverse = (nodes, parentKey = null) => {
+            for (const node of nodes) {
+                if ("/" + node.path === path) {
+                    selectedKeys.push(node.id)
+                    if (parentKey) {
+                        openKeys.push(parentKey);
+                    }
+                    return true;
+                }
+                if (node.children && node.children.length > 0) {
+                    if (traverse(node.children, node.id)) {
+                        if (!openKeys.includes(node.id)) {
+                            openKeys.push(node.id);
+                        }
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
+
+        traverse(tree);
+        return { openKeys, selectedKeys };
+    };
 
     // 通过返回值暴露所管理的状态
     return {
-        buildTree
+        buildTree, findKeys
     }
 }

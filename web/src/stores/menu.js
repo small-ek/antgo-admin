@@ -5,7 +5,14 @@ export const useMenu = defineStore('useMenu', {
     state: () => {
         return {
             menu: [],
-            menuTree: []
+            menuTree: [],
+            tabs: [{
+                key: '0',
+                title: '首页',
+                content: '首页',
+                path: "/",
+            }],
+            tabsActiveKey: '0',
         };
     },
     getters: {},
@@ -21,7 +28,7 @@ export const useMenu = defineStore('useMenu', {
         strategies: [
             {
                 storage: localStorage,
-                paths: ['menu','menuTree']
+                paths: ['menu', 'menuTree', 'tabs','tabsActiveKey'],
             }
         ]
     }

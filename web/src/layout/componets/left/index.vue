@@ -7,7 +7,9 @@ import LogoImg from "@/layout/componets/logoImg/index.vue";
 import {getMenu} from "@/api/menu.js";
 import {useTree} from "@/utils/tree.js";
 import {useMenu} from "@/stores/menu.js";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 const menuRef = ref();
 const pcMenuRef = ref()
 const mobileMenuRef = ref();
@@ -27,6 +29,13 @@ onMounted(async () => {
     pcMenuRef.value.setList(parentMenu.value)
     if (useLayout().layout !== 'columns') {
       rightMenu.value = parentMenu.value
+    }
+    if (useLayout().layout === 'columns') {
+      const {openKeys} = useTree().findKeys(parentMenu.value, router.currentRoute.value.path);
+      const index = parentMenu.value.findIndex((item) => {
+        return item.id === openKeys[0]
+      })
+      onParentMenu(parentMenu.value[index], index)
     }
   });
 })

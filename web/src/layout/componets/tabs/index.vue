@@ -33,12 +33,16 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref,onMounted} from 'vue';
 import {useLayout} from "@/stores/layout.js";
 import {VueDraggable} from 'vue-draggable-plus'
 import {IconClose, IconCloseCircle, IconDoubleLeft, IconDoubleRight, IconRefresh} from '@arco-design/web-vue/es/icon'
+import {useMenu} from "@/stores/menu.js";
+import {useRouter} from "vue-router";
+import EventBus from "@/utils/eventBus.js";
 
-const activeKey = ref('1');
+const router = useRouter()
+const activeKey = ref(useMenu().tabsActiveKey);
 //右侧关闭文字
 const closeText = ref([
   {key: 0, title: '关闭左侧', icon: IconDoubleLeft},
@@ -48,67 +52,25 @@ const closeText = ref([
   {key: 4, title: '刷新', icon: IconRefresh}
 ])
 
-const list = ref([
-  {
-    key: '0',
-    title: 'Tab 0',
-    content: 'Content of Tab Panel 1'
-  },
-  {
-    key: '1',
-    title: 'Tab 1',
-    content: 'Content of Tab Panel 1'
-  },
-  {
-    key: '2',
-    title: 'Tab 2',
-    content: 'Content of Tab Panel 2'
-  },
-  {
-    key: '3',
-    title: 'Tab 3',
-    content: 'Content of Tab Panel 3'
-  },
-  {
-    key: '4',
-    title: 'Tab 4',
-    content: 'Content of Tab Panel 4'
-  },
-  {
-    key: '5',
-    title: 'Tab 5',
-    content: 'Content of Tab Panel 5'
-  },
-  {
-    key: '6',
-    title: 'Tab 6',
-    content: 'Content of Tab Panel 6'
-  },
-  {
-    key: '7',
-    title: 'Tab 7',
-    content: 'Content of Tab Panel 7'
-  },{
-    key: '8',
-    title: 'Tab 8',
-    content: 'Content of Tab Panel 8'
-  },{
-    key: '9',
-    title: 'Tab 9',
-    content: 'Content of Tab Panel 9'
-  },{
-    key: '10',
-    title: 'Tab 10',
-    content: 'Content of Tab Panel 10'
-  },
-]);
+onMounted(() => {
+  EventBus.$on('setActiveKey', (key) => {
+    activeKey.value = key
+  });
+});
+
+const list = ref(useMenu().tabs);
 
 const onClick = (key) => {
   activeKey.value = key
+  const item = list.value.filter(item => item.key === key)
+  if(item.length > 0){
+    router.push({path: "/" + item[0].path});
+  }
 }
 
 const onDelete = (key) => {
   list.value = list.value.filter(item => item.key !== key)
+  useMenu().tabs = list.value
 };
 
 //onClose(0) 关闭左侧
@@ -128,9 +90,11 @@ const onClose = (key) => {
   }
   if (key === 2) {
     list.value = list.value.filter(item => item.key === activeKey.value || item.key === "0")
+    useMenu().tabs = list.value
   }
   if (key === 3) {
     list.value = [list.value[0]]
+    useMenu().tabs = list.value
   }
   if (key === 4) {
     window.location.reload()

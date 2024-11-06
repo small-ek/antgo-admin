@@ -5,9 +5,13 @@ import MenuItem from "@/layout/componets/menuItem/index.vue";
 import {useMenu} from "@/stores/menu.js";
 import {useRouter} from "vue-router"
 import {Message} from "@arco-design/web-vue";
+import {useTree} from "@/utils/tree.js";
+import EventBus from "@/utils/eventBus.js";
 
 const router = useRouter()
 const list = ref([])
+const defaultOpenKeys = ref([])
+const defaultSelectedKeys = ref([])
 
 /**
  * onClickMenuItem 菜单点击
@@ -16,7 +20,23 @@ const list = ref([])
 const onClickMenuItem = (key) => {
   const item = useMenu().menu.find(item => item.id === key);
   if (item && item.path) {
-    router.push({path: "/"+item.path});
+    const getMenu = useMenu().tabs.find(tab => tab.title === item.title)
+
+    if (!getMenu) {
+      useMenu().tabs.push({
+        key: useMenu().tabs.length + "",
+        title: item.title,
+        content: item.title,
+        path: item.path,
+      })
+      useMenu().tabsActiveKey = useMenu().tabs.length + ""
+      EventBus.$emit('setActiveKey', useMenu().tabs.length + "");
+    } else {
+      useMenu().setState("tabsActiveKey", getMenu.key)
+      EventBus.$emit('setActiveKey', getMenu.key);
+    }
+
+    router.push({path: "/" + item.path});
   } else {
     Message.error("当前菜单路径设置不正确,无法跳转")
   }
@@ -31,9 +51,13 @@ const props = defineProps({
 
 const setList = (val) => {
   list.value = val
+  const {openKeys, selectedKeys} = useTree().findKeys(val, router.currentRoute.value.path);
+  defaultOpenKeys.value = openKeys
+  defaultSelectedKeys.value = selectedKeys
+
 }
 const onCollapse = (val, type) => {
-  const content = type === 'responsive' ? '触发响应式收缩' : '点击触发收缩';
+  // const content = type === 'responsive' ? '触发响应式收缩' : '点击触发收缩';
   if (useLayout().layout === 'vertical' || useLayout().layout === 'classic') {
     useLayout().setState("isCollapsed", val)
   }
@@ -49,8 +73,8 @@ defineExpose({
       v-if="list.length>0"
       :theme="useLayout().isDarkSidebar?'dark':'light'"
       :accordion="useLayout().isAccordion"
-      :defaultOpenKeys="['1']"
-      :defaultSelectedKeys="['0_3']"
+      :default-open-keys="defaultOpenKeys"
+      :default-selected-keys="defaultSelectedKeys"
       :style="{ width: '100%' }"
       breakpoint="lg"
       :collapsed="useLayout().isCollapsed"
