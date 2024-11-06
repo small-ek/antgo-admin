@@ -59,6 +59,7 @@ import {useI18n} from "vue-i18n"
 import {Message} from "@arco-design/web-vue";
 import {useUserLoginStore} from "@/stores/userLogin.js";
 import {useNavigation} from "@/utils/base.js";
+import {setMenu} from "@/utils/permission.js";
 
 const router = useRouter();
 const {jump} = useNavigation(router);
@@ -102,7 +103,10 @@ const onSubmit = () => {
     if (res.code === 200) {
       useUserLoginStore().login(res.data)
       Message.info(t('tip.' + res.message))
-      jump(route.query.redirect || '/')
+
+      setMenu().then(() => {
+        jump(route.query.redirect || '/')
+      })
     } else {
       reloadCaptcha()
       Message.error(t('tip.' + res.message))

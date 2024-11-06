@@ -46,8 +46,7 @@ hostname = "127.0.0.1"
 port = "3306"
 #数据库用户名
 username = "root"
-#数据库密码000000.
-
+#数据库密码
 password = "root"
 #数据库名
 database = "antgo"
@@ -92,7 +91,7 @@ height = 80
 
 #Json web token
 [jwt]
-#过期时间(秒)
+#过期时间(小时)
 exp = 168
 #私钥
 private_key = """-----BEGIN RSA PRIVATE KEY-----

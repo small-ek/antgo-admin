@@ -18,11 +18,7 @@ pinia.use(piniaPersist)
 const app = createApp(App)
 app.component('font-awesome-icon', FontAwesomeIcon)
 
-const boot = async () => {
-    app.use(pinia)
-    await initRouter()
-    app.use(i18n).use(router).mount('#app')
-}
-
-boot()
+app.use(pinia)
+await initRouter()
+app.use(i18n).use(router).mount('#app')
 

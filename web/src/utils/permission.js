@@ -1,9 +1,15 @@
 import {useMenu} from "@/stores/menu.js";
 import router from "@/routers/index.js";
+import {getMenu} from "@/api/menu.js";
+import {useTree} from "@/utils/tree.js";
 
-export const initRouter = async () => {
+/**
+ * initRouter 刷新初始化路由
+ * @returns {Promise<void>}
+ */
+export const initRouter =  async () => {
     const modules = import.meta.glob(['../views/*/*.vue'])
-    const menu = await useMenu().menu
+    const menu =  await useMenu().menu
     if (menu.length > 0) {
         for (let i = 0; i < menu.length; i++) {
             const row = menu[i]
@@ -23,5 +29,16 @@ export const initRouter = async () => {
             }
         }
     }
+}
 
+/**
+ * setMenu 设置路由
+ * @returns {Promise<void>}
+ */
+export const setMenu =  () => {
+    return getMenu().then(res => {
+        useMenu().setState("menu", res.data.items)
+        useMenu().setState("menuTree", useTree().buildTree(res.data.items))
+        initRouter()
+    })
 }
