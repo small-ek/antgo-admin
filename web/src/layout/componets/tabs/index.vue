@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import {ref,onMounted} from 'vue';
+import {ref,onMounted,onBeforeUnmount} from 'vue';
 import {useLayout} from "@/stores/layout.js";
 import {VueDraggable} from 'vue-draggable-plus'
 import {IconClose, IconCloseCircle, IconDoubleLeft, IconDoubleRight, IconRefresh} from '@arco-design/web-vue/es/icon'
@@ -53,9 +53,10 @@ const closeText = ref([
 ])
 
 onMounted(() => {
-  EventBus.$on('setActiveKey', (key) => {
+  EventBus.on('setActiveKey', (key) => {
     activeKey.value = key
   });
+
 });
 
 const list = ref(useMenu().tabs);
@@ -64,6 +65,8 @@ const onClick = (key) => {
   activeKey.value = key
   const item = list.value.filter(item => item.key === key)
   if(item.length > 0){
+    console.log(item[0])
+    EventBus.emit('setMenuCheck', item[0].key);
     router.push({path: "/" + item[0].path});
   }
 }

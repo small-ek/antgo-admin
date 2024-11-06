@@ -1,5 +1,5 @@
 <script setup>
-import {defineProps, ref} from 'vue';
+import {defineProps, onMounted, ref} from 'vue';
 import {useLayout} from "@/stores/layout.js";
 import MenuItem from "@/layout/componets/menuItem/index.vue";
 import {useMenu} from "@/stores/menu.js";
@@ -13,6 +13,13 @@ const list = ref([])
 const defaultOpenKeys = ref([])
 const defaultSelectedKeys = ref([])
 
+onMounted(() => {
+  EventBus.on('setMenuCheck', (key) => {
+    console.log(key)
+    console.log(list.value)
+    setCheck(list.value)
+  });
+})
 /**
  * onClickMenuItem 菜单点击
  * @param key
@@ -30,10 +37,10 @@ const onClickMenuItem = (key) => {
         path: item.path,
       })
       useMenu().tabsActiveKey = useMenu().tabs.length + ""
-      EventBus.$emit('setActiveKey', useMenu().tabs.length + "");
+      EventBus.emit('setActiveKey', useMenu().tabs.length + "");
     } else {
       useMenu().setState("tabsActiveKey", getMenu.key)
-      EventBus.$emit('setActiveKey', getMenu.key);
+      EventBus.emit('setActiveKey', getMenu.key);
     }
 
     router.push({path: "/" + item.path});
@@ -51,10 +58,13 @@ const props = defineProps({
 
 const setList = (val) => {
   list.value = val
-  const {openKeys, selectedKeys} = useTree().findKeys(val, router.currentRoute.value.path);
+  setCheck(val)
+}
+
+const setCheck = (list) => {
+  const {openKeys, selectedKeys} = useTree().findKeys(list, router.currentRoute.value.path);
   defaultOpenKeys.value = openKeys
   defaultSelectedKeys.value = selectedKeys
-
 }
 const onCollapse = (val, type) => {
   // const content = type === 'responsive' ? '触发响应式收缩' : '点击触发收缩';

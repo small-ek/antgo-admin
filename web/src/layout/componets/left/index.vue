@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from 'vue';
+import {onMounted, ref,nextTick} from 'vue';
 import Menu from "@/layout/componets/menu/index.vue";
 import Logo from "@/layout/componets/logo/index.vue";
 import {useLayout} from '@/stores/layout.js';
@@ -21,10 +21,8 @@ const onCancel = () => {
 };
 
 onMounted(async () => {
-  getMenu().then((res) => {
-    parentMenu.value = useTree().buildTree(res.data.items);
-    useMenu().setState('menu', res.data.items)
-    useMenu().setState('menuTree', parentMenu.value)
+  nextTick(()=>{
+    parentMenu.value = useMenu().menuTree;
     mobileMenuRef.value.setList(parentMenu.value)
     pcMenuRef.value.setList(parentMenu.value)
     if (useLayout().layout !== 'columns') {
@@ -37,7 +35,7 @@ onMounted(async () => {
       })
       onParentMenu(parentMenu.value[index], index)
     }
-  });
+  })
 })
 
 const onParentMenu = (row, index) => {
