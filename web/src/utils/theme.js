@@ -65,7 +65,6 @@ export function useTheme() {
 
     const handleScroll = (event) => {
         throttle(() => {
-            console.log(useLayout().header)
             if (useLayout().header !== 'adaptive') return;
             const container = event.target;
             const scrollTop = container.scrollTop;

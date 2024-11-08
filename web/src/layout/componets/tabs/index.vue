@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import {ref,onMounted,onBeforeUnmount} from 'vue';
+import {onMounted, ref} from 'vue';
 import {useLayout} from "@/stores/layout.js";
 import {VueDraggable} from 'vue-draggable-plus'
 import {IconClose, IconCloseCircle, IconDoubleLeft, IconDoubleRight, IconRefresh} from '@arco-design/web-vue/es/icon'
@@ -41,7 +41,7 @@ import {useMenu} from "@/stores/menu.js";
 import {useRouter} from "vue-router";
 import EventBus from "@/utils/eventBus.js";
 
-const router = useRouter()
+const router = useRouter();
 const activeKey = ref(useMenu().tabsActiveKey);
 //右侧关闭文字
 const closeText = ref([
@@ -56,7 +56,6 @@ onMounted(() => {
   EventBus.on('setActiveKey', (key) => {
     activeKey.value = key
   });
-
 });
 
 const list = ref(useMenu().tabs);
@@ -64,9 +63,8 @@ const list = ref(useMenu().tabs);
 const onClick = (key) => {
   activeKey.value = key
   const item = list.value.filter(item => item.key === key)
-  if(item.length > 0){
-    console.log(item[0])
-    EventBus.emit('setMenuCheck', item[0].key);
+  if (item.length > 0) {
+    EventBus.emit('setMenuCheck', item[0]);
     router.push({path: "/" + item[0].path});
   }
 }

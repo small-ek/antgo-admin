@@ -1,5 +1,5 @@
 <script setup>
-import {defineProps, onMounted, ref} from 'vue';
+import {defineProps, ref} from 'vue';
 import {useLayout} from "@/stores/layout.js";
 import MenuItem from "@/layout/componets/menuItem/index.vue";
 import {useMenu} from "@/stores/menu.js";
@@ -13,13 +13,6 @@ const list = ref([])
 const defaultOpenKeys = ref([])
 const defaultSelectedKeys = ref([])
 
-onMounted(() => {
-  EventBus.on('setMenuCheck', (key) => {
-    console.log(key)
-    console.log(list.value)
-    setCheck(list.value)
-  });
-})
 /**
  * onClickMenuItem 菜单点击
  * @param key
@@ -30,15 +23,20 @@ const onClickMenuItem = (key) => {
     const getMenu = useMenu().tabs.find(tab => tab.title === item.title)
 
     if (!getMenu) {
+      const index=useMenu().tabs.length
       useMenu().tabs.push({
         key: useMenu().tabs.length + "",
         title: item.title,
         content: item.title,
         path: item.path,
+        selectKey: item.id,
+        openKey: item.parent_id,
       })
+      setMenuCheck(item.parent_id, item.id)
       useMenu().tabsActiveKey = useMenu().tabs.length + ""
-      EventBus.emit('setActiveKey', useMenu().tabs.length + "");
+      EventBus.emit('setActiveKey', index + "");
     } else {
+      setMenuCheck(getMenu.openKey, getMenu.selectKey)
       useMenu().setState("tabsActiveKey", getMenu.key)
       EventBus.emit('setActiveKey', getMenu.key);
     }
@@ -61,6 +59,11 @@ const setList = (val) => {
   setCheck(val)
 }
 
+const setMenuCheck = (openKeys, selectedKeys) => {
+  defaultOpenKeys.value = [openKeys]
+  defaultSelectedKeys.value = [selectedKeys]
+}
+
 const setCheck = (list) => {
   const {openKeys, selectedKeys} = useTree().findKeys(list, router.currentRoute.value.path);
   defaultOpenKeys.value = openKeys
@@ -74,7 +77,7 @@ const onCollapse = (val, type) => {
 }
 
 defineExpose({
-  setList
+  setList, setMenuCheck
 })
 </script>
 
@@ -83,7 +86,9 @@ defineExpose({
       v-if="list.length>0"
       :theme="useLayout().isDarkSidebar?'dark':'light'"
       :accordion="useLayout().isAccordion"
+      :open-keys="defaultOpenKeys"
       :default-open-keys="defaultOpenKeys"
+      :selected-keys="defaultSelectedKeys"
       :default-selected-keys="defaultSelectedKeys"
       :style="{ width: '100%' }"
       breakpoint="lg"

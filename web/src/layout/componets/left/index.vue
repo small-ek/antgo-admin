@@ -1,27 +1,28 @@
 <script setup>
-import {onMounted, ref,nextTick} from 'vue';
+import {nextTick, onMounted, ref} from 'vue';
 import Menu from "@/layout/componets/menu/index.vue";
 import Logo from "@/layout/componets/logo/index.vue";
 import {useLayout} from '@/stores/layout.js';
 import LogoImg from "@/layout/componets/logoImg/index.vue";
-import {getMenu} from "@/api/menu.js";
 import {useTree} from "@/utils/tree.js";
 import {useMenu} from "@/stores/menu.js";
 import {useRouter} from "vue-router";
+import EventBus from "@/utils/eventBus.js";
 
 const router = useRouter()
-const menuRef = ref();
+const menuRef = ref()
 const pcMenuRef = ref()
-const mobileMenuRef = ref();
-const rightMenu = ref([]);
-const parentMenu = ref([]);
+const mobileMenuRef = ref()
+const rightMenu = ref([])
+const parentMenu = ref([])
 const checkIndex = ref()
+
 const onCancel = () => {
   useLayout().setState("showMobileMenu", false);
 };
 
 onMounted(async () => {
-  nextTick(()=>{
+  nextTick(() => {
     parentMenu.value = useMenu().menuTree;
     mobileMenuRef.value.setList(parentMenu.value)
     pcMenuRef.value.setList(parentMenu.value)
@@ -36,6 +37,18 @@ onMounted(async () => {
       onParentMenu(parentMenu.value[index], index)
     }
   })
+
+  EventBus.on('setMenuCheck', (row) => {
+    if(mobileMenuRef.value){
+      mobileMenuRef.value.setMenuCheck(row['openKey'], row['selectKey'])
+    }
+    if(pcMenuRef.value){
+      pcMenuRef.value.setMenuCheck(row['openKey'], row['selectKey'])
+    }
+    if(menuRef.value){
+      menuRef.value.setMenuCheck(row['openKey'], row['selectKey'])
+    }
+  });
 })
 
 const onParentMenu = (row, index) => {
