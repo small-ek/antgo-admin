@@ -57,6 +57,10 @@ const onFullscreen = () => {
   isFullscreen.value = !isFullscreen.value
 }
 
+const onShowSearch=()=>{
+  useLayout().setState('showSearch',true)
+}
+
 //控制屏幕宽度
 onMounted(() => {
   window.addEventListener('resize', useTheme().handleResize);
@@ -111,7 +115,7 @@ onUnmounted(() => {
         </template>
 
         <a-tooltip content="搜索菜单内容" v-if="useLayout().isSearch">
-          <a-button class="btn-icon shadow" shape="circle">
+          <a-button class="btn-icon shadow" shape="circle" @click="onShowSearch">
             <icon-search size="19"/>
           </a-button>
         </a-tooltip>

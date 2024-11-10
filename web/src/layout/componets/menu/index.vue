@@ -11,8 +11,9 @@ import EventBus from "@/utils/eventBus.js";
 const router = useRouter()
 const list = ref([])
 const defaultOpenKeys = ref([])
+const openKeys = ref([])
 const defaultSelectedKeys = ref([])
-
+const selectedKeys = ref([])
 /**
  * onClickMenuItem 菜单点击
  * @param key
@@ -59,18 +60,18 @@ const setList = (val) => {
   setCheck(val)
 }
 
-const setMenuCheck = (openKeys, selectedKeys) => {
-  defaultOpenKeys.value = [openKeys]
-  defaultSelectedKeys.value = [selectedKeys]
+const setMenuCheck = (open, selected) => {
+  defaultOpenKeys.value = [open]
+  openKeys.value = [open]
+  defaultSelectedKeys.value = [selected]
+  selectedKeys.value = [selected]
 }
 
 const setCheck = (list) => {
   const {openKeys, selectedKeys} = useTree().findKeys(list, router.currentRoute.value.path);
-  defaultOpenKeys.value = openKeys
-  defaultSelectedKeys.value = selectedKeys
+  setMenuCheck(openKeys[0], selectedKeys[0])
 }
 const onCollapse = (val, type) => {
-  // const content = type === 'responsive' ? '触发响应式收缩' : '点击触发收缩';
   if (useLayout().layout === 'vertical' || useLayout().layout === 'classic') {
     useLayout().setState("isCollapsed", val)
   }
@@ -86,9 +87,8 @@ defineExpose({
       v-if="list.length>0"
       :theme="useLayout().isDarkSidebar?'dark':'light'"
       :accordion="useLayout().isAccordion"
-      :open-keys="defaultOpenKeys"
       :default-open-keys="defaultOpenKeys"
-      :selected-keys="defaultSelectedKeys"
+      :selected-keys="selectedKeys"
       :default-selected-keys="defaultSelectedKeys"
       :style="{ width: '100%' }"
       breakpoint="lg"

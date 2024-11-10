@@ -15,15 +15,7 @@ const routes = [
         name: 'admin',
         component: () => import('@/layout/index.vue'),
         children: [
-            {
-                path: 'test',
-                component: () => import('@/views/home/index.vue'),
-                meta: {
-                    title: '首页',
-                    keywords: '首页',
-                    description: '首页'
-                },
-            }
+
         ],
     },
 

@@ -13,7 +13,7 @@ export const initRouter =  async () => {
     if (menu.length > 0) {
         for (let i = 0; i < menu.length; i++) {
             const row = menu[i]
-            if (row.path !== "index" && row.path !== "/" && row.path !== "" && row.component) {
+            if (row.path !== "/" && row.path !== "" && row.component) {
                 if (!router.hasRoute(row.path)) {
                     router.addRoute("admin", {
                         name: row.path,

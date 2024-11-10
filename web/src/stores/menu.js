@@ -10,7 +10,9 @@ export const useMenu = defineStore('useMenu', {
                 key: '0',
                 title: '首页',
                 content: '首页',
-                path: "/",
+                path: "index",
+                selectKey: 1,
+                openKey: 1,
             }],
             tabsActiveKey: '0',
         };

@@ -24,34 +24,58 @@ const onCancel = () => {
 onMounted(async () => {
   nextTick(() => {
     parentMenu.value = useMenu().menuTree;
-    mobileMenuRef.value.setList(parentMenu.value)
+    if (mobileMenuRef.value) {
+      mobileMenuRef.value.setList(parentMenu.value)
+    }
     pcMenuRef.value.setList(parentMenu.value)
     if (useLayout().layout !== 'columns') {
       rightMenu.value = parentMenu.value
     }
     if (useLayout().layout === 'columns') {
       const {openKeys} = useTree().findKeys(parentMenu.value, router.currentRoute.value.path);
+
+      checkIndex.value = parentMenu.value.findIndex((item) => {
+        return "/" + item.path === router.currentRoute.value.path
+      })
+
       const index = parentMenu.value.findIndex((item) => {
         return item.id === openKeys[0]
       })
-      onParentMenu(parentMenu.value[index], index)
+
+      if (parentMenu.value[index]) {
+        onParentMenu(parentMenu.value[index], index)
+      }
+
     }
   })
 
   EventBus.on('setMenuCheck', (row) => {
-    if(mobileMenuRef.value){
+    if (mobileMenuRef.value) {
       mobileMenuRef.value.setMenuCheck(row['openKey'], row['selectKey'])
     }
-    if(pcMenuRef.value){
+    if (pcMenuRef.value) {
       pcMenuRef.value.setMenuCheck(row['openKey'], row['selectKey'])
     }
-    if(menuRef.value){
+    if (menuRef.value) {
       menuRef.value.setMenuCheck(row['openKey'], row['selectKey'])
     }
   });
 })
 
 const onParentMenu = (row, index) => {
+
+  if (row && row.children && row.children.length === 0) {
+    const getMenu = useMenu().tabs.find(tab => tab.title === row.title)
+
+    if (!getMenu) {
+      useMenu().tabsActiveKey = useMenu().tabs.length + ""
+      EventBus.emit('setActiveKey', useMenu().tabs.length + "");
+    }else{
+      useMenu().setState("tabsActiveKey", getMenu.key)
+      EventBus.emit('setActiveKey', getMenu.key);
+    }
+  }
+
   menuRef.value.setList(row.children)
   rightMenu.value = row.children
   checkIndex.value = index
@@ -60,7 +84,8 @@ const onParentMenu = (row, index) => {
 
 <template>
   <!-- Mobile Menu -->
-  <a-drawer v-show="useLayout().windowWidth < 768" :width="useLayout().sidebarWidth" :visible="useLayout().showMobileMenu"
+  <a-drawer v-if="useLayout().windowWidth < 768" :width="useLayout().sidebarWidth"
+            v-model:visible="useLayout().showMobileMenu"
             placement="left" :closable="false" :header="false" :footer="false" :drawerStyle="{ padding: '0px' }"
             @cancel="onCancel" class="drawer-left">
     <a-layout-sider hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth"
@@ -69,6 +94,7 @@ const onParentMenu = (row, index) => {
       <Menu ref="mobileMenuRef"/>
     </a-layout-sider>
   </a-drawer>
+
 
   <!-- PC Menu -->
   <a-layout-sider

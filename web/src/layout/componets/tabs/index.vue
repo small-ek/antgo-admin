@@ -2,9 +2,12 @@
   <a-space direction="vertical" v-if="useLayout().isTabs" :size="16" class="ant-tabs-space">
     <a-row justify="space-between" align="center" :wrap="false">
       <a-col :xs="21" :sm="21" :md="21" :lg="22" :xl="23" :xxl="23">
-        <VueDraggable v-model="list" :animation="150" target=".arco-tabs-nav-tab-list" direction="horizontal" :disabled="!useLayout().isTabsDraggable">
-          <a-tabs :type="useLayout().tabsType" class="ant-tabs" size="large" :editable="true" @delete="onDelete" @tab-click="onClick" auto-switch lazy-load :active-key="activeKey">
-            <a-tab-pane v-for="(item, index) in list" :key="item.key" :closable="index!==0" :class="[{'tab0':index===0}]">
+        <VueDraggable v-model="list" :animation="150" target=".arco-tabs-nav-tab-list" direction="horizontal"
+                      :disabled="!useLayout().isTabsDraggable" @update="onEndDraggable">
+          <a-tabs :type="useLayout().tabsType" class="ant-tabs" size="large" :editable="true" @delete="onDelete"
+                  @tab-click="onClick" auto-switch lazy-load :active-key="activeKey">
+            <a-tab-pane v-for="(item, index) in list" :key="item.key" :closable="index!==0"
+                        :class="[{'tab0':index===0}]">
               <template #title>
                 <icon-apps v-if="useLayout().isTabsIcon" class="cursor-move"/>
                 <span class="no-select">{{ item.title }}</span>
@@ -60,9 +63,13 @@ onMounted(() => {
 
 const list = ref(useMenu().tabs);
 
+const onEndDraggable = () => {
+  useMenu().tabs = list.value
+}
 const onClick = (key) => {
   activeKey.value = key
   const item = list.value.filter(item => item.key === key)
+  useMenu().tabsActiveKey = key
   if (item.length > 0) {
     EventBus.emit('setMenuCheck', item[0]);
     router.push({path: "/" + item[0].path});
