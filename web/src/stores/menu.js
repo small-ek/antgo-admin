@@ -6,6 +6,7 @@ export const useMenu = defineStore('useMenu', {
         return {
             menu: [],
             menuTree: [],
+            subMenu: [],
             tabs: [{
                 key: '0',
                 title: '首页',
@@ -30,7 +31,7 @@ export const useMenu = defineStore('useMenu', {
         strategies: [
             {
                 storage: localStorage,
-                paths: ['menu', 'menuTree', 'tabs','tabsActiveKey'],
+                paths: ['menu', 'menuTree', 'tabs', 'tabsActiveKey', 'subMenu'],
             }
         ]
     }

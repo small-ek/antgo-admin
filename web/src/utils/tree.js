@@ -1,4 +1,6 @@
 //用于树形结构的操作
+import {pinyin} from "pinyin-pro";
+
 export function useTree() {
     /**
      * 一维转树形结构
@@ -12,6 +14,18 @@ export function useTree() {
             .map(item => ({
                 ...item,
                 children: buildTree(items, item.id)
+            }));
+    };
+    /**
+     * 获取所有子节点
+     * @param items 数据
+     * @returns {*}
+     */
+    const subTree = (items) => {
+        return items
+            .filter(item => item.path !== "" && item.parent_id !== 0 && item.component !== "").map(item => ({
+                ...item,
+                pinyin: pinyin(item.title, {toneType: "none"}).replace(/\s+/g, ''),
             }));
     };
     /**
@@ -46,11 +60,11 @@ export function useTree() {
         };
 
         traverse(tree);
-        return { openKeys, selectedKeys };
+        return {openKeys, selectedKeys};
     };
 
     // 通过返回值暴露所管理的状态
     return {
-        buildTree, findKeys
+        buildTree, findKeys, subTree
     }
 }

@@ -159,6 +159,30 @@ onUnmounted(() => {
 
 
   </a-layout-header>
+  <!--搜索-->
+  <a-modal v-model:visible="isSearch" draggable  :width="useLayout().windowWidth>768?'500px':'95%'">
+    <template #title>
+      菜单搜索
+    </template>
+    <a-space direction="vertical" :size="16" style="display: block;">
+      <a-row class="grid-demo">
+        <a-col :span="24">
+          <div><a-input-search placeholder="请输入需要跳转的名称或者字母"/></div>
+        </a-col>
+
+        <a-col :span="24" class="mt-10">
+          <a-scrollbar style="height:400px;overflow-x: auto;">
+            <a-typography-title :heading="6">
+              跳转
+            </a-typography-title>
+            <a-list bordered>
+              <a-list-item v-for="row in useMenu().subMenu">{{row.title}}</a-list-item>
+            </a-list>
+          </a-scrollbar>
+        </a-col>
+      </a-row>
+    </a-space>
+  </a-modal>
 </template>
 
 <style scoped>

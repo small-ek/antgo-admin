@@ -39,6 +39,7 @@ export const setMenu =  () => {
     return getMenu().then(res => {
         useMenu().setState("menu", res.data.items)
         useMenu().setState("menuTree", useTree().buildTree(res.data.items))
+        useMenu().setState("subMenu", useTree().subTree(res.data.items))
         initRouter()
     })
 }

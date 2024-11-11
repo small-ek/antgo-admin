@@ -19,6 +19,7 @@
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persist": "^1.0.0",
+    "pinyin-pro": "^3.26.0",
     "vue": "^3.4.29",
     "vue-draggable-plus": "^0.5.3",
     "vue-i18n": "^9.13.1",
