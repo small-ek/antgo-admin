@@ -21,7 +21,7 @@ const selectedKeys = ref([])
 const onClickMenuItem = (key) => {
   const item = useMenu().menu.find(item => item.id === key);
   if (item && item.path) {
-    const getMenu = useMenu().tabs.find(tab => tab.title === item.title)
+    const getMenu = useMenu().tabs.find(tab => tab.path === item.path)
 
     if (!getMenu) {
       const index=useMenu().tabs.length

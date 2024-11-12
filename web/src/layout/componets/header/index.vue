@@ -6,10 +6,13 @@ import headerLogo from "@/layout/componets/headerLogo/index.vue";
 import {useTheme} from "@/utils/theme.js";
 import Menu from "@/layout/componets/menu/index.vue";
 import {useMenu} from "@/stores/menu.js";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 const isFullscreen = ref(false)
 const menuRef = ref()
 const isSearch = ref(false);
+const searchList = ref(useMenu().subMenu)
 
 onMounted(async () => {
   if (useLayout().layout === 'transverse') {
@@ -62,6 +65,15 @@ const onShowSearch = () => {
   isSearch.value = true
 }
 
+const onInputSeach = (e) => {
+  searchList.value = useMenu().subMenu.filter(item => {
+    return item.title.indexOf(e) !== -1 || item.pinyin.indexOf(e) !== -1
+  })
+}
+const jump = (row) => {
+  router.push({path: "/" + row.path});
+  isSearch.value = false
+}
 //控制屏幕宽度
 onMounted(() => {
   window.addEventListener('resize', useTheme().handleResize);
@@ -70,6 +82,7 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', useTheme().handleResize);
 });
+
 </script>
 
 <template>
@@ -160,14 +173,17 @@ onUnmounted(() => {
 
   </a-layout-header>
   <!--搜索-->
-  <a-modal v-model:visible="isSearch" draggable  :width="useLayout().windowWidth>768?'500px':'95%'">
+  <a-modal v-model:visible="isSearch" draggable :footer="false" ok-text="关闭"
+           :width="useLayout().windowWidth>768?'500px':'95%'">
     <template #title>
-      菜单搜索
+      <h4>菜单搜索</h4>
     </template>
     <a-space direction="vertical" :size="16" style="display: block;">
       <a-row class="grid-demo">
         <a-col :span="24">
-          <div><a-input-search placeholder="请输入需要跳转的名称或者字母"/></div>
+          <div>
+            <a-input-search placeholder="请输入需要跳转的关键字或者拼音" @input="onInputSeach"/>
+          </div>
         </a-col>
 
         <a-col :span="24" class="mt-10">
@@ -176,7 +192,9 @@ onUnmounted(() => {
               跳转
             </a-typography-title>
             <a-list bordered>
-              <a-list-item v-for="row in useMenu().subMenu">{{row.title}}</a-list-item>
+              <a-list-item v-for="row in searchList">
+                <div class="hand" @click="jump(row)">{{ row.title }}</div>
+              </a-list-item>
             </a-list>
           </a-scrollbar>
         </a-col>
