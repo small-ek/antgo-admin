@@ -191,11 +191,13 @@ onUnmounted(() => {
             <a-typography-title :heading="6">
               跳转
             </a-typography-title>
-            <a-list bordered>
-              <a-list-item v-for="row in searchList">
-                <div class="hand" @click="jump(row)">{{ row.title }}</div>
-              </a-list-item>
-            </a-list>
+            <div v-for="row in searchList">
+              <div class="hand search-link-list m-auto" @click="jump(row)">
+                <font-awesome-icon v-if="row.icon!==''" :icon="row.icon"/>
+                <font-awesome-icon v-if="row.icon===''" icon="fa-solid fa-table-list"/>
+                <span class="search-link-text">{{ row.title }}</span>
+              </div>
+            </div>
           </a-scrollbar>
         </a-col>
       </a-row>
@@ -238,5 +240,26 @@ onUnmounted(() => {
 .head-row {
   position: relative;
   top: -5px
+}
+
+.search-link-list {
+  width: 400px;
+  height: 40px;
+  line-height: 40px;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 0 10px;
+  font-size: 15px;
+  margin-top: 5px;
+}
+
+.search-link-text {
+  margin-left: 10px;
+}
+
+.search-link-list:hover {
+  transform: scale(1.10);
+  transition: transform 0.8s;
+  background: #f4f4f4;
 }
 </style>
