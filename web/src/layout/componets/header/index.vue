@@ -161,7 +161,7 @@ onUnmounted(() => {
           </template>
         </a-dropdown>
         <template v-if="useLayout().setting">
-          <a-tooltip content="设置" v-if="useLayout().windowWidth>768">
+          <a-tooltip content="偏好设置" v-if="useLayout().windowWidth>768">
             <a-button class="btn-icon shadow" shape="circle" @click="useLayout().setState('showSetting',true)">
               <icon-settings size="19"/>
             </a-button>
@@ -181,7 +181,7 @@ onUnmounted(() => {
                 <template #icon>
                   <icon-user/>
                 </template>
-                <template #default>信息设置</template>
+                <template #default>个人设置</template>
             </a-doption>
             <a-doption>
                 <template #icon>
@@ -285,6 +285,7 @@ onUnmounted(() => {
 .search-link-list:hover {
   transform: scale(1.10);
   transition: transform 0.8s;
-  background: #f4f4f4;
+  background: rgb(var(--primary-6));
+  color: white;
 }
 </style>

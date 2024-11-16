@@ -39,7 +39,7 @@ const setHeaderDark = () => {
 </script>
 
 <template>
-  <a-drawer :width="350" :visible="useLayout().showSetting" title="布局设置" placement="right" :closable="true" :footer="false" :drawerStyle="{padding:'2%'}" @cancel="useLayout().setState('showSetting', false)">
+  <a-drawer :width="350" :visible="useLayout().showSetting" title="偏好设置" placement="right" :closable="true" :footer="false" :drawerStyle="{padding:'2%'}" @cancel="useLayout().setState('showSetting', false)">
     <div class="drawer-body">
       <a-alert type="warning" closable banner center>
         <template #title>
@@ -47,7 +47,7 @@ const setHeaderDark = () => {
         </template>
         应用配置可实时预览效果，但只是在当前浏览器使用,清楚缓存会导致失效。
       </a-alert>
-      <!--布局设置-->
+      <!--偏好设置-->
       <a-divider orientation="center" class="setting-title" style="margin-top: 20px;">
         <icon-layout/>
         布局设置
