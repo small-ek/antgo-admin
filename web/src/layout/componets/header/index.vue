@@ -7,12 +7,17 @@ import {useTheme} from "@/utils/theme.js";
 import Menu from "@/layout/componets/menu/index.vue";
 import {useMenu} from "@/stores/menu.js";
 import {useRouter} from "vue-router";
+import {useNavigation} from "@/utils/base.js";
+import {useUserLoginStore} from "@/stores/userLogin.js";
+import {Message} from "@arco-design/web-vue";
 
 const router = useRouter()
+const navigation = useNavigation(router)
 const isFullscreen = ref(false)
 const menuRef = ref()
 const isSearch = ref(false);
 const searchList = ref(useMenu().subMenu)
+
 
 onMounted(async () => {
   if (useLayout().layout === 'transverse') {
@@ -71,8 +76,18 @@ const onInputSeach = (e) => {
   })
 }
 const jump = (row) => {
-  router.push({path: "/" + row.path});
   isSearch.value = false
+  navigation.jumpTab("/" + row.path)
+}
+
+const onDropdown = (e) => {
+  if (e === '退出登录') {
+    useUserLoginStore().logout()
+    Message.info('退出登录成功')
+    setTimeout(() => {
+      window.location.reload()
+    }, 500)
+  }
 }
 //控制屏幕宽度
 onMounted(() => {
@@ -159,11 +174,21 @@ onUnmounted(() => {
           <img alt="avatar"
                src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"/>
         </a-avatar>
-        <a-dropdown :popup-max-height="false" trigger="hover">
+        <a-dropdown :popup-max-height="false" trigger="hover" @select="onDropdown">
           <span class="head-text">Antgo Admin</span>
           <template #content>
-            <a-doption>信息设置</a-doption>
-            <a-doption>退出登录</a-doption>
+            <a-doption>
+                <template #icon>
+                  <icon-user/>
+                </template>
+                <template #default>信息设置</template>
+            </a-doption>
+            <a-doption>
+                <template #icon>
+                  <icon-poweroff/>
+                </template>
+                <template #default>退出登录</template>
+            </a-doption>
           </template>
         </a-dropdown>
         </span>

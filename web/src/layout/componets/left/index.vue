@@ -51,13 +51,13 @@ onMounted(async () => {
 
   EventBus.on('setMenuCheck', (row) => {
     if (mobileMenuRef.value) {
-      mobileMenuRef.value.setMenuCheck(row['openKey'], row['selectKey'])
+      mobileMenuRef.value.setMenuCheck(row['parent_id'], row['id'])
     }
     if (pcMenuRef.value) {
-      pcMenuRef.value.setMenuCheck(row['openKey'], row['selectKey'])
+      pcMenuRef.value.setMenuCheck(row['parent_id'], row['id'])
     }
     if (menuRef.value) {
-      menuRef.value.setMenuCheck(row['openKey'], row['selectKey'])
+      menuRef.value.setMenuCheck(row['parent_id'], row['id'])
     }
   });
 })

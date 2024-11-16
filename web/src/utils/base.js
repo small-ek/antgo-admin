@@ -20,24 +20,27 @@ export function useNavigation(router) {
      * @param queryParams 跳转参数
      */
     const jumpTab = (url, queryParams = {}) => {
-        const getMenu = useMenu().tabs.find(tab => tab.title === url)
-        if (!getMenu) {
-            const index=useMenu().tabs.length
+        const getTabs = useMenu().tabs.find(item => "/" + item.path === url)
+        if (!getTabs) {
+            const getMenu = useMenu().menu.find(item => "/" + item.path === url);
+            const index = useMenu().tabs.length
             useMenu().tabs.push({
                 key: useMenu().tabs.length + "",
-                title: item.title,
-                content: item.title,
-                path: item.path,
-                selectKey: item.id,
-                openKey: item.parent_id,
+                title: getMenu.title,
+                content: getMenu.title,
+                path: getMenu.path,
+                id: getMenu.id,
+                parent_id: getMenu.parent_id,
             })
-            setMenuCheck(item.parent_id, item.id)
             useMenu().tabsActiveKey = useMenu().tabs.length + ""
             EventBus.emit('setActiveKey', index + "");
+            console.log(getMenu)
+            EventBus.emit('setMenuCheck', getMenu);
         } else {
-            setMenuCheck(getMenu.openKey, getMenu.selectKey)
-            useMenu().setState("tabsActiveKey", getMenu.key)
-            EventBus.emit('setActiveKey', getMenu.key);
+            useMenu().setState("tabsActiveKey", getTabs.key)
+            EventBus.emit('setActiveKey', getTabs.key);
+            console.log(getTabs)
+            EventBus.emit('setMenuCheck', getTabs);
         }
         router.push({
             path: url,
@@ -62,6 +65,6 @@ export function useNavigation(router) {
     };
     // 通过返回值暴露所管理的状态
     return {
-        jump, openUrl, getAssets
+        jump, openUrl, getAssets, jumpTab
     }
 }

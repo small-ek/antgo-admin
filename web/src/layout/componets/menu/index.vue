@@ -30,14 +30,14 @@ const onClickMenuItem = (key) => {
         title: item.title,
         content: item.title,
         path: item.path,
-        selectKey: item.id,
-        openKey: item.parent_id,
+        id: item.id,
+        parent_id: item.parent_id,
       })
       setMenuCheck(item.parent_id, item.id)
       useMenu().tabsActiveKey = useMenu().tabs.length + ""
       EventBus.emit('setActiveKey', index + "");
     } else {
-      setMenuCheck(getMenu.openKey, getMenu.selectKey)
+      setMenuCheck(getMenu.parent_id, getMenu.id)
       useMenu().setState("tabsActiveKey", getMenu.key)
       EventBus.emit('setActiveKey', getMenu.key);
     }
