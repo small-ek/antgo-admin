@@ -1,32 +1,35 @@
 <script setup>
-import {defineProps} from 'vue';
-import MenuItem from "@/layout/componets/menuItem/index.vue"
+import { defineProps, useAttrs } from 'vue';
+import MenuItem from "@/layout/componets/menuItem/index.vue";
+
 const props = defineProps({
   item: {
     type: Object,
     required: true
   }
 });
+
+const attrs = useAttrs();
 </script>
 
 <template>
-  <a-sub-menu v-if="item.children&&item.children.length>0" :key="item.id">
+  <a-sub-menu v-if="props.item.children && props.item.children.length > 0" v-bind="attrs" :key="props.item.id">
     <template #icon>
-      <font-awesome-icon v-if="item.icon!==''" :icon="item.icon"/>
-      <font-awesome-icon v-if="item.icon===''" icon="fa-solid fa-table-list"/>
+      <font-awesome-icon v-if="props.item.icon !== ''" :icon="props.item.icon" />
+      <font-awesome-icon v-if="props.item.icon === ''" icon="fa-solid fa-table-list" />
     </template>
     <template #title>
-      <span>{{ item.title }}</span>
+      <span>{{ props.item.title }}</span>
     </template>
-    <template v-for="child in item.children" :key="child.id">
-      <MenuItem :item="child"/>
+    <template v-for="child in props.item.children" :key="child.id">
+      <MenuItem :item="child" />
     </template>
   </a-sub-menu>
-  <a-menu-item v-if="item.children&&item.children.length===0" :key="item.id">
+  <a-menu-item v-if="props.item.children && props.item.children.length === 0" v-bind="attrs" :key="props.item.id">
     <template #icon>
-      <font-awesome-icon v-if="item.icon!==''" :icon="item.icon"/>
-      <font-awesome-icon v-if="item.icon===''" icon="fa-solid fa-table-list"/>
+      <font-awesome-icon v-if="props.item.icon !== ''" :icon="props.item.icon" />
+      <font-awesome-icon v-if="props.item.icon === ''" icon="fa-solid fa-table-list" />
     </template>
-    {{ item.title }}
+    {{ props.item.title }}
   </a-menu-item>
 </template>

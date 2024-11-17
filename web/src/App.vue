@@ -10,7 +10,11 @@
 import zhCN from '@arco-design/web-vue/es/locale/lang/zh-CN';
 import {useTheme} from "@/utils/theme.js";
 
+
 useTheme().defaultTheme()
+
+
+
 </script>
 <style scoped>
 

@@ -23,7 +23,7 @@ export function useTree() {
      */
     const subTree = (items) => {
         return items
-            .filter(item => item.path !== "" && item.parent_id !== 0 && item.component !== "").map(item => ({
+            .filter(item => item.path !== "" &&  item.component !== "").map(item => ({
                 ...item,
                 pinyin: pinyin(item.title, {toneType: "none"}).replace(/\s+/g, ''),
             }));

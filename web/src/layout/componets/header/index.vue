@@ -10,6 +10,8 @@ import {useRouter} from "vue-router";
 import {useNavigation} from "@/utils/base.js";
 import {useUserLoginStore} from "@/stores/userLogin.js";
 import {Message} from "@arco-design/web-vue";
+import Mousetrap from 'mousetrap';
+import {modalWidth} from "@/utils/helper.js";
 
 const router = useRouter()
 const navigation = useNavigation(router)
@@ -17,6 +19,7 @@ const isFullscreen = ref(false)
 const menuRef = ref()
 const isSearch = ref(false);
 const searchList = ref(useMenu().subMenu)
+const isShortcutKey = ref(false)
 
 
 onMounted(async () => {
@@ -67,9 +70,29 @@ const onFullscreen = () => {
 }
 
 const onShowSearch = () => {
-  isSearch.value = true
+  isSearch.value = !isSearch.value
 }
 
+const logout = () => {
+  useUserLoginStore().logout()
+  Message.info('退出登录成功')
+  setTimeout(() => {
+    window.location.reload()
+  }, 500)
+}
+
+// 搜索快捷键
+Mousetrap.bind('alt+s', onShowSearch);
+Mousetrap.bind('command+s', onShowSearch);
+Mousetrap.bind('alt+q', logout);
+Mousetrap.bind('command+q', logout);
+
+onUnmounted(() => {
+  Mousetrap.unbind('alt+s');
+  Mousetrap.unbind('command+s');
+  Mousetrap.unbind('alt+q', logout);
+  Mousetrap.unbind('command+q', logout);
+});
 const onInputSeach = (e) => {
   searchList.value = useMenu().subMenu.filter(item => {
     return item.title.indexOf(e) !== -1 || item.pinyin.indexOf(e) !== -1
@@ -80,13 +103,13 @@ const jump = (row) => {
   navigation.jumpTab("/" + row.path)
 }
 
+
 const onDropdown = (e) => {
   if (e === '退出登录') {
-    useUserLoginStore().logout()
-    Message.info('退出登录成功')
-    setTimeout(() => {
-      window.location.reload()
-    }, 500)
+    logout()
+  }
+  if (e === '快捷键介绍') {
+    isShortcutKey.value = true
   }
 }
 //控制屏幕宽度
@@ -185,6 +208,12 @@ onUnmounted(() => {
             </a-doption>
             <a-doption>
                 <template #icon>
+                  <icon-compass/>
+                </template>
+                <template #default>快捷键介绍</template>
+            </a-doption>
+            <a-doption>
+                <template #icon>
                   <icon-poweroff/>
                 </template>
                 <template #default>退出登录</template>
@@ -198,10 +227,11 @@ onUnmounted(() => {
 
   </a-layout-header>
   <!--搜索-->
-  <a-modal v-model:visible="isSearch" draggable :footer="false" ok-text="关闭"
-           :width="useLayout().windowWidth>768?'500px':'95%'">
+  <a-modal v-model:visible="isSearch" draggable title-align="start" :footer="false" :width="modalWidth('500px')">
     <template #title>
-      <h4>菜单搜索</h4>
+      <a-typography-title :heading="5">
+        菜单搜索
+      </a-typography-title>
     </template>
     <a-space direction="vertical" :size="16" style="display: block;">
       <a-row class="grid-demo">
@@ -224,6 +254,70 @@ onUnmounted(() => {
               </div>
             </div>
           </a-scrollbar>
+        </a-col>
+      </a-row>
+    </a-space>
+  </a-modal>
+
+  <!--快捷键介绍-->
+  <a-modal v-model:visible="isShortcutKey" title-align="start" draggable :footer="false" :width="modalWidth('500px')">
+    <template #title>
+      <a-typography-title :heading="5">
+        快捷键介绍
+      </a-typography-title>
+    </template>
+    <a-space direction="vertical" :size="16" style="display: block;">
+      <a-row class="grid-demo">
+        <a-col :span="24">
+          <a-typography-title :heading="5">
+            全局
+          </a-typography-title>
+        </a-col>
+        <a-col :span="24">
+          <a-space>
+            <a-button>Alt</a-button>
+            <a-button>S</a-button>
+            <h4>唤起导航搜索</h4>
+          </a-space>
+        </a-col>
+        <a-col :span="24">
+          <a-space>
+            <a-button>Alt</a-button>
+            <a-button>Q</a-button>
+            <h4>退出登录</h4>
+          </a-space>
+        </a-col>
+        <a-col :span="24">
+          <a-space>
+            <a-button>ESC</a-button>
+            <h4>关闭弹框</h4>
+          </a-space>
+        </a-col>
+        <a-col :span="24">
+          <a-typography-title :heading="5">
+            标签栏
+          </a-typography-title>
+        </a-col>
+        <a-col :span="24">
+          <a-space>
+            <a-button>Alt</a-button>
+            <a-button>←</a-button>
+            <h4>切换到上一个标签页</h4>
+          </a-space>
+        </a-col>
+        <a-col :span="24">
+          <a-space>
+            <a-button>Alt</a-button>
+            <a-button>→</a-button>
+            <h4>切换到下一个标签页</h4>
+          </a-space>
+        </a-col>
+        <a-col :span="24">
+          <a-space>
+            <a-button>Alt</a-button>
+            <a-button>W</a-button>
+            <h4>关闭当前标签页</h4>
+          </a-space>
         </a-col>
       </a-row>
     </a-space>

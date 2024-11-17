@@ -7,6 +7,8 @@ import {useRouter} from "vue-router"
 import {Message} from "@arco-design/web-vue";
 import {useTree} from "@/utils/tree.js";
 import EventBus from "@/utils/eventBus.js";
+import {useNavigation} from "@/utils/base.js";
+import {generateUniqueKey} from '@/utils/helper.js';
 
 const router = useRouter()
 const list = ref([])
@@ -19,30 +21,30 @@ const selectedKeys = ref([])
  * @param key
  */
 const onClickMenuItem = (key) => {
-  const item = useMenu().menu.find(item => item.id === key);
-  if (item && item.path) {
-    const getMenu = useMenu().tabs.find(tab => tab.path === item.path)
+  console.log(key)
+  const getMenu = useMenu().menu.find(item => item.id === key);
+  console.log(getMenu)
+  if (getMenu && getMenu.path) {
+    const getTabs = useMenu().tabs.find(tab => tab.path === getMenu.path)
 
-    if (!getMenu) {
-      const index=useMenu().tabs.length
+    if (!getTabs) {
+      const key = generateUniqueKey() + ""
       useMenu().tabs.push({
-        key: useMenu().tabs.length + "",
-        title: item.title,
-        content: item.title,
-        path: item.path,
-        id: item.id,
-        parent_id: item.parent_id,
+        key: key,
+        title: getMenu.title,
+        content: getMenu.title,
+        path: getMenu.path,
+        id: getMenu.id,
+        parent_id: getMenu.parent_id,
       })
-      setMenuCheck(item.parent_id, item.id)
-      useMenu().tabsActiveKey = useMenu().tabs.length + ""
-      EventBus.emit('setActiveKey', index + "");
-    } else {
+      EventBus.emit('setActiveKey', key);
       setMenuCheck(getMenu.parent_id, getMenu.id)
-      useMenu().setState("tabsActiveKey", getMenu.key)
-      EventBus.emit('setActiveKey', getMenu.key);
+    } else {
+      EventBus.emit('setActiveKey', getTabs.key);
+      setMenuCheck(getMenu.parent_id, getMenu.id)
     }
 
-    router.push({path: "/" + item.path});
+    useNavigation(router).jump(getMenu.path)
   } else {
     Message.error("当前菜单路径设置不正确,无法跳转")
   }

@@ -1,7 +1,7 @@
 // 用于处理公共逻辑，如跳转、返回等
 import {useMenu} from "@/stores/menu.js";
 import EventBus from "@/utils/eventBus.js";
-
+import { generateUniqueKey } from '@/utils/helper.js';
 export function useNavigation(router) {
     /**
      * 跳转,跳转到应用内的某个页面
@@ -23,23 +23,19 @@ export function useNavigation(router) {
         const getTabs = useMenu().tabs.find(item => "/" + item.path === url)
         if (!getTabs) {
             const getMenu = useMenu().menu.find(item => "/" + item.path === url);
-            const index = useMenu().tabs.length
+            const key = generateUniqueKey() + ""
             useMenu().tabs.push({
-                key: useMenu().tabs.length + "",
+                key: key,
                 title: getMenu.title,
                 content: getMenu.title,
                 path: getMenu.path,
                 id: getMenu.id,
                 parent_id: getMenu.parent_id,
             })
-            useMenu().tabsActiveKey = useMenu().tabs.length + ""
-            EventBus.emit('setActiveKey', index + "");
-            console.log(getMenu)
+            EventBus.emit('setActiveKey', key);
             EventBus.emit('setMenuCheck', getMenu);
         } else {
-            useMenu().setState("tabsActiveKey", getTabs.key)
             EventBus.emit('setActiveKey', getTabs.key);
-            console.log(getTabs)
             EventBus.emit('setMenuCheck', getTabs);
         }
         router.push({
@@ -63,6 +59,7 @@ export function useNavigation(router) {
         const modules = import.meta.glob('../static/*', {eager: true});
         return modules["../assets/" + url].default
     };
+
     // 通过返回值暴露所管理的状态
     return {
         jump, openUrl, getAssets, jumpTab

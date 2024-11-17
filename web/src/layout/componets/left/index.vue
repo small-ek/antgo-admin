@@ -130,9 +130,7 @@ const onParentMenu = (row, index) => {
   </a-layout-sider>
   <!--分栏右侧菜单-->
   <div v-show="rightMenu.length > 0">
-    <a-layout-sider v-show="useLayout().windowWidth > 768 && useLayout().layout === 'columns'" hide-trigger collapsible
-                    :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth"
-                    :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">
+    <a-layout-sider v-show="useLayout().windowWidth > 768 && useLayout().layout === 'columns'" hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth" :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">
       <Logo v-if="useLayout().layout === 'vertical' || useLayout().layout === 'columns'"/>
       <Menu ref="menuRef"/>
     </a-layout-sider>
