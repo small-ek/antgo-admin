@@ -29,47 +29,10 @@ import { useLayout } from '@/stores/layout.js';
 import { useTheme } from '@/utils/theme.js';
 </script>
 
-<style scoped>
-.ant-layout {
-  height: 100vh;
-  background: var(--color-neutral-1);
-}
-
-.container {
-  height: 100vh;
-  overflow: auto;
-}
-
-
-.ant-layout :deep(.arco-layout-header) {
-  height: 64px;
-  line-height: 64px;
-  position: relative;
-  background: var(--color-bg-4);
-  color: var(--color-text-1);
-}
-
-.ant-layout :deep(.arco-layout-footer) {
-  height: 30px;
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 30px;
-  color: var(--color-text-3);
-}
-
-.ant-layout :deep(.arco-layout-content) {
-  font-weight: 400;
-  font-size: 14px;
-  background: var(--color-bg-4);
-  color: var(--color-text-1);
-}
-
-.ant-layout :deep(.arco-layout-footer),
-.ant-layout :deep(.arco-layout-content) {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-stretch: condensed;
-  text-align: center;
-}
+<style scoped lang="less">
+@import "../layout.less";
+//.container {
+//  height: 100vh;
+//  overflow: auto;
+//}
 </style>

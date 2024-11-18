@@ -62,6 +62,7 @@ export default defineConfig({
         open: true
     },
     build: {
+        // sourcemap: true,
         target: 'es2015',
         cssTarget: 'chrome64', // 此选项允许用户为 CSS 的压缩设置一个不同的浏览器 target，此处的 target 并非是用于 JavaScript 转写目标。
         cssCodeSplit: true, // 启用/禁用 CSS 代码拆分
