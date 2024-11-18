@@ -15,7 +15,16 @@ const routes = [
         name: 'admin',
         component: () => import('@/layout/index.vue'),
         children: [
-
+            {
+                name: "settings",
+                path: '/settings',
+                component: () => import('@/views/settings/index.vue'),
+                meta: {
+                    title: '个人设置',
+                    keywords: '个人设置',
+                    description: '个人设置'
+                },
+            },
         ],
     },
 

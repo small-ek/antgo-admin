@@ -48,12 +48,6 @@ import {useTheme} from "@/utils/theme.js";
   margin-top: -1px;
 }
 
-.ant-layout {
-  height: 100vh;
-  background: var(--color-neutral-1);
-}
-
-
 .ant-layout :deep(.arco-layout-header) {
   height: 64px;
   line-height: 64px;

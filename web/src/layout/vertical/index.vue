@@ -1,5 +1,5 @@
 <template>
-  <a-layout class="layout">
+  <a-layout class="ant-layout">
     <Left />
     <a-layout class="container">
       <a-scrollbar class="scrollbar" @scroll="useTheme().handleScroll">
@@ -30,7 +30,7 @@ import { useTheme } from '@/utils/theme.js';
 </script>
 
 <style scoped>
-.layout {
+.ant-layout {
   height: 100vh;
   background: var(--color-neutral-1);
 }
@@ -41,7 +41,7 @@ import { useTheme } from '@/utils/theme.js';
 }
 
 
-.layout :deep(.arco-layout-header) {
+.ant-layout :deep(.arco-layout-header) {
   height: 64px;
   line-height: 64px;
   position: relative;
@@ -49,7 +49,7 @@ import { useTheme } from '@/utils/theme.js';
   color: var(--color-text-1);
 }
 
-.layout :deep(.arco-layout-footer) {
+.ant-layout :deep(.arco-layout-footer) {
   height: 30px;
   font-weight: 400;
   font-size: 13px;
@@ -57,15 +57,15 @@ import { useTheme } from '@/utils/theme.js';
   color: var(--color-text-3);
 }
 
-.layout :deep(.arco-layout-content) {
+.ant-layout :deep(.arco-layout-content) {
   font-weight: 400;
   font-size: 14px;
   background: var(--color-bg-4);
   color: var(--color-text-1);
 }
 
-.layout :deep(.arco-layout-footer),
-.layout :deep(.arco-layout-content) {
+.ant-layout :deep(.arco-layout-footer),
+.ant-layout :deep(.arco-layout-content) {
   display: flex;
   flex-direction: column;
   justify-content: center;

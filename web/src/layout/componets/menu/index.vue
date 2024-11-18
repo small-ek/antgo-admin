@@ -21,9 +21,7 @@ const selectedKeys = ref([])
  * @param key
  */
 const onClickMenuItem = (key) => {
-  console.log(key)
   const getMenu = useMenu().menu.find(item => item.id === key);
-  console.log(getMenu)
   if (getMenu && getMenu.path) {
     const getTabs = useMenu().tabs.find(tab => tab.path === getMenu.path)
 

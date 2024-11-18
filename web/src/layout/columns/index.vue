@@ -2,8 +2,6 @@
   <a-layout class="ant-layout">
     <!--左侧-->
     <Left/>
-
-
     <a-layout class="ant-container">
       <a-scrollbar class="scrollbar" @scroll="useTheme().handleScroll">
         <!--头部-->
@@ -37,11 +35,6 @@ import {useLayout} from "@/stores/layout.js";
 import {useTheme} from "@/utils/theme.js";
 </script>
 <style scoped>
-.ant-layout {
-  height: 100vh;
-  background: var(--color-neutral-1);
-}
-
 .ant-layout :deep(.arco-layout-header) {
   height: 64px;
   line-height: 64px;
