@@ -17,6 +17,7 @@
 
           <!--底部-->
           <Footer v-if="useLayout().isFooter"></Footer>
+          <a-back-top target-container=".scrollbar" :style="{position:'fixed'}" />
         </a-layout>
       </a-scrollbar>
     </a-layout>

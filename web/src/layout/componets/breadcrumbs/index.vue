@@ -1,8 +1,8 @@
 <script setup>
-import { useRoute } from 'vue-router';
-import { useMenu } from '@/stores/menu.js';
-import { computed } from 'vue';
-import { useLayout } from "@/stores/layout.js";
+import {useRoute} from 'vue-router';
+import {useMenu} from '@/stores/menu.js';
+import {computed} from 'vue';
+import {useLayout} from "@/stores/layout.js";
 
 const route = useRoute();
 const menuTree = useMenu().menuTree;
@@ -24,6 +24,8 @@ const matchedTitles = computed(() => {
     return false;
   };
   findTitles(menuTree, route.path);
+
+  titles.length === 0 ? titles.push(route.meta.title) : "";
   return titles.reverse();
 });
 </script>

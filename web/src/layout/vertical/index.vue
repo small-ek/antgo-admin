@@ -1,7 +1,7 @@
 <template>
   <a-layout class="ant-layout">
     <Left />
-    <a-layout class="container">
+    <a-layout class="ant-container">
       <a-scrollbar class="scrollbar" @scroll="useTheme().handleScroll">
         <div :class="{'affix': useLayout().isFixedHeader, 'affix-hidden': !useLayout().isFixedHeader && useLayout().header === 'adaptive'}">
           <Header />
@@ -12,7 +12,9 @@
             <router-view />
           </a-layout-content>
           <Footer v-if="useLayout().isFooter" />
+          <a-back-top target-container=".scrollbar" :style="{position:'fixed'}" />
         </a-layout>
+
       </a-scrollbar>
     </a-layout>
     <Setting />

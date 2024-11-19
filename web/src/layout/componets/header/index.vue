@@ -108,6 +108,9 @@ const onDropdown = (e) => {
   if (e === '退出登录') {
     logout()
   }
+  if (e === '个人设置') {
+    navigation.jump('/settings')
+  }
   if (e === '快捷键介绍') {
     isShortcutKey.value = true
   }

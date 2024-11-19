@@ -1,7 +1,8 @@
 // 用于处理公共逻辑，如跳转、返回等
 import {useMenu} from "@/stores/menu.js";
 import EventBus from "@/utils/eventBus.js";
-import { generateUniqueKey } from '@/utils/helper.js';
+import {generateUniqueKey} from '@/utils/helper.js';
+
 export function useNavigation(router) {
     /**
      * 跳转,跳转到应用内的某个页面
@@ -15,7 +16,7 @@ export function useNavigation(router) {
         })
     }
     /**
-     * 跳转,跳转到应用内的某个页面
+     * 跳转,跳转到应用内的某个页面加载到tab
      * @param url 跳转地址，前面要有斜杠/page/*
      * @param queryParams 跳转参数
      */

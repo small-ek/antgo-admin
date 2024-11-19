@@ -8,8 +8,10 @@ import {useTree} from "@/utils/tree.js";
 import {useMenu} from "@/stores/menu.js";
 import {useRouter} from "vue-router";
 import EventBus from "@/utils/eventBus.js";
+import {useNavigation} from "@/utils/base.js";
 
 const router = useRouter()
+const navigation = useNavigation(router)
 const menuRef = ref()
 const pcMenuRef = ref()
 const mobileMenuRef = ref()
@@ -66,14 +68,7 @@ const onParentMenu = (row, index) => {
 
   if (row && row.children && row.children.length === 0) {
     const getMenu = useMenu().tabs.find(tab => tab.title === row.title)
-
-    if (!getMenu) {
-      useMenu().tabsActiveKey = useMenu().tabs.length + ""
-      EventBus.emit('setActiveKey', useMenu().tabs.length + "");
-    }else{
-      useMenu().setState("tabsActiveKey", getMenu.key)
-      EventBus.emit('setActiveKey', getMenu.key);
-    }
+    navigation.jumpTab("/" + getMenu.path)
   }
 
   menuRef.value.setList(row.children)
@@ -130,7 +125,9 @@ const onParentMenu = (row, index) => {
   </a-layout-sider>
   <!--分栏右侧菜单-->
   <div v-show="rightMenu.length > 0">
-    <a-layout-sider v-show="useLayout().windowWidth > 768 && useLayout().layout === 'columns'" hide-trigger collapsible :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth" :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">
+    <a-layout-sider v-show="useLayout().windowWidth > 768 && useLayout().layout === 'columns'" hide-trigger collapsible
+                    :collapsed="useLayout().isCollapsed" :width="useLayout().sidebarWidth"
+                    :theme="useLayout().isDarkSidebar ? 'dark' : 'light'" class="menu">
       <Logo v-if="useLayout().layout === 'vertical' || useLayout().layout === 'columns'"/>
       <Menu ref="menuRef"/>
     </a-layout-sider>
