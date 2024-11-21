@@ -3,23 +3,22 @@
 import {reactive, ref} from "vue";
 
 const rules = reactive({
-  username: [
-    {required: true, message: '请输入用户名', trigger: 'blur'},
+  nick_name: [
+    {required: true, message: '请输入昵称', trigger: 'blur'},
   ],
-  password: [
-    {required: true, message: '请输入密码', trigger: 'blur',},
+  phone: [
+    {required: true, message: '请输入手机', trigger: 'blur',},
   ],
-  code: [
-    {required: true, message: '请输入验证码', trigger: 'blur',},
+  email: [
+    {required: true, message: '请输入电子邮件', trigger: 'blur',},
   ],
 })
 
-const form = ref({
-  username: '',
-  password: '',
-  code: "",
-  id: ""
-})
+const form = ref({})
+
+const onSubmit = () => {
+  console.log(form.value)
+}
 </script>
 
 <template>
@@ -30,15 +29,15 @@ const form = ref({
           <a-col :xs="22" :sm="18" :md="15" :lg="13" :xl="10" class="m-auto" style="margin-top: 35px">
             <a-form :model="form" :rules="rules" layout="horizontal" auto-label-width feedback
                     @submit-success="onSubmit">
-              <a-form-item field="nick_name" label="昵称" hide-asterisk>
+              <a-form-item field="nick_name" label="昵称">
                 <a-input v-model="form.nick_name" autocomplete="off" placeholder="请输入昵称" allow-clear>
                 </a-input>
               </a-form-item>
-              <a-form-item field="phone" label="手机" hide-asterisk>
+              <a-form-item field="phone" label="手机">
                 <a-input v-model="form.phone" autocomplete="off" placeholder="请输入手机" allow-clear>
                 </a-input>
               </a-form-item>
-              <a-form-item field="email" label="电子邮件" hide-asterisk>
+              <a-form-item field="email" label="电子邮件">
                 <a-input v-model="form.email" autocomplete="off" placeholder="请输入电子邮件" allow-clear>
                 </a-input>
               </a-form-item>
