@@ -42,6 +42,7 @@ const onClickMenuItem = (key) => {
       setMenuCheck(getMenu.parent_id, getMenu.id)
     }
 
+    useLayout().windowWidth < 776 ? useLayout().setState("showMobileMenu", false) : null
     useNavigation(router).jump(getMenu.path)
   } else {
     Message.error("当前菜单路径设置不正确,无法跳转")
@@ -84,7 +85,7 @@ defineExpose({
 
 <template>
   <a-menu
-      v-if="list.length>0"
+      v-show="list.length>0"
       :theme="useLayout().isDarkSidebar?'dark':'light'"
       :accordion="useLayout().isAccordion"
       :default-open-keys="defaultOpenKeys"
@@ -117,8 +118,8 @@ defineExpose({
 
 .arco-menu-item:hover {
   background: rgb(var(--primary-1));
-  transform: scale(1.01);
-  transition: transform 0.8s;
+  transform: scale(1.04);
+  transition: transform 0.3s;
 }
 
 .arco-menu-dark .arco-menu-item .arco-icon, .arco-menu-dark .arco-menu-group-title .arco-icon, .arco-menu-dark .arco-menu-pop-header .arco-icon, .arco-menu-dark .arco-menu-inline-header .arco-icon, .arco-menu-dark .arco-menu-item .arco-menu-icon, .arco-menu-dark .arco-menu-group-title .arco-menu-icon, .arco-menu-dark .arco-menu-pop-header .arco-menu-icon, .arco-menu-dark .arco-menu-inline-header .arco-menu-icon:hover {
@@ -127,5 +128,18 @@ defineExpose({
 
 .arco-menu-light .arco-menu-item.arco-menu-selected .arco-menu-icon {
   color: white !important;
+}
+
+.arco-menu-dark .arco-menu-item, .arco-menu-dark .arco-menu-group-title, .arco-menu-dark .arco-menu-pop-header, .arco-menu-dark .arco-menu-inline-header {
+  color: hsla(0, 0%, 100%, .7) !important;
+}
+
+.arco-menu-dark .arco-menu-inline-header.arco-menu-selected,
+.arco-menu-dark .arco-menu-inline-header.arco-menu-selected .arco-icon, .arco-menu-dark .arco-menu-inline-header.arco-menu-selected .arco-menu-icon {
+  color: #fff !important;
+}
+
+.arco-menu-dark .arco-menu-item.arco-menu-selected {
+  color: #fff !important;
 }
 </style>

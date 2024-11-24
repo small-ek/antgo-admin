@@ -24,8 +24,8 @@ func NewSysAdminUsersController() *SysAdminUsersController {
 //	@Accept			json
 //	@Produce		json
 //	@Param		    data query request.SysAdminUsersRequest true "分页参数"
-//	@Success		200	{object}	response.Write{data=response.Page{items=[]models.SysAdminUsers}}
-//	@Failure		422	{object}	response.Write
+//	@Success		0	{object}	response.Write{data=response.Page{items=[]models.SysAdminUsers}}
+//	@Failure		1	{object}	response.Write
 //	@Router			/sys-admin-users [get] 路由
 //
 // Index 分页列表
@@ -50,8 +50,8 @@ func (ctrl *SysAdminUsersController) Index(c *gin.Context) {
 //	@Summary		获取管理员用户详情数据
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	response.Write{data=models.SysAdminUsers}
-//	@Failure		422	{object}	response.Write
+//	@Success		0	{object}	response.Write{data=models.SysAdminUsers}
+//	@Failure		1	{object}	response.Write
 //	@Router			/sys-admin-users/:id [get]
 //
 // Show 详情
@@ -71,8 +71,8 @@ func (ctrl *SysAdminUsersController) Show(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param		    data body request.SysAdminUsersRequestForm true "创建参数"
-//	@Success		200	{object}	response.Write
-//	@Failure		422	{object}	response.Write
+//	@Success		0	{object}	response.Write
+//	@Failure		1	{object}	response.Write
 //	@Router			/sys-admin-users [post]
 //
 // Create 创建
@@ -83,7 +83,7 @@ func (ctrl *SysAdminUsersController) Create(c *gin.Context) {
 		return
 	}
 
-	if err := ctrl.SysAdminUsersService.SetReqForm(req).Store(); err != nil {
+	if err := ctrl.SysAdminUsersService.SetReq(req).Store(); err != nil {
 		ctrl.Fail(c, vo.CREATION_FAILED, err.Error())
 		return
 	}
@@ -95,8 +95,8 @@ func (ctrl *SysAdminUsersController) Create(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param		    data body request.SysAdminUsersRequestForm true "更新参数"
-//	@Success		200	{object}	response.Write
-//	@Failure		422	{object}	response.Write
+//	@Success		0	{object}	response.Write
+//	@Failure		1	{object}	response.Write
 //	@Router			/sys-admin-users/:id [put]
 //
 // Update 修改
@@ -107,8 +107,9 @@ func (ctrl *SysAdminUsersController) Update(c *gin.Context) {
 		return
 	}
 
-	if err := ctrl.SysAdminUsersService.SetReqForm(req).Update(); err != nil {
+	if err := ctrl.SysAdminUsersService.SetReq(req).Update(); err != nil {
 		ctrl.Fail(c, vo.UPDATE_FAILED, err.Error())
+		return
 	}
 	ctrl.Success(c, vo.UPDATE_SUCCESS)
 }
@@ -117,8 +118,8 @@ func (ctrl *SysAdminUsersController) Update(c *gin.Context) {
 //	@Summary		删除管理员用户数据
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	response.Write
-//	@Failure		422	{object}	response.Write
+//	@Success		0	{object}	response.Write
+//	@Failure		1	{object}	response.Write
 //	@Router			/sys-admin-users/:id [delete]
 //
 // Delete 删除

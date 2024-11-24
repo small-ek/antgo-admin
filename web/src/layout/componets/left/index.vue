@@ -62,10 +62,15 @@ onMounted(async () => {
       menuRef.value.setMenuCheck(row['parent_id'], row['id'])
     }
   });
+
+  EventBus.on('swtWindowWidth', (width) => {
+    if (width < 768 && mobileMenuRef.value) {
+      mobileMenuRef.value.setList(parentMenu.value)
+    }
+  });
 })
 
 const onParentMenu = (row, index) => {
-
   if (row && row.children && row.children.length === 0) {
     const getMenu = useMenu().tabs.find(tab => tab.title === row.title)
     navigation.jumpTab("/" + getMenu.path)
@@ -182,4 +187,5 @@ const onParentMenu = (row, index) => {
   transform: scale(1.15);
   transition: transform 0.5s;
 }
+
 </style>

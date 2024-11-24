@@ -1,6 +1,8 @@
 import axios from 'axios';
 import config from "./config.js"
 import {useUserLoginStore} from "@/stores/userLogin.js";
+import {Message} from "@arco-design/web-vue";
+import i18n from "@/utils/i18n.js";
 
 const http = axios.create({
     baseURL: config.url,
@@ -11,7 +13,7 @@ const http = axios.create({
 http.interceptors.request.use(
     config => {
         if (useUserLoginStore().authorization !== "") {
-            config.headers['Authorization'] = "Bearer "+useUserLoginStore().authorization
+            config.headers['Authorization'] = "Bearer " + useUserLoginStore().authorization
         }
         config.headers['Device-ID'] = useUserLoginStore().getDeviceId
         return config;
@@ -28,7 +30,11 @@ http.interceptors.response.use(
         // 对响应数据做处理，例如只返回data部分
         const data = response.data
         if (response.status !== 200) {
-            console.error("请求失败，请稍后再试")
+            Message.error(i18n.global.t('tip.' + data.message))
+
+        }
+        if (data.code !== 0) {
+            Message.error(i18n.global.t('tip.' + data.message))
         }
         return data === undefined ? {} : data
     },

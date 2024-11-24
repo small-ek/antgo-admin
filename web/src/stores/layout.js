@@ -13,7 +13,7 @@ export const useLayout = defineStore('useLayout', {
             // 菜单手风琴
             isAccordion: false,
             // 侧边栏宽度
-            sidebarWidth: 250,
+            sidebarWidth: 260,
             // 头部深色
             isDarkHeader: false,
             // 面包屑导航
@@ -70,7 +70,7 @@ export const useLayout = defineStore('useLayout', {
             this.$patch({[args[0]]: args[1]});
         },
         setLayout(value) {
-            this.setState('sidebarWidth', 250);
+            this.setState('sidebarWidth', 260);
             if (value === 'vertical') {
                 this.setState('isDarkSidebar', true);
                 this.setState('isDarkHeader', false);

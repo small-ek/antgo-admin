@@ -13,8 +13,8 @@ func GeneratePassword(password string) (string, error) {
 }
 
 // VerifyPassword 验证密码
-func VerifyPassword(hashed, password string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hashed), []byte(password))
+func VerifyPassword(hashedPassword, password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 	if err == nil {
 		return true
 	}

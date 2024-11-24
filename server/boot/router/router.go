@@ -42,6 +42,7 @@ func Load() *gin.Engine {
 	//注册路由
 	routes.IndexRoute(Group)
 	routes.SysMenuRoute(Group)
+	routes.AuthRoute(Group)
 
 	return app
 }

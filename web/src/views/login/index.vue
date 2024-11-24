@@ -54,7 +54,7 @@
 import {onMounted, reactive, ref} from 'vue'
 import {useRoute, useRouter} from "vue-router";
 import {IconLock, IconSafe, IconUser} from '@arco-design/web-vue/es/icon';
-import {getCaptcha, login} from "@/api/common.js";
+import {getCaptcha, login} from "@/api/auth.js";
 import {useI18n} from "vue-i18n"
 import {Message} from "@arco-design/web-vue";
 import {useUserLoginStore} from "@/stores/userLogin.js";
@@ -100,7 +100,7 @@ onMounted(() => {
 //登录
 const onSubmit = () => {
   login(form.value).then(res => {
-    if (res.code === 200) {
+    if (res.code === 0) {
       useUserLoginStore().login(res.data)
       Message.info(t('tip.' + res.message))
 

@@ -2,9 +2,12 @@ package service
 
 import (
 	"errors"
+	"github.com/small-ek/antgo/os/alog"
 	"github.com/small-ek/antgo/os/config"
 	"github.com/small-ek/antgo/utils/conv"
 	"github.com/small-ek/antgo/utils/jwt"
+	"go.uber.org/zap"
+	"reflect"
 	"server/app/dao"
 	"server/app/entity/models"
 	"server/app/entity/request"
@@ -13,34 +16,37 @@ import (
 )
 
 type SysAdminUsers struct {
-	req          request.SysAdminUsersRequest
-	reqForm      request.SysAdminUsersRequestForm
-	reqLoginForm request.SysAdminUsersLoginRequestForm
+	req                  request.SysAdminUsersRequest
+	reqForm              request.SysAdminUsersRequestForm
+	reqSysAdminUsersInfo request.SysAdminUsersInfoRequest
+	reqLoginForm         request.SysAdminUsersLoginRequestForm
 }
 
 func NewSysAdminUsersService() *SysAdminUsers {
 	return &SysAdminUsers{}
 }
 
-// SetReq 设置参数
-func (svc *SysAdminUsers) SetReq(req request.SysAdminUsersRequest) *SysAdminUsers {
-	svc.req = req
-	return svc
-}
-
-// SetReqForm 设置参数
-func (svc *SysAdminUsers) SetReqForm(req request.SysAdminUsersRequestForm) *SysAdminUsers {
-	req.SysAdminUsers.Username = req.Username
-	req.SysAdminUsers.Password = req.Password
-	req.SysAdminUsers.NickName = req.NickName
-
-	svc.reqForm = req
-	return svc
-}
-
-// SetReqLoginForm 设置参数
-func (svc *SysAdminUsers) SetReqLoginForm(req request.SysAdminUsersLoginRequestForm) *SysAdminUsers {
-	svc.reqLoginForm = req
+// SetReq 设置参数，支持不同类型的请求
+func (svc *SysAdminUsers) SetReq(req interface{}) *SysAdminUsers {
+	switch value := req.(type) {
+	case request.SysAdminUsersRequest:
+		svc.req = value
+	case request.SysAdminUsersRequestForm:
+		svc.reqForm = value
+		// 根据需求做字段赋值
+		svc.reqForm.SysAdminUsers.Username = value.Username
+		svc.reqForm.SysAdminUsers.Password = value.Password
+		svc.reqForm.SysAdminUsers.NickName = value.NickName
+	case request.SysAdminUsersInfoRequest:
+		conv.ToStruct(value, &svc.reqForm.SysAdminUsers)
+	case request.SysAdminUsersLoginRequestForm:
+		svc.reqLoginForm = value
+	case request.SysAdminUsersPasswordRequestForm:
+		svc.reqForm.SysAdminUsers.Password = value.Password
+	default:
+		// 不支持的类型，抛出异常或者返回错误
+		alog.Write.Error("SetReq", zap.Any("Unsupported request type", reflect.TypeOf(value)))
+	}
 	return svc
 }
 
@@ -83,8 +89,11 @@ func (svc *SysAdminUsers) Login() (result map[string]interface{}, err error) {
 			"token":     token,
 			"expiresAt": expiresAt,
 			"user": map[string]interface{}{
-				"username": item.Username,
-				"nickname": item.NickName,
+				"username":  item.Username,
+				"nick_name": item.NickName,
+				"phone":     item.Phone,
+				"email":     item.Email,
+				"status":    item.Status,
 			}}, nil
 	}
 	return nil, errors.New("LOGIN_ERROR")

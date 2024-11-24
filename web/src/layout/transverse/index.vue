@@ -1,13 +1,14 @@
 <template>
   <a-layout class="ant-layout">
     <!--头部-->
-      <a-layout class="ant-container">
-        <!--左侧-->
-        <Left/>
-        <a-layout>
-          <a-scrollbar class="scrollbar" @scroll="useTheme().handleScroll">
+    <a-layout class="ant-container">
+      <!--左侧-->
+      <Left/>
+      <a-layout>
+        <a-scrollbar class="scrollbar" @scroll="useTheme().handleScroll">
           <!--头部标签-->
-          <div :class="{'affix': useLayout().isFixedHeader, 'affix-hidden': !useLayout().isFixedHeader&&useLayout().header==='adaptive'}">
+          <div
+              :class="{'affix': useLayout().isFixedHeader, 'affix-hidden': !useLayout().isFixedHeader&&useLayout().header==='adaptive'}">
             <Header/>
             <Tags/>
           </div>
@@ -23,11 +24,11 @@
 
           <!--底部-->
           <Footer v-if="useLayout().isFooter"></Footer>
-          <a-back-top target-container=".scrollbar" :style="{position:'fixed'}" />
-          </a-scrollbar>
-        </a-layout>
-
+          <a-back-top target-container=".scrollbar" :style="{position:'fixed'}"/>
+        </a-scrollbar>
       </a-layout>
+
+    </a-layout>
 
     <!--布局设置-->
     <Setting></Setting>
@@ -49,8 +50,8 @@ import {useTheme} from "@/utils/theme.js";
   top: -1px;
 }
 
-/*.ant-container {
-  height: 100vh;
-}*/
-
+.content-layout {
+  width: 95vw;
+  margin: auto;
+}
 </style>

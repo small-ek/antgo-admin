@@ -2,6 +2,7 @@
 import {useLayout} from "@/stores/layout.js";
 import {getLightColor} from "@/utils/color.js";
 import throttle from "@/utils/throttle.js";
+import EventBus from "@/utils/eventBus.js";
 
 let lastScrollTop = 0;
 
@@ -81,8 +82,10 @@ export function useTheme() {
         useLayout().setState("windowHeight", window.innerHeight)
         if (useLayout().windowWidth < 768) {
             useLayout().setState("isCollapsed", false)
+            EventBus.emit("swtWindowWidth", window.innerWidth)
         } else {
             useLayout().setState("mobileVisible", false)
+            EventBus.emit("swtWindowWidth", window.innerWidth)
         }
     };
     return {

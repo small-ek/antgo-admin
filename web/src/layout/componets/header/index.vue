@@ -108,6 +108,9 @@ const onDropdown = (e) => {
   if (e === '退出登录') {
     logout()
   }
+  if (e === '偏好设置') {
+    useLayout().setState('showSetting',true)
+  }
   if (e === '个人设置') {
     navigation.jump('/settings')
   }
@@ -134,19 +137,14 @@ onUnmounted(() => {
         <headerLogo></headerLogo>
       </a-col>
       <a-col :flex="useLayout().layout==='transverse'?'80px':'auto'">
-        <a-tooltip content="收缩菜单" v-if="useLayout().layout==='vertical'||useLayout().layout==='classic'">
-          <a-button @click="onCollapse" class="btn-icon shadow first-icon" shape="circle">
-            <icon-menu-unfold size="19" v-if="useLayout().isCollapse"/>
-            <icon-menu-fold size="19" v-else/>
-          </a-button>
-        </a-tooltip>
-        <a-tooltip content="收缩菜单"
-                   v-if="(useLayout().layout==='transverse'||useLayout().layout==='columns')&&useLayout().windowWidth<765">
-          <a-button @click="onCollapse" class="btn-icon shadow first-icon" shape="circle">
-            <icon-menu-unfold size="19" v-if="useLayout().isCollapse"/>
-            <icon-menu-fold size="19" v-else/>
-          </a-button>
-        </a-tooltip>
+        <a-button @click="onCollapse" class="btn-icon shadow first-icon" shape="circle" v-if="useLayout().layout==='vertical'||useLayout().layout==='classic'">
+          <icon-menu-unfold size="19" v-if="useLayout().isCollapse"/>
+          <icon-menu-fold size="19" v-else/>
+        </a-button>
+        <a-button @click="onCollapse" class="btn-icon shadow first-icon" shape="circle" v-if="(useLayout().layout==='transverse'||useLayout().layout==='columns')&&useLayout().windowWidth<765">
+          <icon-menu-unfold size="19" v-if="useLayout().isCollapse"/>
+          <icon-menu-fold size="19" v-else/>
+        </a-button>
         <a-tooltip content="刷新页面" v-if="useLayout().isRefresh">
           <a-button @click="onRefresh" class="btn-icon shadow" shape="circle">
             <icon-refresh size="19"/>
@@ -208,6 +206,12 @@ onUnmounted(() => {
                   <icon-user/>
                 </template>
                 <template #default>个人设置</template>
+            </a-doption>
+            <a-doption>
+                <template #icon>
+                  <icon-settings />
+                </template>
+                <template #default>偏好设置</template>
             </a-doption>
             <a-doption>
                 <template #icon>

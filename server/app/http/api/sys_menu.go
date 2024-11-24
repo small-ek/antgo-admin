@@ -3,8 +3,8 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/small-ek/antgo/utils/page"
-	"server/app/entity/vo"
 	"server/app/entity/request"
+	"server/app/entity/vo"
 	"server/app/service"
 )
 
@@ -24,8 +24,8 @@ func NewSysMenuController() *SysMenuController {
 //	@Accept			json
 //	@Produce		json
 //	@Param		    data query request.SysMenuRequest true "分页参数"
-//	@Success		200	{object}	response.Write{data=response.Page{items=[]models.SysMenu}}
-//	@Failure		422	{object}	response.Write
+//	@Success		0	{object}	response.Write{data=response.Page{items=[]models.SysMenu}}
+//	@Failure		1	{object}	response.Write
 //	@Router			/sys-menu [get] 路由
 //
 // Index 分页列表
@@ -50,8 +50,8 @@ func (ctrl *SysMenuController) Index(c *gin.Context) {
 //	@Summary		获取后台菜单详情数据
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	response.Write{data=models.SysMenu}
-//	@Failure		422	{object}	response.Write
+//	@Success		0	{object}	response.Write{data=models.SysMenu}
+//	@Failure		1	{object}	response.Write
 //	@Router			/sys-menu/:id [get]
 //
 // Show 详情
@@ -71,8 +71,8 @@ func (ctrl *SysMenuController) Show(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param		    data body request.SysMenuRequestForm true "创建参数"
-//	@Success		200	{object}	response.Write
-//	@Failure		422	{object}	response.Write
+//	@Success		0	{object}	response.Write
+//	@Failure		1	{object}	response.Write
 //	@Router			/sys-menu [post]
 //
 // Create 创建
@@ -95,8 +95,8 @@ func (ctrl *SysMenuController) Create(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param		    data body request.SysMenuRequestForm true "更新参数"
-//	@Success		200	{object}	response.Write
-//	@Failure		422	{object}	response.Write
+//	@Success		0	{object}	response.Write
+//	@Failure		1	{object}	response.Write
 //	@Router			/sys-menu/:id [put]
 //
 // Update 修改
@@ -107,7 +107,7 @@ func (ctrl *SysMenuController) Update(c *gin.Context) {
 		return
 	}
 
-	if err := ctrl.SysMenuService.SetReqForm(req).Update();err!=nil{
+	if err := ctrl.SysMenuService.SetReqForm(req).Update(); err != nil {
 		ctrl.Fail(c, vo.UPDATE_FAILED, err.Error())
 	}
 	ctrl.Success(c, vo.UPDATE_SUCCESS)
@@ -117,8 +117,8 @@ func (ctrl *SysMenuController) Update(c *gin.Context) {
 //	@Summary		删除后台菜单数据
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	response.Write
-//	@Failure		422	{object}	response.Write
+//	@Success		0	{object}	response.Write
+//	@Failure		1	{object}	response.Write
 //	@Router			/sys-menu/:id [delete]
 //
 // Delete 删除
@@ -136,4 +136,3 @@ func (ctrl *SysMenuController) Delete(c *gin.Context) {
 
 	ctrl.Success(c, vo.DELETE_SUCCESS)
 }
-

@@ -28,7 +28,7 @@ func NewAuthController() *AuthController {
 //	@Summary		获取验证码
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	response.Write{data=vo.ResponseCaptcha}
+//	@Success		0	{object}	response.Write{data=vo.ResponseCaptcha}
 //	@Failure		500	{object}	response.Write
 //	@Router			/captcha [get] 路由
 //
@@ -52,8 +52,8 @@ func (ctrl *AuthController) Captcha(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param		    data body request.SysAdminUsersLoginRequestForm true "登录参数"
-//	@Success		200	{object}	response.Write
-//	@Failure		422	{object}	response.Write
+//	@Success		0	{object}	response.Write
+//	@Failure		1	{object}	response.Write
 //	@Router			/login [post]
 //
 // Login 登录
@@ -68,11 +68,11 @@ func (ctrl *AuthController) Login(c *gin.Context) {
 		return
 	}
 
-	if result, err := ctrl.SysAdminUsersService.SetReqLoginForm(req).Login(); err != nil {
+	if result, err := ctrl.SysAdminUsersService.SetReq(req).Login(); err != nil {
 		ctrl.Fail(c, vo.LOGIN_ERROR, err.Error())
 		return
 	} else {
-		ctrl.Success(c, vo.SUCCESS, result)
+		ctrl.Success(c, vo.LOGIN_SUCCESS, result)
 	}
 }
 
@@ -82,4 +82,52 @@ func (ctrl *AuthController) verifyCaptcha(id string, VerifyValue string) bool {
 		return true
 	}
 	return false
+}
+
+//	@Tags			管理员用户
+//	@Summary		修改用户数据
+//	@Accept			json
+//	@Produce		json
+//	@Param		    data body request.SysAdminUsersInfoRequest true "更新参数"
+//	@Success		0	{object}	response.Write
+//	@Failure		1	{object}	response.Write
+//	@Router			/userinfo [put]
+//
+// UpdateUserInfo 修改用户信息
+func (ctrl *AuthController) UpdateUserInfo(c *gin.Context) {
+	var req request.SysAdminUsersInfoRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		return
+	}
+	req.Id = ctrl.GetUser(c).Id
+	if err := ctrl.SysAdminUsersService.SetReq(req).Update(); err != nil {
+		ctrl.Fail(c, vo.UPDATE_FAILED, err.Error())
+		return
+	}
+	ctrl.Success(c, vo.UPDATE_SUCCESS)
+}
+
+//	@Tags			管理员用户
+//	@Summary		修改用户数据
+//	@Accept			json
+//	@Produce		json
+//	@Param		    data body request.SysAdminUsersInfoRequest true "更新参数"
+//	@Success		0	{object}	response.Write
+//	@Failure		1	{object}	response.Write
+//	@Router			/password [put]
+//
+// UpdateUserInfo 修改用户信息
+func (ctrl *AuthController) UpdatePassword(c *gin.Context) {
+	var req request.SysAdminUsersPasswordRequestForm
+	if err := c.ShouldBindJSON(&req); err != nil {
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		return
+	}
+	req.Id = ctrl.GetUser(c).Id
+	if err := ctrl.SysAdminUsersService.SetReq(req).Update(); err != nil {
+		ctrl.Fail(c, vo.UPDATE_FAILED, err.Error())
+		return
+	}
+	ctrl.Success(c, vo.UPDATE_SUCCESS)
 }
