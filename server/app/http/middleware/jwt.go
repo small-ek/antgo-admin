@@ -7,8 +7,14 @@ import (
 	"github.com/small-ek/antgo/utils/jwt"
 	"github.com/small-ek/antgo/utils/response"
 	"server/app/dao"
+	"server/app/entity/models"
 	"server/app/entity/vo"
 	"strings"
+)
+
+// 常量定义
+const (
+	UnauthorizedCode = 401
 )
 
 func AuthJWT() gin.HandlerFunc {
@@ -17,24 +23,34 @@ func AuthJWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var token = c.Request.Header.Get("Authorization")
 		if token == "" {
-			c.AbortWithStatusJSON(401, response.Fail(vo.AUTH_ERROR, 401))
+			c.AbortWithStatusJSON(UnauthorizedCode, response.Fail(vo.AUTH_ERROR, UnauthorizedCode))
 			return
 		}
 
 		token = strings.TrimPrefix(token, "Bearer ")
 		getAuthorization, err := newJwt.Decode(token)
 		if err != nil {
-			c.AbortWithStatusJSON(401, response.Fail(vo.AUTH_ERROR, 401, err.Error()))
+			c.AbortWithStatusJSON(UnauthorizedCode, response.Fail(vo.AUTH_ERROR, UnauthorizedCode, err.Error()))
+			return
+		}
+		if c.GetHeader("device-id") != getAuthorization["device-id"] {
+			c.AbortWithStatusJSON(UnauthorizedCode, response.Fail(vo.AUTH_DEVICE_ERROR, UnauthorizedCode))
 			return
 		}
 
-		getUser := dao.NewSysAdminUsersDao().GetById(conv.Int(getAuthorization["id"]))
+		getUser := getUserByUser(conv.Int(getAuthorization["id"]))
 		if getUser.Id == 0 {
-			c.AbortWithStatusJSON(401, response.Fail(vo.AUTH_USER_ERROR, 401))
+			c.AbortWithStatusJSON(UnauthorizedCode, response.Fail(vo.AUTH_USER_ERROR, UnauthorizedCode))
 			return
 		}
 		c.Set("user", getUser)
 		c.Set("user_id", getUser.Id)
 		c.Next()
 	}
+}
+
+// getUserByUser 通过 ID 获取用户信息
+func getUserByUser(userID int) models.SysAdminUsers {
+	user := dao.NewSysAdminUsersDao().GetById(userID)
+	return user
 }

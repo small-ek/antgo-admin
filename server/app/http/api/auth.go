@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/mojocn/base64Captcha"
 	"github.com/small-ek/antgo/os/config"
@@ -38,7 +39,7 @@ func (ctrl *AuthController) Captcha(c *gin.Context) {
 	// cp := base64Captcha.NewCaptcha(driver, store.UseWithCtx(c))   // 使用redis
 	cp := base64Captcha.NewCaptcha(driver, store)
 	if id, b64s, _, err := cp.Generate(); err != nil {
-		ctrl.Fail(c, "ERROR", err.Error())
+		ctrl.Fail(c, "ERROR", err)
 	} else {
 		ctrl.Success(c, "SUCCESS", vo.ResponseCaptcha{
 			Id:  id,
@@ -60,16 +61,16 @@ func (ctrl *AuthController) Captcha(c *gin.Context) {
 func (ctrl *AuthController) Login(c *gin.Context) {
 	var req request.SysAdminUsersLoginRequestForm
 	if err := c.ShouldBindJSON(&req); err != nil {
-		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 	if ctrl.verifyCaptcha(req.Id, req.Code) == false {
-		ctrl.Fail(c, vo.CAPTCHA_ERROR)
+		ctrl.Fail(c, vo.CAPTCHA_ERROR, errors.New(vo.CAPTCHA_ERROR))
 		return
 	}
-
+	req.DeviceId = ctrl.GetDeviceId(c)
 	if result, err := ctrl.SysAdminUsersService.SetReq(req).Login(); err != nil {
-		ctrl.Fail(c, vo.LOGIN_ERROR, err.Error())
+		ctrl.Fail(c, vo.LOGIN_ERROR, err)
 		return
 	} else {
 		ctrl.Success(c, vo.LOGIN_SUCCESS, result)
@@ -97,19 +98,19 @@ func (ctrl *AuthController) verifyCaptcha(id string, VerifyValue string) bool {
 func (ctrl *AuthController) UpdateUserInfo(c *gin.Context) {
 	var req request.SysAdminUsersInfoRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 	req.Id = ctrl.GetUser(c).Id
 	if err := ctrl.SysAdminUsersService.SetReq(req).Update(); err != nil {
-		ctrl.Fail(c, vo.UPDATE_FAILED, err.Error())
+		ctrl.Fail(c, vo.UPDATE_FAILED, err)
 		return
 	}
 	ctrl.Success(c, vo.UPDATE_SUCCESS)
 }
 
 //	@Tags			管理员用户
-//	@Summary		修改用户数据
+//	@Summary		修改密码
 //	@Accept			json
 //	@Produce		json
 //	@Param		    data body request.SysAdminUsersInfoRequest true "更新参数"
@@ -121,12 +122,12 @@ func (ctrl *AuthController) UpdateUserInfo(c *gin.Context) {
 func (ctrl *AuthController) UpdatePassword(c *gin.Context) {
 	var req request.SysAdminUsersPasswordRequestForm
 	if err := c.ShouldBindJSON(&req); err != nil {
-		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 	req.Id = ctrl.GetUser(c).Id
-	if err := ctrl.SysAdminUsersService.SetReq(req).Update(); err != nil {
-		ctrl.Fail(c, vo.UPDATE_FAILED, err.Error())
+	if err := ctrl.SysAdminUsersService.SetReq(req).UpdatePassword(); err != nil {
+		ctrl.Fail(c, vo.GetUpdatePasswordErrorMsg(err), err)
 		return
 	}
 	ctrl.Success(c, vo.UPDATE_SUCCESS)

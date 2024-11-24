@@ -3,6 +3,7 @@ package vo
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/small-ek/antgo/os/alog"
+	"github.com/small-ek/antgo/os/config"
 	"github.com/small-ek/antgo/utils/response"
 	"go.uber.org/zap"
 	"server/app/entity/models"
@@ -23,16 +24,19 @@ func (b *Base) Success(c *gin.Context, msg string, data ...interface{}) {
 }
 
 // Fail 错误返回
-func (b *Base) Fail(c *gin.Context, msg string, err ...string) {
+func (b *Base) Fail(c *gin.Context, msg string, err ...error) {
 	if len(err) > 0 {
-		alog.Write.Debug("Return error", zap.Any("error", err))
+		alog.Write.Error("Return error", zap.Errors("Fail Error", err))
 	}
 	code := 1
 	if b.Code != 0 {
 		code = b.Code
 	}
-
-	c.SecureJSON(200, response.Fail(msg, code, err...))
+	if config.GetBool("system.debug") == true {
+		c.SecureJSON(200, response.Fail(msg, code, err[0].Error()))
+		return
+	}
+	c.SecureJSON(200, response.Fail(msg, code))
 
 }
 
@@ -57,4 +61,9 @@ func (b *Base) GetUser(c *gin.Context) models.SysAdminUsers {
 		return models.SysAdminUsers{}
 	}
 	return userModel
+}
+
+// GetDeviceId 获取设备号
+func (b *Base) GetDeviceId(c *gin.Context) string {
+	return c.GetHeader("device-id")
 }

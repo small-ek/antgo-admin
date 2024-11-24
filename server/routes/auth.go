@@ -13,5 +13,6 @@ func AuthRoute(route *gin.RouterGroup) {
 	v1 := route.Group("auth").Use(middleware.AuthJWT())
 	{
 		v1.PUT("userinfo", AuthController.UpdateUserInfo) //更新用户信息
+		v1.PUT("password", AuthController.UpdatePassword) //更新用户信息
 	}
 }

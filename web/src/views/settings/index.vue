@@ -1,7 +1,7 @@
 <script setup>
 
 import {reactive, ref} from "vue";
-import {updateUserinfo} from "@/api/auth.js";
+import {updatePassword, updateUserinfo} from "@/api/auth.js";
 import {Message} from "@arco-design/web-vue";
 import {useUserLoginStore} from "@/stores/userLogin.js";
 
@@ -49,14 +49,7 @@ const passwordRules = reactive({
     }
   ]
 })
-const form = ref({
-  nick_name: useUserLoginStore().userInfo.nick_name,
-  phone: useUserLoginStore().userInfo.phone,
-  email: useUserLoginStore().userInfo.email,
-  status: useUserLoginStore().userInfo.status,
-  username: useUserLoginStore().userInfo.username,
-})
-
+const form = ref(Object.assign({}, useUserLoginStore().userInfo))
 const passwordForm = ref({
   password: '',
   new_password: '',
@@ -66,17 +59,16 @@ const passwordForm = ref({
 const onSubmit = () => {
   updateUserinfo(form.value).then(res => {
     if (res.code === 0) {
-      useUserLoginStore().setUserInfo(form.value)
+      useUserLoginStore().setUserInfo(Object.assign({}, form.value))
       Message.success('保存成功')
     }
   })
 }
 
 const onSubmitPassword = () => {
-  updateUserinfo(passwordForm.value).then(res => {
+  updatePassword(passwordForm.value).then(res => {
     if (res.code === 0) {
-      useUserLoginStore().setUserInfo(passwordForm.value)
-      Message.success('保存成功')
+      Message.success('修改密码成功')
     }
   })
 }
@@ -116,17 +108,20 @@ const onSubmitPassword = () => {
             <a-form :model="passwordForm" :rules="passwordRules" layout="horizontal" auto-label-width feedback
                     @submit-success="onSubmitPassword">
               <a-form-item field="password" label="原密码">
-                <a-input v-model="passwordForm.password" autocomplete="off" placeholder="请输入原密码" allow-clear>
-                </a-input>
+                <a-input-password v-model="passwordForm.password" autocomplete="off" placeholder="请输入原密码"
+                                  allow-clear>
+                </a-input-password>
               </a-form-item>
               <a-form-item field="new_password" label="新密码">
-                <a-input v-model="passwordForm.new_password" autocomplete="off" placeholder="请输入新密码" allow-clear>
-                </a-input>
+                <a-input-password v-model="passwordForm.new_password" autocomplete="off" placeholder="请输入新密码"
+                                  allow-clear>
+                </a-input-password>
               </a-form-item>
               <a-form-item field="confirm_password" label="确认新密码">
-                <a-input v-model="passwordForm.confirm_password" autocomplete="off" placeholder="请输入确认新密码"
-                         allow-clear>
-                </a-input>
+                <a-input-password v-model="passwordForm.confirm_password" autocomplete="off"
+                                  placeholder="请输入确认新密码"
+                                  allow-clear>
+                </a-input-password>
               </a-form-item>
               <a-form-item>
                 <a-button round html-type="submit" type="primary">

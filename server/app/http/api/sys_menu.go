@@ -34,13 +34,13 @@ func (ctrl *SysMenuController) Index(c *gin.Context) {
 		PageParam: page.New(),
 	}
 	if err := c.ShouldBindQuery(&req); err != nil {
-		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 
 	list, total, err := ctrl.SysMenuService.SetReq(req).Index()
 	if err != nil {
-		ctrl.Fail(c, vo.FAILED, err.Error())
+		ctrl.Fail(c, vo.FAILED, err)
 		return
 	}
 	ctrl.Success(c, vo.SUCCESS, ctrl.Page(total, list))
@@ -58,7 +58,7 @@ func (ctrl *SysMenuController) Index(c *gin.Context) {
 func (ctrl *SysMenuController) Show(c *gin.Context) {
 	var req request.SysMenuRequest
 	if err := c.ShouldBindUri(&req); err != nil {
-		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 
@@ -79,12 +79,12 @@ func (ctrl *SysMenuController) Show(c *gin.Context) {
 func (ctrl *SysMenuController) Create(c *gin.Context) {
 	var req request.SysMenuRequestForm
 	if err := c.ShouldBindJSON(&req); err != nil {
-		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 
 	if err := ctrl.SysMenuService.SetReqForm(req).Store(); err != nil {
-		ctrl.Fail(c, vo.CREATION_FAILED, err.Error())
+		ctrl.Fail(c, vo.CREATION_FAILED, err)
 		return
 	}
 	ctrl.Success(c, vo.CREATION_SUCCESS)
@@ -103,12 +103,12 @@ func (ctrl *SysMenuController) Create(c *gin.Context) {
 func (ctrl *SysMenuController) Update(c *gin.Context) {
 	var req request.SysMenuRequestForm
 	if err := c.ShouldBindJSON(&req); err != nil {
-		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 
 	if err := ctrl.SysMenuService.SetReqForm(req).Update(); err != nil {
-		ctrl.Fail(c, vo.UPDATE_FAILED, err.Error())
+		ctrl.Fail(c, vo.UPDATE_FAILED, err)
 	}
 	ctrl.Success(c, vo.UPDATE_SUCCESS)
 }
@@ -125,12 +125,12 @@ func (ctrl *SysMenuController) Update(c *gin.Context) {
 func (ctrl *SysMenuController) Delete(c *gin.Context) {
 	var req request.SysMenuRequest
 	if err := c.ShouldBindUri(&req); err != nil {
-		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 
 	if err := ctrl.SysMenuService.SetReq(req).Delete(); err != nil {
-		ctrl.Fail(c, vo.DELETE_FAILED, err.Error())
+		ctrl.Fail(c, vo.DELETE_FAILED, err)
 		return
 	}
 

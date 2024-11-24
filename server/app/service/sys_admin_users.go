@@ -2,6 +2,8 @@ package service
 
 import (
 	"errors"
+	"fmt"
+	"github.com/small-ek/antgo/frame/ant"
 	"github.com/small-ek/antgo/os/alog"
 	"github.com/small-ek/antgo/os/config"
 	"github.com/small-ek/antgo/utils/conv"
@@ -20,6 +22,7 @@ type SysAdminUsers struct {
 	reqForm              request.SysAdminUsersRequestForm
 	reqSysAdminUsersInfo request.SysAdminUsersInfoRequest
 	reqLoginForm         request.SysAdminUsersLoginRequestForm
+	reqPasswordForm      request.SysAdminUsersPasswordRequestForm
 }
 
 func NewSysAdminUsersService() *SysAdminUsers {
@@ -30,8 +33,10 @@ func NewSysAdminUsersService() *SysAdminUsers {
 func (svc *SysAdminUsers) SetReq(req interface{}) *SysAdminUsers {
 	switch value := req.(type) {
 	case request.SysAdminUsersRequest:
+
 		svc.req = value
 	case request.SysAdminUsersRequestForm:
+
 		svc.reqForm = value
 		// 根据需求做字段赋值
 		svc.reqForm.SysAdminUsers.Username = value.Username
@@ -39,12 +44,15 @@ func (svc *SysAdminUsers) SetReq(req interface{}) *SysAdminUsers {
 		svc.reqForm.SysAdminUsers.NickName = value.NickName
 	case request.SysAdminUsersInfoRequest:
 		conv.ToStruct(value, &svc.reqForm.SysAdminUsers)
+
 	case request.SysAdminUsersLoginRequestForm:
 		svc.reqLoginForm = value
+
 	case request.SysAdminUsersPasswordRequestForm:
 		svc.reqForm.SysAdminUsers.Password = value.Password
+		svc.reqForm.SysAdminUsers.Id = value.Id
+		svc.reqPasswordForm = value
 	default:
-		// 不支持的类型，抛出异常或者返回错误
 		alog.Write.Error("SetReq", zap.Any("Unsupported request type", reflect.TypeOf(value)))
 	}
 	return svc
@@ -65,6 +73,21 @@ func (svc *SysAdminUsers) Store() error {
 	return dao.NewSysAdminUsersDao().Create(&svc.reqForm.SysAdminUsers)
 }
 
+// UpdatePassword 修改密码
+func (svc *SysAdminUsers) UpdatePassword() error {
+	item := dao.NewSysAdminUsersDao().GetById(svc.reqForm.SysAdminUsers.Id)
+
+	if utils.VerifyPassword(item.Password, svc.reqForm.SysAdminUsers.Password) == true {
+		password, err := utils.GeneratePassword(svc.reqPasswordForm.NewPassword)
+		if err != nil {
+			return err
+		}
+		svc.reqForm.SysAdminUsers.Password = password
+		return dao.NewSysAdminUsersDao().Update(svc.reqForm.SysAdminUsers)
+	}
+	return errors.New("PASSWORD_ERROR")
+}
+
 // Update 修改
 func (svc *SysAdminUsers) Update() error {
 	return dao.NewSysAdminUsersDao().Update(svc.reqForm.SysAdminUsers)
@@ -75,16 +98,20 @@ func (svc *SysAdminUsers) Delete() error {
 	return dao.NewSysAdminUsersDao().DeleteById(svc.req.SysAdminUsers.Id)
 }
 
-// Login 添加
+// Login 登录操作
 func (svc *SysAdminUsers) Login() (result map[string]interface{}, err error) {
 	item := dao.NewSysAdminUsersDao().GetByUserName(svc.reqLoginForm.Username)
 	if utils.VerifyPassword(item.Password, svc.reqLoginForm.Password) == true {
 
-		token, expiresAt, err := svc.token(map[string]interface{}{"id": item.Id, "username": item.Username})
+		token, expiresAt, err := svc.token(map[string]interface{}{"id": item.Id, "username": item.Username, "device-id": svc.reqLoginForm.DeviceId})
 		if err != nil {
 			return nil, err
 		}
+		fmt.Println(config.GetInt64("jwt.exp"))
 
+		if err = ant.Redis().Set("sys_admin_users:"+conv.String(item.Id), token, int64(3600*1000*time.Duration(config.GetInt64("jwt.exp")))); err != nil {
+			return nil, err
+		}
 		return map[string]interface{}{
 			"token":     token,
 			"expiresAt": expiresAt,

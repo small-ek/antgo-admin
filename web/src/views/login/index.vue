@@ -109,7 +109,6 @@ const onSubmit = () => {
       })
     } else {
       reloadCaptcha()
-      Message.error(t('tip.' + res.message))
     }
   })
 }

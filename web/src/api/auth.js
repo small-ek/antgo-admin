@@ -23,3 +23,11 @@ export const login = async (data) => {
 export const updateUserinfo = async (data) => {
     return http.put('auth/userinfo', data);
 }
+
+/**
+ * updateUserinfo 更新用户密码
+ * @returns {Promise<axios.AxiosResponse<any>>}
+ */
+export const updatePassword = async (data) => {
+    return http.put('auth/password', data);
+}

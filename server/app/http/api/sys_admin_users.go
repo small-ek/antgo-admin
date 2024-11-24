@@ -34,13 +34,13 @@ func (ctrl *SysAdminUsersController) Index(c *gin.Context) {
 		PageParam: page.New(),
 	}
 	if err := c.ShouldBindQuery(&req); err != nil {
-		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 
 	list, total, err := ctrl.SysAdminUsersService.SetReq(req).Index()
 	if err != nil {
-		ctrl.Fail(c, vo.FAILED, err.Error())
+		ctrl.Fail(c, vo.FAILED, err)
 		return
 	}
 	ctrl.Success(c, vo.SUCCESS, ctrl.Page(total, list))
@@ -58,7 +58,7 @@ func (ctrl *SysAdminUsersController) Index(c *gin.Context) {
 func (ctrl *SysAdminUsersController) Show(c *gin.Context) {
 	var req request.SysAdminUsersRequest
 	if err := c.ShouldBindUri(&req); err != nil {
-		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 
@@ -79,12 +79,12 @@ func (ctrl *SysAdminUsersController) Show(c *gin.Context) {
 func (ctrl *SysAdminUsersController) Create(c *gin.Context) {
 	var req request.SysAdminUsersRequestForm
 	if err := c.ShouldBindJSON(&req); err != nil {
-		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 
 	if err := ctrl.SysAdminUsersService.SetReq(req).Store(); err != nil {
-		ctrl.Fail(c, vo.CREATION_FAILED, err.Error())
+		ctrl.Fail(c, vo.CREATION_FAILED, err)
 		return
 	}
 	ctrl.Success(c, vo.CREATION_SUCCESS)
@@ -103,12 +103,12 @@ func (ctrl *SysAdminUsersController) Create(c *gin.Context) {
 func (ctrl *SysAdminUsersController) Update(c *gin.Context) {
 	var req request.SysAdminUsersRequestForm
 	if err := c.ShouldBindJSON(&req); err != nil {
-		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 
 	if err := ctrl.SysAdminUsersService.SetReq(req).Update(); err != nil {
-		ctrl.Fail(c, vo.UPDATE_FAILED, err.Error())
+		ctrl.Fail(c, vo.UPDATE_FAILED, err)
 		return
 	}
 	ctrl.Success(c, vo.UPDATE_SUCCESS)
@@ -126,12 +126,12 @@ func (ctrl *SysAdminUsersController) Update(c *gin.Context) {
 func (ctrl *SysAdminUsersController) Delete(c *gin.Context) {
 	var req request.SysAdminUsersRequest
 	if err := c.ShouldBindUri(&req); err != nil {
-		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err.Error())
+		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 
 	if err := ctrl.SysAdminUsersService.SetReq(req).Delete(); err != nil {
-		ctrl.Fail(c, vo.DELETE_FAILED, err.Error())
+		ctrl.Fail(c, vo.DELETE_FAILED, err)
 		return
 	}
 
