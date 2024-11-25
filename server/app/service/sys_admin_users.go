@@ -33,10 +33,8 @@ func NewSysAdminUsersService() *SysAdminUsers {
 func (svc *SysAdminUsers) SetReq(req interface{}) *SysAdminUsers {
 	switch value := req.(type) {
 	case request.SysAdminUsersRequest:
-
 		svc.req = value
 	case request.SysAdminUsersRequestForm:
-
 		svc.reqForm = value
 		// 根据需求做字段赋值
 		svc.reqForm.SysAdminUsers.Username = value.Username
@@ -44,7 +42,6 @@ func (svc *SysAdminUsers) SetReq(req interface{}) *SysAdminUsers {
 		svc.reqForm.SysAdminUsers.NickName = value.NickName
 	case request.SysAdminUsersInfoRequest:
 		conv.ToStruct(value, &svc.reqForm.SysAdminUsers)
-
 	case request.SysAdminUsersLoginRequestForm:
 		svc.reqLoginForm = value
 
