@@ -1,11 +1,9 @@
 <script setup>
-
+import Search from "@/components/search/index.vue";
 </script>
 
 <template>
-  <div v-for="(row ,index) in 300">
-    用户{{index}}
-  </div>
+  <Search></Search>
 </template>
 
 <style scoped>
