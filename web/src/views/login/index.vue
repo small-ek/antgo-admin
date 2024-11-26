@@ -9,7 +9,7 @@
                 <span class="login-title">后台登录</span>
               </a-col>
               <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" style="margin-top: 35px">
-                <a-form :model="form" :rules="rules" layout="vertical" feedback @submit-success="onSubmit">
+                <a-form :model="form" :rules="rules" layout="vertical" autocomplete="off" feedback @submit-success="onSubmit">
                   <a-form-item field="username" hide-asterisk>
                     <a-input v-model="form.username" autocomplete="off" placeholder="请输入用户名" size="large" allow-clear>
                       <template #prefix>

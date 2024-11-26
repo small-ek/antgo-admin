@@ -1,54 +1,80 @@
 <script setup>
-import {reactive} from "vue";
+import {defineProps, reactive, ref} from "vue";
+import formItem from "@/components/formItem/index.vue";
 
-const form = reactive({
-  value1: '',
-  value2: '',
-  value3: '',
-  value4: '',
-  value5: '',
-})
+const props = defineProps({
+  model: {
+    type: Object,
+    required: true
+  }
+});
+console.log(props.model)
+const isExpand = ref(false)
+const onChangeIsExpand = () => {
+  isExpand.value = !isExpand.value
+}
+
+const form = reactive({})
+const onSearch = () => {
+  console.log(props.model)
+}
 </script>
 
 <template>
-  <div class="container ant-card search-list">
-    <a-form :model="form">
-      <a-row :gutter="16">
-        <a-col :span="8">
-          <a-form-item field="value1" label="Value 1" label-col-flex="100px">
-            <a-input v-model="form.value1" placeholder="please enter..." />
-          </a-form-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-item field="value2" label="Value 2" label-col-flex="80px">
-            <a-input v-model="form.value2" placeholder="please enter..." />
-          </a-form-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-item field="value3" label="Value 3" label-col-flex="80px">
-            <a-input v-model="form.value3" placeholder="please enter..." />
-          </a-form-item>
+  <div class="container ant-card is-always-shadow search-list" v-if="props.model">
+    <a-form :model="form" class="form" layout="horizontal">
+      <a-row :gutter="15">
+        <template v-for="(row,index) in props.model">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="8" v-if="index<3">
+            <formItem :row="row"></formItem>
+          </a-col>
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="8" v-else-if="isExpand===true">
+            <formItem :row="row"></formItem>
+          </a-col>
+        </template>
+        <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" :xxl="24">
+          <div style="float: right;margin-bottom: 20px">
+            <a-button type="primary" @click="onSearch">
+              <template #icon>
+                <icon-search/>
+              </template>
+              筛选
+            </a-button>
+            <a-button class="ml-10">
+              <template #icon>
+                <icon-refresh/>
+              </template>
+              重置
+            </a-button>
+
+            <a-button type="text" class="ml-10" @click="onChangeIsExpand">
+            <span v-show="isExpand===false">
+              展开
+            <icon-caret-down/>
+            </span>
+              <span v-show="isExpand===true">
+              收起
+            <icon-caret-up/>
+            </span>
+            </a-button>
+          </div>
         </a-col>
       </a-row>
-      <a-row :gutter="16">
-        <a-col :span="16">
-          <a-form-item field="value4" label="Value 4" label-col-flex="100px">
-            <a-input v-model="form.value4" placeholder="please enter..." />
-          </a-form-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-item field="value5" label="Value 5" label-col-flex="80px">
-            <a-input v-model="form.value5" placeholder="please enter..." />
-          </a-form-item>
-        </a-col>
-      </a-row>
+
     </a-form>
   </div>
 </template>
 
 <style scoped>
-.search-list{
-  width: 70vw;
-  min-height: 10vw;
+.search-list {
+
+}
+
+.form {
+  width: 98%
+}
+
+.ml-10 {
+  margin-left: 10px;
 }
 </style>
