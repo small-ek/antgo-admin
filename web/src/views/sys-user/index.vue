@@ -19,8 +19,8 @@ const searchList = ref([
   },
   {
     label: '性别',
-    key: 'age',
-    value: '',
+    key: 'sex',
+    value: "",
     type: 'select',
     placeholder: '请选择性别',
     options: [
@@ -40,17 +40,27 @@ const searchList = ref([
     type: 'datePicker',
     placeholder: '请选择创建时间',
   }, {
-    label: '修改时间修改时间',
+    label: '三方sdk参数',
     key: 'updated_at',
+    value: [],
+    type: 'dateRange',
+    placeholder: '请选择创建时间',
+  }, {
+    label: '三方sdk参数',
+    key: 'updated_at2',
     value: [],
     type: 'dateRange',
     placeholder: '请选择创建时间',
   }]);
 
+const onSearch = (form) => {
+  console.log(form)
+  console.log(searchList.value)
+}
 </script>
 
 <template>
-  <Search :model="searchList"></Search>
+  <Search :model="searchList" @search="onSearch"></Search>
 </template>
 
 <style scoped>
