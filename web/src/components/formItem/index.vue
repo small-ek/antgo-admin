@@ -48,6 +48,7 @@ props.form[props.row.key] = props.row.value
   <a-form-item v-if="props.row.type==='dateRange'" :field="props.row.key" :label="props.row.label+'：'" feedback>
     <a-range-picker v-model="props.form[props.row.key]" style="width: 100%"/>
   </a-form-item>
+
 </template>
 
 <style scoped>

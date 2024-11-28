@@ -25,16 +25,27 @@ const onReset = () => {
 </script>
 
 <template>
-  <div class="container ant-card is-always-shadow search-list" v-if="props.model">
+
+  <div class="container ant-card" v-if="props.model">
     <a-form ref="formRef" :model="form" class="form" layout="horizontal" auto-label-width size="small"
             label-align="right" :label-col-props="{span: 8, offset: 0}" :wrapper-col-props="{span: 16, offset: 0}">
       <a-row :gutter="15">
         <template v-for="(row,index) in props.model">
           <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="8" v-if="index<3">
-            <formItem :row="row" :form="form"></formItem>
+            <!--表单组件 TODO可以组件或者使用JSX优化-->
+            <formItem v-if="row.type!=='slot'" :row="row" :form="form"></formItem>
+            <!--自定义插槽-->
+            <a-form-item v-else :field="row.key" :label="row.label+'：'" feedback>
+              <slot :name="row.key" :form="form"></slot>
+            </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="8" v-else-if="isExpand===true">
-            <formItem :row="row" :form="form"></formItem>
+            <!--表单组件-->
+            <formItem v-if="row.type!=='slot'" :row="row" :form="form"></formItem>
+            <!--自定义插槽-->
+            <a-form-item v-else :field="row.key" :label="row.label+'：'" feedback>
+              <slot :name="row.key" :form="form"></slot>
+            </a-form-item>
           </a-col>
         </template>
         <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" :xxl="24">
@@ -71,10 +82,6 @@ const onReset = () => {
 </template>
 
 <style scoped>
-.search-list {
-
-}
-
 .form {
   width: 95%;
   margin: 0 auto;
