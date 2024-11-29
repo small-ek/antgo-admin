@@ -43,6 +43,6 @@ func Load() *gin.Engine {
 	routes.IndexRoute(Group)
 	routes.SysMenuRoute(Group)
 	routes.AuthRoute(Group)
-
+	routes.SysAdminUsersRoute(Group)
 	return app
 }

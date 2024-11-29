@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia';
 import {useDevice} from "@/utils/device.js";
+import {useMenu} from "@/stores/menu.js";
 
 
 export const useUserLoginStore = defineStore('userLogin', {
@@ -52,6 +53,18 @@ export const useUserLoginStore = defineStore('userLogin', {
             this.setAuthorization("");
             this.setUserInfo({});
             this.setExpiresAt("");
+            useMenu().setState("menu", []);
+            useMenu().setState("menuTree", []);
+            useMenu().setState("subMenu", []);
+            useMenu().setState("tabs", [{
+                key: '0',
+                title: '首页',
+                content: '首页',
+                path: "index",
+                id: 1,
+                parent_id: 1,
+            }]);
+            useMenu().setState("tabsActiveKey", "0");
         }
     },
     persist: {

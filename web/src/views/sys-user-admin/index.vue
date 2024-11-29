@@ -1,7 +1,8 @@
 <script setup>
 import Search from "@/components/search/index.vue";
 import Table from "@/components/table/index.vue";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
+import {getSysAdminUsersList} from "@/api/sys_admin_users.js";
 
 const searchList = ref([
   {
@@ -62,57 +63,63 @@ const searchList = ref([
 
 const columns = [
   {
-    title: 'Name',
-    dataIndex: 'name',
+    title: '标识',
+    dataIndex: 'id',
+    minWidth: 30
   },
   {
-    title: 'Salary',
-    dataIndex: 'salary',
+    title: '用户名',
+    dataIndex: 'username',
+    minWidth: 50,
+    tooltip: true,
+    ellipsis: true,
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
+    title: '昵称',
+    dataIndex: 'nick_name',
+    minWidth: 100,
+    tooltip: true,
+    ellipsis: true,
   },
   {
-    title: 'Email',
+    title: '手机号',
+    dataIndex: 'phone',
+    minWidth: 100,
+    tooltip: true,
+    ellipsis: true,
+  },
+  {
+    title: '电子邮箱',
     dataIndex: 'email',
-  },
+    minWidth: 100,
+    tooltip: true,
+    ellipsis: true,
+  },{
+    title: '状态',
+    dataIndex: 'status',
+    minWidth: 100,
+    tooltip: true,
+    ellipsis: true,
+  },{
+    title: '创建时间',
+    dataIndex: 'created_at',
+    tooltip: true,
+    ellipsis: true,
+    minWidth: 100
+  }
 ];
-const data = ref([{
-  key: '1',
-  name: 'Jane Doe',
-  salary: 23000,
-  address: '32 Park Road, London',
-  email: 'jane.doe@example.com'
-}, {
-  key: '2',
-  name: 'Alisa Ross',
-  salary: 25000,
-  address: '35 Park Road, London',
-  email: 'alisa.ross@example.com'
-}, {
-  key: '3',
-  name: 'Kevin Sandra',
-  salary: 22000,
-  address: '31 Park Road, London',
-  email: 'kevin.sandra@example.com'
-}, {
-  key: '4',
-  name: 'Ed Hellen',
-  salary: 17000,
-  address: '42 Park Road, London',
-  email: 'ed.hellen@example.com'
-}, {
-  key: '5',
-  name: 'William Smith',
-  salary: 27000,
-  address: '62 Park Road, London',
-  email: 'william.smith@example.com'
-}]);
+const data = ref();
 const onSearch = (row) => {
   console.log(row)
 }
 
+onMounted(() => {
+  getSysAdminUsersList().then(res => {
+    console.log(res)
+    data.value = res.data.items
+    console.log(data.value)
+  })
+})
 </script>
 
 <template>
@@ -125,7 +132,6 @@ const onSearch = (row) => {
   <div class="container ant-card">
     <Table :columns="columns" :data="data"></Table>
   </div>
-
 
 
 </template>

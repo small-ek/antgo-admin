@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"github.com/small-ek/antgo/frame/ant"
 	"github.com/small-ek/antgo/os/alog"
 	"github.com/small-ek/antgo/os/config"
@@ -13,6 +12,7 @@ import (
 	"server/app/dao"
 	"server/app/entity/models"
 	"server/app/entity/request"
+	"server/app/entity/vo"
 	"server/utils"
 	"time"
 )
@@ -82,7 +82,7 @@ func (svc *SysAdminUsers) UpdatePassword() error {
 		svc.reqForm.SysAdminUsers.Password = password
 		return dao.NewSysAdminUsersDao().Update(svc.reqForm.SysAdminUsers)
 	}
-	return errors.New("PASSWORD_ERROR")
+	return errors.New(vo.PASSWORD_ERROR)
 }
 
 // Update 修改
@@ -104,11 +104,11 @@ func (svc *SysAdminUsers) Login() (result map[string]interface{}, err error) {
 		if err != nil {
 			return nil, err
 		}
-		fmt.Println(config.GetInt64("jwt.exp"))
 
 		if err = ant.Redis().Set("sys_admin_users:"+conv.String(item.Id), token, int64(3600*1000*time.Duration(config.GetInt64("jwt.exp")))); err != nil {
 			return nil, err
 		}
+
 		return map[string]interface{}{
 			"token":     token,
 			"expiresAt": expiresAt,
@@ -120,7 +120,7 @@ func (svc *SysAdminUsers) Login() (result map[string]interface{}, err error) {
 				"status":    item.Status,
 			}}, nil
 	}
-	return nil, errors.New("LOGIN_ERROR")
+	return nil, errors.New(vo.LOGIN_ERROR)
 }
 
 // token 生成token
