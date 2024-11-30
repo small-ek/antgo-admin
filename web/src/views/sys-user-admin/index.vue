@@ -94,13 +94,13 @@ const columns = [
     minWidth: 100,
     tooltip: true,
     ellipsis: true,
-  },{
+  }, {
     title: '状态',
     dataIndex: 'status',
     minWidth: 100,
     tooltip: true,
     ellipsis: true,
-  },{
+  }, {
     title: '创建时间',
     dataIndex: 'created_at',
     tooltip: true,
@@ -108,18 +108,35 @@ const columns = [
     minWidth: 100
   }
 ];
-const data = ref();
+const data = ref([]);
+
+const page = ref({
+  current_page: 1,
+  page_size: 10,
+  total: 0
+})
 const onSearch = (row) => {
   console.log(row)
 }
 
+const getPageList = async (current_page, page_size) => {
+  const res = await getSysAdminUsersList(current_page, page_size)
+  data.value = res.data.items
+  page.value.total = res.data.total
+}
+
 onMounted(() => {
-  getSysAdminUsersList().then(res => {
-    console.log(res)
-    data.value = res.data.items
-    console.log(data.value)
-  })
+
+  getPageList(page.current_page, page.page_size)
+  // getSysAdminUsersList(page.value.current_page, page.value.page_size).then(res => {
+  //   data.value = res.data.items
+  //   page.value.total = res.data.total
+  // })
 })
+const onChangePage = (current_page) => {
+  console.log(current_page)
+  getPageList(current_page, page.page_size)
+}
 </script>
 
 <template>
@@ -130,7 +147,8 @@ onMounted(() => {
   </Search>
 
   <div class="container ant-card">
-    <Table :columns="columns" :data="data"></Table>
+    <Table :columns="columns" :data="data" :total="page.total" :current_page="page.current_page"
+           :page_size="page.page_size" @changePage="onChangePage"></Table>
   </div>
 
 

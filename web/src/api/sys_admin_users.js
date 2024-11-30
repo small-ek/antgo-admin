@@ -4,8 +4,13 @@ import http from "@/utils/request.js";
  * getSysAdminUsersList 获取列表
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-export const getSysAdminUsersList = async () => {
-    return http.get('sys-admin-users');
+export const getSysAdminUsersList = async (current_page, page_size) => {
+    return http.get('sys-admin-users', {
+        params: {
+            current_page: current_page,
+            page_size: page_size,
+        }
+    });
 }
 
 /**

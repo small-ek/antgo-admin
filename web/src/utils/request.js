@@ -30,12 +30,17 @@ http.interceptors.response.use(
         // 对响应数据做处理，例如只返回data部分
         const data = response.data
 
-        const errorMsg = i18n.global.t('tip.' + data.error) !== 'tip.' + data.error ? i18n.global.t('tip.' + data.error) : data.error;
+
         const msg = i18n.global.t('tip.' + data.message) !== 'tip.' + data.message ? i18n.global.t('tip.' + data.message) : data.message;
 
-        if (data.code !== 0 && errorMsg) {
-            Message.error(errorMsg)
-        } else if (data.code !== 0 && msg) {
+        if (data.code !== 0 && data.error) {
+            const errorMsg = i18n.global.t('tip.' + data.error) !== 'tip.' + data.error ? i18n.global.t('tip.' + data.error) : data.error;
+            if (errorMsg) {
+                Message.error(errorMsg)
+                return
+            }
+        }
+        if (data.code !== 0 && msg) {
             Message.error(msg)
         }
 
