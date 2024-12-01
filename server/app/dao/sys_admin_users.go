@@ -50,7 +50,7 @@ func (dao *SysAdminUsersDao) GetPage(page page.PageParam, filter models.SysAdmin
 		sql.Filters(page.Filter),
 		sql.Order(page.Order, page.Desc),
 		sql.Paginate(page.PageSize, page.CurrentPage),
-	).Omit("password").Find(&list).Offset(0).Count(&total).Error
+	).Omit(page.Omit).Find(&list).Offset(0).Count(&total).Error
 	return list, total, err
 }
 

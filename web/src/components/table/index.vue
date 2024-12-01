@@ -14,13 +14,18 @@ const props = defineProps({
     type: Number,
     required: true
   },
-  current_page: {
+  current: {
     type: Number,
     required: true
   },
-  page_size: {
+  pageSize: {
     type: Number,
     required: true
+  },
+  pageSizeOptions: {
+    type: Array,
+    required: false,
+    default: () => [10, 20, 50, 100, 200, 500, 1000]
   },
   rowSelection: {
     type: Object,
@@ -38,7 +43,6 @@ const onChangePage = (page) => {
   emit('changePage', page)
 }
 const onPageSizeChange = (size) => {
-  console.log(size)
   emit('pageSizeChange', size)
 }
 </script>
@@ -47,8 +51,8 @@ const onPageSizeChange = (size) => {
   <a-table :columns="props.columns" :data="props.data" :row-selection="props.rowSelection"
            stripe :pagination="false"/>
   <div class="ant-page">
-    <a-pagination :total="props.total" :current="props.current" :page-size="page_size" show-total show-jumper
-                  show-page-size @change="onChangePage"
+    <a-pagination :total="props.total" :current="props.current" :page-size="props.pageSize" show-total show-jumper
+                  show-page-size @change="onChangePage" :page-size-options="props.pageSizeOptions"
                   @pageSizeChange="onPageSizeChange"/>
   </div>
 </template>

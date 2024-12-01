@@ -108,34 +108,38 @@ const columns = [
     minWidth: 100
   }
 ];
-const data = ref([]);
+const list = ref([]);
 
 const page = ref({
-  current_page: 1,
-  page_size: 10,
+  current: 1,
+  pageSize: 10,
   total: 0
 })
+
 const onSearch = (row) => {
   console.log(row)
 }
 
-const getPageList = async (current_page, page_size) => {
-  const res = await getSysAdminUsersList(current_page, page_size)
-  data.value = res.data.items
-  page.value.total = res.data.total
+const getPageList = async ({currentPage, pageSize, updateTotal = false}) => {
+  const res = await getSysAdminUsersList(currentPage, pageSize)
+  list.value = res.data.items
+  page.value.current = currentPage
+  page.value.pageSize = pageSize
+  if (updateTotal) {
+    page.value.total = res.data.total;
+  }
 }
 
 onMounted(() => {
-
-  getPageList(page.current_page, page.page_size)
-  // getSysAdminUsersList(page.value.current_page, page.value.page_size).then(res => {
-  //   data.value = res.data.items
-  //   page.value.total = res.data.total
-  // })
+  getPageList({currentPage: page.value.current, pageSize: page.value.pageSize, updateTotal: true})
 })
-const onChangePage = (current_page) => {
-  console.log(current_page)
-  getPageList(current_page, page.page_size)
+
+const onChangePage = (current) => {
+  getPageList({currentPage: current, pageSize: page.value.pageSize})
+}
+
+const onPageSizeChange = (size) => {
+  getPageList({currentPage: page.value.pageSize, pageSize: size})
 }
 </script>
 
@@ -147,8 +151,8 @@ const onChangePage = (current_page) => {
   </Search>
 
   <div class="container ant-card">
-    <Table :columns="columns" :data="data" :total="page.total" :current_page="page.current_page"
-           :page_size="page.page_size" @changePage="onChangePage"></Table>
+    <Table :columns="columns" :data="list" :total="page.total" :current="page.current"
+           :pageSize="page.pageSize" @changePage="onChangePage" @pageSizeChange="onPageSizeChange"></Table>
   </div>
 
 

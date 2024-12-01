@@ -9,6 +9,11 @@ export const getSysAdminUsersList = async (current_page, page_size) => {
         params: {
             current_page: current_page,
             page_size: page_size,
+            order: ['created_at', 'id'],
+            desc: [true, true],
+            filter: [
+                ["name", "like", ""],
+            ]
         }
     });
 }
