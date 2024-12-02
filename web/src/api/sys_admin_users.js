@@ -4,16 +4,14 @@ import http from "@/utils/request.js";
  * getSysAdminUsersList 获取列表
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-export const getSysAdminUsersList = async (current_page, page_size) => {
+export const getSysAdminUsersList = async (current_page, page_size, filter_map) => {
     return http.get('sys-admin-users', {
         params: {
             current_page: current_page,
             page_size: page_size,
-            order: ['created_at', 'id'],
-            desc: [true, true],
-            filter: [
-                ["name", "like", ""],
-            ]
+            order: ['id'],
+            desc: [true],
+            filter_map: JSON.stringify(filter_map)
         }
     });
 }

@@ -3,7 +3,6 @@ package api
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/small-ek/antgo/utils/conv"
 	"github.com/small-ek/antgo/utils/page"
 	"server/app/entity/request"
 	"server/app/entity/vo"
@@ -39,7 +38,7 @@ func (ctrl *SysAdminUsersController) Index(c *gin.Context) {
 		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
-	fmt.Println(conv.String(req))
+	fmt.Println(req)
 	list, total, err := ctrl.SysAdminUsersService.SetReq(req).Index()
 	if err != nil {
 		ctrl.Fail(c, vo.FAILED, err)

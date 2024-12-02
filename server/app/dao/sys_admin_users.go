@@ -46,7 +46,7 @@ func (dao *SysAdminUsersDao) GetList() (list []models.SysAdminUsers) {
 // GetPage
 func (dao *SysAdminUsersDao) GetPage(page page.PageParam, filter models.SysAdminUsers) (list []models.SysAdminUsers, total int64, err error) {
 	err = dao.db.Model(&dao.models).Scopes(
-		sql.Where("username", "LIKE", filter.Username),
+		sql.Where("username", "LIKE", page.FilterMap["username"]),
 		sql.Filters(page.Filter),
 		sql.Order(page.Order, page.Desc),
 		sql.Paginate(page.PageSize, page.CurrentPage),

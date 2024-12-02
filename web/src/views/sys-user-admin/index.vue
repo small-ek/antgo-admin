@@ -6,8 +6,8 @@ import {getSysAdminUsersList} from "@/api/sys_admin_users.js";
 
 const searchList = ref([
   {
-    label: '姓名',
-    key: 'name',
+    label: '用户名',
+    key: 'username',
     value: "",
     type: 'input',
     placeholder: '请输入姓名'
@@ -118,10 +118,11 @@ const page = ref({
 
 const onSearch = (row) => {
   console.log(row)
+  getPageList({currentPage: page.value.current, pageSize: page.value.pageSize, updateTotal: true, filter_map: row})
 }
 
-const getPageList = async ({currentPage, pageSize, updateTotal = false}) => {
-  const res = await getSysAdminUsersList(currentPage, pageSize)
+const getPageList = async ({currentPage, pageSize, updateTotal = false, filter_map}) => {
+  const res = await getSysAdminUsersList(currentPage, pageSize, filter_map)
   list.value = res.data.items
   page.value.current = currentPage
   page.value.pageSize = pageSize
@@ -133,11 +134,11 @@ const getPageList = async ({currentPage, pageSize, updateTotal = false}) => {
 onMounted(() => {
   getPageList({currentPage: page.value.current, pageSize: page.value.pageSize, updateTotal: true})
 })
-
+//切换页码
 const onChangePage = (current) => {
   getPageList({currentPage: current, pageSize: page.value.pageSize})
 }
-
+//设置每页显示多少条
 const onPageSizeChange = (size) => {
   getPageList({currentPage: page.value.pageSize, pageSize: size})
 }
