@@ -3,15 +3,37 @@ import config from "./config.js"
 import {useUserLoginStore} from "@/stores/userLogin.js";
 import {Message} from "@arco-design/web-vue";
 import i18n from "@/utils/i18n.js";
+import EventBus from "@/utils/eventBus.js";
 
 const http = axios.create({
     baseURL: config.url,
     timeout: config.timeout,
 });
+let loadingTimer;
+
+// 显示loading
+const showLoading = () => {
+    if (loadingTimer) {
+        clearTimeout(loadingTimer);
+    }
+    loadingTimer = setTimeout(() => {
+        EventBus.emit('setLoading', true);
+    }, 200);
+};
+
+// 关闭loading
+const closeLoading = () => {
+    if (loadingTimer) {
+        clearTimeout(loadingTimer);
+        loadingTimer = null;
+    }
+    EventBus.emit('setLoading', false);
+};
 
 // 请求拦截器
 http.interceptors.request.use(
     config => {
+        showLoading()
         if (useUserLoginStore().authorization !== "") {
             config.headers['Authorization'] = "Bearer " + useUserLoginStore().authorization
         }
@@ -27,19 +49,13 @@ http.interceptors.request.use(
 // 响应拦截器
 http.interceptors.response.use(
     response => {
+        closeLoading()
         // 对响应数据做处理，例如只返回data部分
         const data = response.data
 
 
         const msg = i18n.global.t('tip.' + data.message) !== 'tip.' + data.message ? i18n.global.t('tip.' + data.message) : data.message;
 
-        if (data.code !== 0 && data.error) {
-            const errorMsg = i18n.global.t('tip.' + data.error) !== 'tip.' + data.error ? i18n.global.t('tip.' + data.error) : data.error;
-            if (errorMsg) {
-                Message.error(errorMsg)
-                return
-            }
-        }
         if (data.code !== 0 && msg) {
             Message.error(msg)
         }
@@ -48,11 +64,12 @@ http.interceptors.response.use(
         return data === undefined ? {} : data
     },
     response => {
+        closeLoading()
         const data = response.data
         const errorMsg = i18n.global.t('tip.' + data.error)
         const msg = i18n.global.t('tip.' + data.message)
         if (response.status === 500) {
-            Message.error("接口请求失败，请重新尝试一下")
+            Message.error("请求失败,请重新尝试一下")
         } else if (response.status === 401 && errorMsg) {
             Message.error(msg)
         } else if (response.status !== 200 && msg) {

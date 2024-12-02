@@ -42,11 +42,11 @@ props.form[props.row.key] = props.row.value
   <!--日期时间选择框-->
   <a-form-item v-if="props.row.type==='datePicker'" :field="props.row.key" :label="props.row.label+'：'" feedback>
     <a-date-picker v-model="props.form[props.row.key]" format="YYYY-MM-DD HH:mm:ss" style="width: 100%" show-time
-                   :time-picker-props="{ defaultValue: '00:00:00' }" type="datetime" :placeholder="props.row.placeholder||'请选择'" allow-clear/>
+                   :time-picker-props="{ defaultValue: '00:00:00' }" type="datetime" :placeholder="props.row.placeholder||'请选择'"  allow-clear/>
   </a-form-item>
   <!--日期范围选择-->
   <a-form-item v-if="props.row.type==='dateRange'" :field="props.row.key" :label="props.row.label+'：'" feedback>
-    <a-range-picker v-model="props.form[props.row.key]" style="width: 100%"/>
+    <a-range-picker v-model="props.form[props.row.key]" showTime :time-picker-props="{defaultValue:['00:00:00','23:59:59']}" style="width: 100%"/>
   </a-form-item>
 
 </template>

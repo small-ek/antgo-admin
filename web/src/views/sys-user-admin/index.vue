@@ -13,10 +13,10 @@ const searchList = ref([
     placeholder: '请输入姓名'
   },
   {
-    label: '年龄',
-    key: 'age',
+    label: '手机号',
+    key: 'phone',
     value: "",
-    type: 'number',
+    type: 'input',
     placeholder: '请输入年龄'
   },
   {
@@ -38,26 +38,8 @@ const searchList = ref([
   {
     label: '创建时间',
     key: 'created_at',
-    value: '',
-    type: 'datePicker',
-    placeholder: '请选择创建时间',
-  }, {
-    label: '三方sdk参数',
-    key: 'updated_at',
     value: [],
     type: 'dateRange',
-    placeholder: '请选择创建时间',
-  }, {
-    label: '三方sdk参数',
-    key: 'updated_at2',
-    value: [],
-    type: 'dateRange',
-    placeholder: '请选择创建时间',
-  }, {
-    label: '三方sdk参数3',
-    key: 'updated_at3',
-    value: [],
-    type: 'slot',
     placeholder: '请选择创建时间',
   }]);
 
@@ -113,11 +95,14 @@ const list = ref([]);
 const page = ref({
   current: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
+  searchForm: {}
 })
 
+//搜索
 const onSearch = (row) => {
-  console.log(row)
+  page.value.searchForm = row
+  page.value.current = 1
   getPageList({currentPage: page.value.current, pageSize: page.value.pageSize, updateTotal: true, filter_map: row})
 }
 
@@ -136,11 +121,11 @@ onMounted(() => {
 })
 //切换页码
 const onChangePage = (current) => {
-  getPageList({currentPage: current, pageSize: page.value.pageSize})
+  getPageList({currentPage: current, pageSize: page.value.pageSize, filter_map: page.value.searchForm})
 }
 //设置每页显示多少条
 const onPageSizeChange = (size) => {
-  getPageList({currentPage: page.value.pageSize, pageSize: size})
+  getPageList({currentPage: page.value.pageSize, pageSize: size, filter_map: page.value.searchForm})
 }
 </script>
 
@@ -155,8 +140,6 @@ const onPageSizeChange = (size) => {
     <Table :columns="columns" :data="list" :total="page.total" :current="page.current"
            :pageSize="page.pageSize" @changePage="onChangePage" @pageSizeChange="onPageSizeChange"></Table>
   </div>
-
-
 </template>
 
 <style scoped>

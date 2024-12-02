@@ -9,9 +9,9 @@ export const getSysAdminUsersList = async (current_page, page_size, filter_map) 
         params: {
             current_page: current_page,
             page_size: page_size,
+            filter_map: JSON.stringify(filter_map),
             order: ['id'],
             desc: [true],
-            filter_map: JSON.stringify(filter_map)
         }
     });
 }

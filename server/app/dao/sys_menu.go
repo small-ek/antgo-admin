@@ -48,7 +48,7 @@ func (dao *SysMenuDao) GetPage(page page.PageParam, filter models.SysMenu) (list
 	err = dao.db.Model(&dao.models).Scopes(
 		sql.Where("title", "LIKE", filter.Title),
 		sql.Where("path", "LIKE", filter.Path),
-		sql.Filters(page.Filter),
+		//sql.Filters(page.Filter),
 		sql.Order(page.Order, page.Desc),
 		sql.Paginate(page.PageSize, page.CurrentPage),
 	).Find(&list).Offset(0).Count(&total).Error
