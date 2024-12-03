@@ -36,15 +36,7 @@ import Tags from '@/layout/componets/tabs/index.vue';
 import Setting from '@/layout/componets/setting/index.vue';
 import {useLayout} from '@/stores/layout.js';
 import {useTheme} from '@/utils/theme.js';
-import {onMounted, ref} from 'vue';
-import EventBus from "@/utils/eventBus.js";
-
-const loading = ref(false);
-onMounted(() => {
-  EventBus.on('setLoading', (data) => {
-    loading.value = data;
-  });
-});
+import {loading} from '@/utils/loading.js'
 </script>
 
 <style scoped lang="less">

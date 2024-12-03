@@ -3,23 +3,26 @@
     <!--左侧-->
     <Left/>
     <a-layout class="ant-container">
-      <a-scrollbar class="scrollbar" @scroll="useTheme().handleScroll">
-        <!--头部-->
-        <div :class="{'affix': useLayout().isFixedHeader, 'affix-hidden': !useLayout().isFixedHeader&&useLayout().header==='adaptive'}">
-          <Header/>
-          <Tags/>
-        </div>
-        <!--内容-->
-        <a-layout class="content-layout">
-          <a-layout-content>
-            <router-view></router-view>
-          </a-layout-content>
+      <a-spin :loading="loading" tip="加载中...">
+        <a-scrollbar class="scrollbar" @scroll="useTheme().handleScroll">
+          <!--头部-->
+          <div
+              :class="{'affix': useLayout().isFixedHeader, 'affix-hidden': !useLayout().isFixedHeader&&useLayout().header==='adaptive'}">
+            <Header/>
+            <Tags/>
+          </div>
+          <!--内容-->
+          <a-layout class="content-layout">
+            <a-layout-content>
+              <router-view></router-view>
+            </a-layout-content>
 
-          <!--底部-->
-          <Footer v-if="useLayout().isFooter"></Footer>
-          <a-back-top target-container=".scrollbar" :style="{position:'fixed'}" />
-        </a-layout>
-      </a-scrollbar>
+            <!--底部-->
+            <Footer v-if="useLayout().isFooter"></Footer>
+            <a-back-top target-container=".scrollbar" :style="{position:'fixed'}"/>
+          </a-layout>
+        </a-scrollbar>
+      </a-spin>
     </a-layout>
 
     <!--布局设置-->
@@ -34,6 +37,7 @@ import Tags from "@/layout/componets/tabs/index.vue"
 import Setting from "@/layout/componets/setting/index.vue"
 import {useLayout} from "@/stores/layout.js";
 import {useTheme} from "@/utils/theme.js";
+import {loading} from "@/utils/loading.js";
 </script>
 <style scoped lang="less">
 @import "../layout.less";
