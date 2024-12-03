@@ -20,6 +20,13 @@ const searchList = ref([
     placeholder: '请输入年龄'
   },
   {
+    label: '状态',
+    key: 'status',
+    value: 0,
+    type: 'number',
+    placeholder: '请输入年龄'
+  },
+  {
     label: '性别',
     key: 'sex',
     value: "",
