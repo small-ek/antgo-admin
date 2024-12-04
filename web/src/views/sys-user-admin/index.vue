@@ -54,7 +54,10 @@ const columns = [
   {
     title: '标识',
     dataIndex: 'id',
-    minWidth: 30
+    minWidth: 30,
+    sortable: {
+      sortDirections: ['ascend', 'descend']
+    }
   },
   {
     title: '用户名',
@@ -89,12 +92,16 @@ const columns = [
     minWidth: 100,
     tooltip: true,
     ellipsis: true,
+    slotName: 'status'
   }, {
     title: '创建时间',
     dataIndex: 'created_at',
     tooltip: true,
     ellipsis: true,
-    minWidth: 100
+    minWidth: 100,
+  }, {
+    title: '操作',
+    slotName: 'optional'
   }
 ];
 const list = ref([]);
@@ -110,11 +117,16 @@ const page = ref({
 const onSearch = (row) => {
   page.value.searchForm = row
   page.value.current = 1
-  getPageList({currentPage: page.value.current, pageSize: page.value.pageSize, updateTotal: true, filter_map: row})
+  getPageList({
+    currentPage: page.value.current,
+    pageSize: page.value.pageSize,
+    updateTotal: true,
+    filter_map: row
+  })
 }
 
-const getPageList = async ({currentPage, pageSize, updateTotal = false, filter_map}) => {
-  const res = await getSysAdminUsersList(currentPage, pageSize, filter_map)
+const getPageList = async ({currentPage = 1, pageSize = 10, updateTotal = false, filter_map = {}, order, desc}) => {
+  const res = await getSysAdminUsersList(currentPage, pageSize, filter_map, order, desc)
   list.value = res.data.items
   page.value.current = currentPage
   page.value.pageSize = pageSize
@@ -124,28 +136,53 @@ const getPageList = async ({currentPage, pageSize, updateTotal = false, filter_m
 }
 
 onMounted(() => {
-  getPageList({currentPage: page.value.current, pageSize: page.value.pageSize, updateTotal: true})
+  getPageList({
+    currentPage: page.value.current,
+    pageSize: page.value.pageSize,
+    updateTotal: true})
 })
 //切换页码
 const onChangePage = (current) => {
-  getPageList({currentPage: current, pageSize: page.value.pageSize, filter_map: page.value.searchForm})
+  getPageList({
+    currentPage: current,
+    pageSize: page.value.pageSize,
+    filter_map: page.value.searchForm
+  })
 }
 //设置每页显示多少条
 const onPageSizeChange = (size) => {
-  getPageList({currentPage: page.value.pageSize, pageSize: size, filter_map: page.value.searchForm})
+  getPageList({
+    currentPage: page.value.pageSize,
+    pageSize: size,
+    filter_map: page.value.searchForm})
+}
+//表格变化
+const onChangeTable = (data, extra, currentDataSource) => {
+  if(extra.sorter){
+    getPageList({
+      currentPage: page.value.current,
+      pageSize: page.value.pageSize,
+      filter_map: page.value.searchForm,
+      order: [extra.sorter.field],
+      desc: [extra.sorter.direction === 'descend'],
+    })
+  }
+
 }
 </script>
 
 <template>
   <Search :model="searchList" @search="onSearch">
-    <template #updated_at3="{form}">
-      <a-input v-model="form.updated_at3" autocomplete="off" class="input" placeholder="请输入" allow-clear/>
-    </template>
   </Search>
 
   <div class="container ant-card">
     <Table :columns="columns" :data="list" :total="page.total" :current="page.current"
-           :pageSize="page.pageSize" @changePage="onChangePage" @pageSizeChange="onPageSizeChange"></Table>
+           :pageSize="page.pageSize" @changePage="onChangePage" @pageSizeChange="onPageSizeChange"
+           @onChangeTable="onChangeTable">
+      <template #optional="{ record }">
+        <a-button>编辑</a-button>
+      </template>
+    </Table>
   </div>
 </template>
 

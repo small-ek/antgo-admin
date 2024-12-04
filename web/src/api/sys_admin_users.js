@@ -4,14 +4,14 @@ import http from "@/utils/request.js";
  * getSysAdminUsersList 获取列表
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-export const getSysAdminUsersList = async (current_page, page_size, filter_map) => {
+export const getSysAdminUsersList = async (current_page, page_size, filter_map, order = [], desc = []) => {
     return http.get('sys-admin-users', {
         params: {
             current_page: current_page,
             page_size: page_size,
             filter_map: JSON.stringify(filter_map),
-            order: ['id'],
-            desc: [true],
+            order: order.length > 0 ? order : ['id'],
+            desc: desc.length > 0 ? desc : [true],
         }
     });
 }
@@ -36,8 +36,8 @@ export const deleteSysAdminUsers = async (id) => {
  * createSysAdminUsers 创建
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-export const createSysAdminUsers = async (id) => {
-    return http.post('sys-admin-users/' + id);
+export const createSysAdminUsers = async (data) => {
+    return http.post('sys-admin-users', data);
 }
 
 /**
