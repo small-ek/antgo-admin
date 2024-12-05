@@ -57,7 +57,7 @@ func (svc *SysAdminUsers) SetReq(req interface{}) *SysAdminUsers {
 
 // Index 分页
 func (svc *SysAdminUsers) Index() ([]models.SysAdminUsers, int64, error) {
-	return dao.NewSysAdminUsersDao().GetPage(svc.req.PageParam, svc.req.SysAdminUsers)
+	return dao.NewSysAdminUsersDao().GetPage(svc.req.PageParam)
 }
 
 // Show 查询单个

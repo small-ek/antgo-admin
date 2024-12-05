@@ -1,8 +1,10 @@
 package dao
 
 import (
+	"fmt"
 	"github.com/small-ek/antgo/db/adb/sql"
 	"github.com/small-ek/antgo/frame/ant"
+	"github.com/small-ek/antgo/utils/conv"
 	"github.com/small-ek/antgo/utils/page"
 	"gorm.io/gorm"
 	"server/app/entity/models"
@@ -44,9 +46,14 @@ func (dao *SysAdminUsersDao) GetList() (list []models.SysAdminUsers) {
 }
 
 // GetPage
-func (dao *SysAdminUsersDao) GetPage(page page.PageParam, filter models.SysAdminUsers) (list []models.SysAdminUsers, total int64, err error) {
+func (dao *SysAdminUsersDao) GetPage(page page.PageParam) (list []models.SysAdminUsers, total int64, err error) {
+	fmt.Println(conv.String(page.FilterMap))
 	err = dao.db.Model(&dao.models).Scopes(
 		sql.Where("username", "LIKE", page.FilterMap["username"]),
+		sql.Where("nick_name", "LIKE", page.FilterMap["nick_name"]),
+		sql.Where("phone", "LIKE", page.FilterMap["phone"]),
+		sql.Where("email", "LIKE", page.FilterMap["email"]),
+		sql.Where("status", "=", page.FilterMap["status"]),
 		sql.Where("created_at", "BETWEEN", page.FilterMap["created_at"]),
 		sql.Filters(page.Filter),
 		sql.Order(page.Order, page.Desc),
@@ -63,6 +70,6 @@ func (dao *SysAdminUsersDao) GetById(id int) (row models.SysAdminUsers) {
 
 // GetByUserName
 func (dao *SysAdminUsersDao) GetByUserName(username string) (row models.SysAdminUsers) {
-	dao.db.Model(&dao.models).Where("username=? AND status=1", username).Limit(1).Find(&row)
+	dao.db.Model(&dao.models).Where("username=? AND status=2", username).Limit(1).Find(&row)
 	return row
 }

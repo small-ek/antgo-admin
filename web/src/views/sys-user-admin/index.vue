@@ -2,7 +2,10 @@
 import Search from "@/components/search/index.vue";
 import Table from "@/components/table/index.vue";
 import {onMounted, ref} from "vue";
-import {getSysAdminUsersList} from "@/api/sys_admin_users.js";
+import {getSysAdminUsersList, updateSysAdminUsers} from "@/api/sys_admin_users.js";
+import Status from "@/components/status/index.vue";
+import {Message} from "@arco-design/web-vue";
+import {formatTime} from "@/utils/time.js";
 
 const searchList = ref([
   {
@@ -11,6 +14,20 @@ const searchList = ref([
     value: "",
     type: 'input',
     placeholder: '请输入姓名'
+  },
+  {
+    label: '昵称',
+    key: 'nick_name',
+    value: "",
+    type: 'input',
+    placeholder: '请输入昵称'
+  },
+  {
+    label: '电子邮箱',
+    key: 'email',
+    value: "",
+    type: 'input',
+    placeholder: '请输入电子邮箱'
   },
   {
     label: '手机号',
@@ -22,26 +39,20 @@ const searchList = ref([
   {
     label: '状态',
     key: 'status',
-    value: 0,
-    type: 'number',
-    placeholder: '请输入年龄'
-  },
-  {
-    label: '性别',
-    key: 'sex',
     value: "",
     type: 'select',
-    placeholder: '请选择性别',
+    placeholder: '请选择状态',
     options: [
       {
-        label: '男',
-        value: '1'
+        label: '已禁用',
+        value: 1
       },
       {
-        label: '女',
-        value: '2'
+        label: '已启用',
+        value: 2
       }],
   },
+
   {
     label: '创建时间',
     key: 'created_at',
@@ -99,6 +110,7 @@ const columns = [
     tooltip: true,
     ellipsis: true,
     minWidth: 100,
+    slotName: 'created_at'
   }, {
     title: '操作',
     slotName: 'optional'
@@ -139,7 +151,8 @@ onMounted(() => {
   getPageList({
     currentPage: page.value.current,
     pageSize: page.value.pageSize,
-    updateTotal: true})
+    updateTotal: true
+  })
 })
 //切换页码
 const onChangePage = (current) => {
@@ -154,11 +167,12 @@ const onPageSizeChange = (size) => {
   getPageList({
     currentPage: page.value.pageSize,
     pageSize: size,
-    filter_map: page.value.searchForm})
+    filter_map: page.value.searchForm
+  })
 }
 //表格变化
 const onChangeTable = (data, extra, currentDataSource) => {
-  if(extra.sorter){
+  if (extra.sorter) {
     getPageList({
       currentPage: page.value.current,
       pageSize: page.value.pageSize,
@@ -167,7 +181,18 @@ const onChangeTable = (data, extra, currentDataSource) => {
       desc: [extra.sorter.direction === 'descend'],
     })
   }
-
+}
+//更新状态
+const onUpdatedStatus = (status, row) => {
+  row.status = status
+  updateSysAdminUsers(row).then((res) => {
+    if (res.code === 0) {
+      Message.success('操作成功')
+    } else {
+      Message.error('操作失败')
+      row.status = status === 2 ? 1 : 2
+    }
+  })
 }
 </script>
 
@@ -179,6 +204,12 @@ const onChangeTable = (data, extra, currentDataSource) => {
     <Table :columns="columns" :data="list" :total="page.total" :current="page.current"
            :pageSize="page.pageSize" @changePage="onChangePage" @pageSizeChange="onPageSizeChange"
            @onChangeTable="onChangeTable">
+      <template #status="{ record }">
+        <Status :row="record" @onClick="onUpdatedStatus"></Status>
+      </template>
+      <template #created_at="{ record }">
+        {{formatTime(record.created_at)}}
+      </template>
       <template #optional="{ record }">
         <a-button>编辑</a-button>
       </template>
