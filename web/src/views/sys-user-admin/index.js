@@ -1,4 +1,4 @@
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 
 //分页
 const page = ref({
@@ -9,7 +9,9 @@ const page = ref({
 })
 const list = ref([]);
 const formRef = ref(null)
-const form = ref({})
+const formData = ref({})
+
+
 //搜索列表
 const searchList = ref([
     {
@@ -123,12 +125,21 @@ const columns = [
     }
 ];
 
+//表单验证
+const formRules = reactive({
+    username: [
+        {required: true, message: '请输入用户名', trigger: 'blur'},
+    ],
+    nick_name: [
+        {required: true, message: '请输入密码', trigger: 'blur',},
+    ]
+})
 //表单列表
 const formList = ref([
     {
         label: '用户名',
         key: 'username',
-        value: form.username,
+        value: "",
         type: 'input',
         placeholder: '请输入姓名'
     },
@@ -171,4 +182,4 @@ const formList = ref([
     }
 ]);
 
-export {searchList, columns, page, formList, list, formRef, form};
+export {searchList, columns, page, formList, list, formRef, formData, formRules};

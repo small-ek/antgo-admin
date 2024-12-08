@@ -1,52 +1,57 @@
 <script setup>
 import {modalWidth} from "@/utils/helper.js";
-import {defineExpose, defineProps, reactive, ref} from "vue";
-import formItem from "@/components/formItem/index.vue";
+import {defineExpose, defineProps, ref} from "vue";
+import FormItem from "@/components/formItem/index.vue";
 
-const visible = ref(false)
+const isVisible = ref(false)
 const props = defineProps({
   model: {
     type: Array,
     required: true
   },
-  form:{
+  form: {
     type: Object,
     required: true
+  },
+  rules: {
+    type: Object,
+    required: false
   }
 });
-// const form = reactive({})
 const formRef = ref(null)
-
+const emit = defineEmits(['submit'])
 const setVisible = (value) => {
-  visible.value = value
+  isVisible.value = value
 }
+
+const submit = () => {
+  emit('submit', props.form)
+}
+const reset = () => {
+  formRef.value.resetFields()
+}
+
 defineExpose({
   setVisible
 })
-
-const onSubmit = () => {
-
-}
-const onReset = () => {
-  formRef.value.resetFields()
-}
 </script>
 
 <template>
-  <a-modal v-model:visible="visible" draggable title-align="start" :mask-closable="false" :footer="false"
+  <a-modal v-model:visible="isVisible" draggable title-align="start" :mask-closable="false" :footer="false"
            :width="modalWidth('800px')">
     <template #title>
       <a-typography-title :heading="5">
         编辑
       </a-typography-title>
     </template>
-    <a-form ref="formRef" :model="props.form" class="form" layout="horizontal" auto-label-width size="small"
+    <a-form ref="formRef" :model="props.form" :rules="props.rules" class="form" layout="horizontal" auto-label-width
+            size="small"
             label-align="right" :label-col-props="{span: 8, offset: 0}" :wrapper-col-props="{span: 16, offset: 0}"
-            @submit-success="onSubmit">
+            @submit-success="submit">
       <a-row :gutter="15">
         <template v-for="(row,index) in props.model">
-          <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="12" :xxl="12">
-            <formItem v-if="row.type!=='slot'" :row="row" :form="props.form"></formItem>
+          <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" :xxl="24">
+            <FormItem v-if="row.type!=='slot'" :row="row" :form="props.form"></FormItem>
             <!--自定义插槽-->
             <a-form-item v-else :field="row.key" :label="row.label+'：'" feedback>
               <slot :name="row.key" :form="props.form"></slot>
@@ -55,14 +60,14 @@ const onReset = () => {
         </template>
         <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" :xxl="24">
           <div style="float: right;margin-bottom: 20px">
-            <a-button @click="onReset">
+            <a-button @click="reset">
               <template #icon>
                 <icon-refresh/>
               </template>
               重置
             </a-button>
 
-            <a-button class="ml-10" type="primary" @click="onSubmit">
+            <a-button class="ml-10" type="primary" html-type="submit">
               <template #icon>
                 <icon-search/>
               </template>

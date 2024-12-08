@@ -31,7 +31,7 @@ const onReset = () => {
             label-align="right" :label-col-props="{span: 8, offset: 0}" :wrapper-col-props="{span: 16, offset: 0}" @submit-success="onSearch">
       <a-row :gutter="15">
         <template v-for="(row,index) in props.model">
-          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="8" v-if="index<3">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="8" v-if="index<2">
             <!--表单组件 TODO可以组件或者使用JSX优化-->
             <formItem v-if="row.type!=='slot'" :row="row" :form="form" @search="onSearch"></formItem>
             <!--自定义插槽-->
@@ -39,7 +39,7 @@ const onReset = () => {
               <slot :name="row.key" :form="form"></slot>
             </a-form-item>
           </a-col>
-          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="8" v-show="index>2&&isExpand===true">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="8" v-show="index>1&&isExpand===true">
             <!--表单组件-->
             <formItem v-if="row.type!=='slot'" :row="row" :form="form" @search="onSearch"></formItem>
             <!--自定义插槽-->
@@ -48,8 +48,35 @@ const onReset = () => {
             </a-form-item>
           </a-col>
         </template>
+        <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="8" :xxl="8">
+          <div style="float: right;">
+            <a-button type="primary" @click="onSearch">
+              <template #icon>
+                <icon-search/>
+              </template>
+              筛选
+            </a-button>
+            <a-button class="ml-10" @click="onReset">
+              <template #icon>
+                <icon-refresh/>
+              </template>
+              重置
+            </a-button>
+
+            <a-button type="text" class="ml-10" @click="onChangeIsExpand">
+            <span v-show="isExpand===false">
+              展开
+            <icon-caret-down/>
+            </span>
+              <span v-show="isExpand===true">
+              收起
+            <icon-caret-up/>
+            </span>
+            </a-button>
+          </div>
+        </a-col>
         <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" :xxl="24">
-          <div style="float: right;margin-bottom: 20px">
+          <div style="margin-bottom: 20px">
             <a-button type="primary" @click="onSearch">
               <template #icon>
                 <icon-search/>

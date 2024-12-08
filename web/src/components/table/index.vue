@@ -38,23 +38,23 @@ const props = defineProps({
     }
   }
 });
-const emit = defineEmits(['changePage', 'pageSizeChange', 'onChangeTable'])
+const emit = defineEmits(['changePage', 'pageSizeChange', 'changeTable'])
 const onChangePage = (page) => {
   emit('changePage', page)
 }
-const onPageSizeChange = (size) => {
+const pageSizeChange = (size) => {
   emit('pageSizeChange', size)
 }
 const slot = props.columns.filter(item => item.slotName)
 
-const onChangeTable = (data, extra, currentDataSource) => {
-  emit('onChangeTable', data, extra, currentDataSource)
+const changeTable = (data, extra, currentDataSource) => {
+  emit('changeTable', data, extra, currentDataSource)
 }
 </script>
 
 <template>
   <a-table :columns="props.columns" :data="props.data" :row-selection="props.rowSelection"
-           stripe :pagination="false"  @change="onChangeTable">
+           stripe :pagination="false"  @change="changeTable">
     <!--自定义插槽-->
     <template #[row.slotName]="{record, rowIndex}" v-for="row in slot">
       <slot :name="row.slotName" :record="record" :rowIndex="rowIndex"></slot>
@@ -63,7 +63,7 @@ const onChangeTable = (data, extra, currentDataSource) => {
   <div class="ant-page">
     <a-pagination :total="props.total" :current="props.current" :page-size="props.pageSize" show-total show-jumper
                   show-page-size @change="onChangePage" :page-size-options="props.pageSizeOptions"
-                  @pageSizeChange="onPageSizeChange"/>
+                  @pageSizeChange="pageSizeChange"/>
   </div>
 </template>
 
