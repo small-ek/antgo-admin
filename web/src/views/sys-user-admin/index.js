@@ -7,10 +7,11 @@ const page = ref({
     total: 0,
     searchForm: {}
 })
+const tableRef = ref(null)
 const list = ref([]);
 const formRef = ref(null)
 const formData = ref({})
-
+const ids = ref([])
 
 //搜索列表
 const searchList = ref([
@@ -58,7 +59,6 @@ const searchList = ref([
                 value: 2
             }],
     },
-
     {
         label: '创建时间',
         key: 'created_at',
@@ -182,4 +182,4 @@ const formList = ref([
     }
 ]);
 
-export {searchList, columns, page, formList, list, formRef, formData, formRules};
+export {searchList, columns, page, formList, list, formRef, formData, formRules, ids, tableRef};

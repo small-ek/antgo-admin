@@ -88,7 +88,4 @@ defineExpose({
   margin-top: 20px;
 }
 
-.ml-10 {
-  margin-left: 10px;
-}
 </style>

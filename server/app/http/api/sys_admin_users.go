@@ -120,17 +120,17 @@ func (ctrl *SysAdminUsersController) Update(c *gin.Context) {
 //	@Produce		json
 //	@Success		0	{object}	response.Write
 //	@Failure		1	{object}	response.Write
-//	@Router			/sys-admin-users/:id [delete]
+//	@Router			/sys-admin-users [delete]
 //
 // Delete 删除
-func (ctrl *SysAdminUsersController) Delete(c *gin.Context) {
-	var req request.SysAdminUsersRequest
-	if err := c.ShouldBindUri(&req); err != nil {
+func (ctrl *SysAdminUsersController) DeleteIds(c *gin.Context) {
+	var req request.IdsRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
 		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 
-	if err := ctrl.SysAdminUsersService.SetReq(req).Delete(); err != nil {
+	if err := ctrl.SysAdminUsersService.SetReq(req).Deletes(); err != nil {
 		ctrl.Fail(c, vo.DELETE_FAILED, err)
 		return
 	}

@@ -23,6 +23,7 @@ type SysAdminUsers struct {
 	reqSysAdminUsersInfo request.SysAdminUsersInfoRequest
 	reqLoginForm         request.SysAdminUsersLoginRequestForm
 	reqPasswordForm      request.SysAdminUsersPasswordRequestForm
+	reqIds               request.IdsRequest
 }
 
 func NewSysAdminUsersService() *SysAdminUsers {
@@ -34,6 +35,8 @@ func (svc *SysAdminUsers) SetReq(req interface{}) *SysAdminUsers {
 	switch value := req.(type) {
 	case request.SysAdminUsersRequest:
 		svc.req = value
+	case request.IdsRequest:
+		svc.reqIds = value
 	case request.SysAdminUsersRequestForm:
 		svc.reqForm = value
 		// 根据需求做字段赋值
@@ -90,9 +93,9 @@ func (svc *SysAdminUsers) Update() error {
 	return dao.NewSysAdminUsersDao().Update(svc.reqForm.SysAdminUsers)
 }
 
-// Delete 删除
-func (svc *SysAdminUsers) Delete() error {
-	return dao.NewSysAdminUsersDao().DeleteById(svc.req.SysAdminUsers.Id)
+// Deletes 批量删除
+func (svc *SysAdminUsers) Deletes() error {
+	return dao.NewSysAdminUsersDao().DeleteByIds(svc.reqIds.Ids)
 }
 
 // Login 登录操作

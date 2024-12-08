@@ -32,11 +32,15 @@ export const getSysAdminUsers = async (id) => {
 
 /**
  * deleteSysAdminUsers 删除
- * @param id 删除id
  * @returns {Promise<axios.AxiosResponse<any>>}
+ * @param ids 删除的主键
  */
-export const deleteSysAdminUsers = async (id) => {
-    return http.delete('sys-admin-users/' + id);
+export const deleteSysAdminUsers = async (ids = []) => {
+    return http.delete('sys-admin-users', {
+        data: {
+            ids: ids
+        }
+    });
 }
 
 /**

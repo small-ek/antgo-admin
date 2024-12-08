@@ -17,6 +17,7 @@ const (
 	UnauthorizedCode = 401
 )
 
+// AuthJWT JWT 认证
 func AuthJWT() gin.HandlerFunc {
 	newJwt := jwt.New().SetPublicKey(conv.Bytes(config.GetString("jwt.public_key")))
 
