@@ -77,11 +77,7 @@ const submit = (row) => {
     if (res.code === 0) {
       Message.success('操作成功');
       formRef.value.setVisible(false);
-      fetchPageList({
-        currentPage: page.value.current,
-        pageSize: page.value.pageSize,
-        filter_map: page.value.searchForm
-      });
+      reload();
     }
   });
 };
@@ -103,12 +99,16 @@ const deletesItem = (id) => {
       Message.success('操作成功');
       ids.value = [];
       tableRef.value.clearSelected();
-      fetchPageList({
-        currentPage: page.value.current,
-        pageSize: page.value.pageSize,
-        filter_map: page.value.searchForm
-      });
+      reload();
     }
+  });
+};
+// 重新加载
+const reload = () => {
+  fetchPageList({
+    currentPage: page.value.current,
+    pageSize: page.value.pageSize,
+    filter_map: page.value.searchForm
   });
 };
 </script>
