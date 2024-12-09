@@ -2,186 +2,115 @@
 import FilterBar from "@/components/filterBar/index.vue";
 import Table from "@/components/table/index.vue";
 import {onMounted} from "vue";
+import Status from "@/components/status/index.vue";
+import {Message} from "@arco-design/web-vue";
+import {formatTime} from "@/utils/time.js";
+import EditForm from "./form.vue";
 import {
   createSysAdminUsers,
   deleteSysAdminUsers,
   getSysAdminUsersList,
   updateSysAdminUsers
 } from "@/api/sys_admin_users.js";
-import Status from "@/components/status/index.vue";
-import {Message} from "@arco-design/web-vue";
-import {formatTime} from "@/utils/time.js";
-import EditForm from "./form.vue";
 import {columns, formData, formList, formRef, formRules, ids, list, page, searchList, tableRef} from "./index.js";
 
-
-//搜索
-const search = (row) => {
-  page.value.searchForm = row
-  page.value.current = 1
-  getPageList({
-    currentPage: page.value.current,
-    pageSize: page.value.pageSize,
-    updateTotal: true,
-    filter_map: row
-  })
-}
-
-/**
- * 获取分页列表
- * @param currentPage 当前页
- * @param pageSize  每页显示多少条
- * @param updateTotal   是否更新总数
- * @param filter_map   过滤条件
- * @param order  排序字段
- * @param desc  是否倒序
- * @returns {Promise<void>}
- */
-const getPageList = async ({currentPage = 1, pageSize = 10, updateTotal = false, filter_map = {}, order, desc}) => {
-  const res = await getSysAdminUsersList(currentPage, pageSize, filter_map, order, desc)
-  list.value = res.data.items
-  page.value.current = currentPage
-  page.value.pageSize = pageSize
-  if (updateTotal) {
+const fetchPageList = async (params) => {
+  const res = await getSysAdminUsersList(params.currentPage, params.pageSize, params.filter_map, params.order, params.desc);
+  list.value = res.data.items;
+  page.value.current = params.currentPage;
+  page.value.pageSize = params.pageSize;
+  if (params.updateTotal) {
     page.value.total = res.data.total;
   }
-}
+};
+
+const search = (row) => {
+  page.value.searchForm = row;
+  page.value.current = 1;
+  fetchPageList({currentPage: 1, pageSize: page.value.pageSize, updateTotal: true, filter_map: row});
+};
 
 onMounted(() => {
-  getPageList({
-    currentPage: page.value.current,
-    pageSize: page.value.pageSize,
-    updateTotal: true
-  })
-})
+  fetchPageList({currentPage: page.value.current, pageSize: page.value.pageSize, updateTotal: true});
+});
 
-/**
- * 分页变化
- * @param current
- */
 const changePage = (current) => {
-  getPageList({
-    currentPage: current,
-    pageSize: page.value.pageSize,
-    filter_map: page.value.searchForm
-  })
-}
+  fetchPageList({currentPage: current, pageSize: page.value.pageSize, filter_map: page.value.searchForm});
+};
 
-/**
- * 每页显示多少条
- * @param size
- */
 const pageSizeChange = (size) => {
-  getPageList({
-    currentPage: page.value.pageSize,
-    pageSize: size,
-    filter_map: page.value.searchForm
-  })
-}
+  fetchPageList({currentPage: page.value.pageSize, pageSize: size, filter_map: page.value.searchForm});
+};
 
-/**
- * 表格变化 修改排序
- * @param data
- * @param extra
- * @param currentDataSource
- */
-const changeTable = (data, extra, currentDataSource) => {
+const changeTable = (data, extra) => {
   if (extra.sorter) {
-    getPageList({
+    fetchPageList({
       currentPage: page.value.current,
       pageSize: page.value.pageSize,
       filter_map: page.value.searchForm,
       order: [extra.sorter.field],
-      desc: [extra.sorter.direction === 'descend'],
-    })
+      desc: [extra.sorter.direction === 'descend']
+    });
   }
-}
+};
 
-/**
- * 更新状态
- * @param status
- * @param row
- */
 const updatedStatus = (status, row) => {
-  row.status = status
+  row.status = status;
   updateSysAdminUsers(row).then((res) => {
     if (res.code === 0) {
-      Message.success('操作成功')
+      Message.success('操作成功');
     } else {
-      Message.error('操作失败')
-      row.status = status === 2 ? 1 : 2
+      Message.error('操作失败');
+      row.status = status === 2 ? 1 : 2;
     }
-  })
-}
-/**
- * 显示编辑
- * @param row
- */
+  });
+};
+
 const showEdit = (row) => {
-  formData.value = {...row}
-  formRef.value.setVisible(true)
-}
+  formData.value = {...row};
+  formRef.value.setVisible(true);
+};
 
 const submit = (row) => {
-  if (row.id) {
-    updateSysAdminUsers(row).then((res) => {
-      if (res.code === 0) {
-        Message.success('操作成功')
-        formRef.value.setVisible(false)
-        getPageList({
-          currentPage: page.value.current,
-          pageSize: page.value.pageSize,
-          filter_map: page.value.searchForm
-        })
-      }
-    })
-  } else {
-    createSysAdminUsers(row).then((res) => {
-      if (res.code === 0) {
-        Message.success('操作成功')
-        formRef.value.setVisible(false)
-        getPageList({
-          currentPage: page.value.current,
-          pageSize: page.value.pageSize,
-          filter_map: page.value.searchForm
-        })
-      }
-    })
-  }
-}
-
-/**
- * 选择
- * @param selectedRowKeys
- */
-const select = (selectedRowKeys) => {
-  ids.value = selectedRowKeys
-}
-/**
- * 批量删除
- */
-const deletesItem = (id) => {
-  if (id > 0) {
-    ids.value.push(id)
-  }
-  if (ids.value.length === 0) {
-    Message.warning('请选择要删除的项目')
-    return
-  }
-
-  deleteSysAdminUsers(ids.value).then((res) => {
+  const action = row.id ? updateSysAdminUsers : createSysAdminUsers;
+  action(row).then((res) => {
     if (res.code === 0) {
-      Message.success('操作成功')
-      ids.value = []
-      tableRef.value.clearSelected()
-      getPageList({
+      Message.success('操作成功');
+      formRef.value.setVisible(false);
+      fetchPageList({
         currentPage: page.value.current,
         pageSize: page.value.pageSize,
         filter_map: page.value.searchForm
-      })
+      });
     }
-  })
-}
+  });
+};
+
+const select = (selectedRowKeys) => {
+  ids.value = selectedRowKeys;
+};
+
+const deletesItem = (id) => {
+  if (id > 0) {
+    ids.value.push(id);
+  }
+  if (ids.value.length === 0) {
+    Message.warning('请选择要删除的项目');
+    return;
+  }
+  deleteSysAdminUsers(ids.value).then((res) => {
+    if (res.code === 0) {
+      Message.success('操作成功');
+      ids.value = [];
+      tableRef.value.clearSelected();
+      fetchPageList({
+        currentPage: page.value.current,
+        pageSize: page.value.pageSize,
+        filter_map: page.value.searchForm
+      });
+    }
+  });
+};
 </script>
 
 <template>
