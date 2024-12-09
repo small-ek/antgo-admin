@@ -10,7 +10,13 @@ const page = ref({
 const tableRef = ref(null)
 const list = ref([]);
 const formRef = ref(null)
-const formData = ref({})
+const formData = ref({
+    "username": "",
+    "nick_name": "",
+    "email": "",
+    "phone": "",
+    "status": 0
+})
 const ids = ref([])
 
 //搜索列表
@@ -41,7 +47,7 @@ const searchList = ref([
         key: 'phone',
         value: "",
         type: 'input',
-        placeholder: '请输入年龄'
+        placeholder: '请输入手机号'
     },
     {
         label: '状态',

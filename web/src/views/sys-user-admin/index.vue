@@ -114,6 +114,7 @@ const deletesItem = (id) => {
 </script>
 
 <template>
+  <!--过滤栏-->
   <FilterBar :model="searchList" @search="search">
     <template #topBtn>
       <a-button type="outline" @click="showEdit">
@@ -135,6 +136,7 @@ const deletesItem = (id) => {
   </FilterBar>
 
   <div class="container ant-card">
+    <!-- 表格-->
     <Table ref="tableRef" :columns="columns" :data="list" :total="page.total" :current="page.current"
            :pageSize="page.pageSize" @changePage="changePage"
            @pageSizeChange="pageSizeChange"
@@ -156,6 +158,7 @@ const deletesItem = (id) => {
       </template>
     </Table>
   </div>
+  <!-- 编辑表单-->
   <EditForm ref="formRef" :model="formList" :form="formData" :rules="formRules" @submit="submit"></EditForm>
 </template>
 
