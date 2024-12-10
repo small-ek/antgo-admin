@@ -63,16 +63,19 @@ http.interceptors.response.use(
 
         return data === undefined ? {} : data
     },
-    response => {
+    res => {
         closeLoading()
-        const data = response.data
-        const errorMsg = i18n.global.t('tip.' + data.error)
-        const msg = i18n.global.t('tip.' + data.message)
-        if (response.status === 500) {
+        const data = res.response.data
+        const msg = i18n.global.t('tip.' + data.message) !== 'tip.' + data.message ? i18n.global.t('tip.' + data.message) : data.message;
+        if (res.status === 500) {
             Message.error("请求失败,请重新尝试一下")
-        } else if (response.status === 401 && errorMsg) {
+        } else if (res.status === 401 && msg) {
             Message.error(msg)
-        } else if (response.status !== 200 && msg) {
+            useUserLoginStore().logout()
+            setTimeout(() => {
+                window.location.reload()
+            }, 500)
+        } else if (res.status !== 200 && msg) {
             Message.error(msg)
         }
         // 响应错误处理
