@@ -137,6 +137,9 @@ const formRules = reactive({
         {required: true, message: '请输入用户名', trigger: 'blur'},
     ],
     nick_name: [
+        {required: true, message: '请输入昵称', trigger: 'blur',},
+    ],
+    password: [
         {required: true, message: '请输入密码', trigger: 'blur',},
     ]
 })
@@ -148,6 +151,13 @@ const formList = ref([
         value: "",
         type: 'input',
         placeholder: '请输入姓名'
+    },
+    {
+        label: '密码',
+        key: 'password',
+        value: "",
+        type: 'hidden',
+        placeholder: '请输入密码'
     },
     {
         label: '昵称',

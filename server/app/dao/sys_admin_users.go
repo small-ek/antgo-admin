@@ -58,18 +58,24 @@ func (dao *SysAdminUsersDao) GetPage(page page.PageParam) (list []models.SysAdmi
 		sql.Filters(page.Filter),
 		sql.Order(page.Order, page.Desc),
 		sql.Paginate(page.PageSize, page.CurrentPage),
-	).Omit(page.Omit).Find(&list).Offset(0).Count(&total).Error
+	).Omit("password").Find(&list).Offset(0).Count(&total).Error
 	return list, total, err
 }
 
 // GetById
-func (dao *SysAdminUsersDao) GetById(id int) (row models.SysAdminUsers) {
-	dao.db.Model(&dao.models).Where("id=?", id).Limit(1).Find(&row)
+func (dao *SysAdminUsersDao) GetById(id int) (row *models.SysAdminUsers) {
+	dao.db.Model(&dao.models).Omit("password").Where("id=?", id).Limit(1).Find(&row)
 	return row
 }
 
-// GetByUserName
-func (dao *SysAdminUsersDao) GetByUserName(username string) (row models.SysAdminUsers) {
+// GetByUserNameAndStatus
+func (dao *SysAdminUsersDao) GetByUserNameAndStatus(username string) (row *models.SysAdminUsers) {
 	dao.db.Model(&dao.models).Where("username=? AND status=2", username).Limit(1).Find(&row)
+	return row
+}
+
+// GetByUserNameAndStatus
+func (dao *SysAdminUsersDao) GetByUserName(username string) (row *models.SysAdminUsers) {
+	dao.db.Model(&dao.models).Where("username=?", username).Limit(1).Find(&row)
 	return row
 }

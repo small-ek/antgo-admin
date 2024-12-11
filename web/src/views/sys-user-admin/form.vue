@@ -54,7 +54,7 @@ defineExpose({
             <FormItem v-if="row.type!=='slot'" :row="row" :form="props.form"></FormItem>
             <!--自定义插槽-->
             <a-form-item v-else :field="row.key" :label="row.label+'：'" feedback>
-              <slot :name="row.key" :form="props.form"></slot>
+              <slot :name="row.key"></slot>
             </a-form-item>
           </a-col>
         </template>

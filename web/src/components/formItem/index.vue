@@ -1,5 +1,6 @@
 <script setup>
 import {defineProps} from "vue";
+import {formData} from "@/views/sys-user-admin/index.js";
 
 const props = defineProps({
   row: {
@@ -30,6 +31,11 @@ const onSearch = () => {
   <a-form-item v-if="props.row.type==='input'" :field="props.row.key" :label="props.row.label+'：'" feedback>
     <a-input v-model="props.form[props.row.key]" autocomplete="off" class="input"
              :placeholder="props.row.placeholder||'请输入'" allow-clear @press-enter="onSearch" @clear="onSearch"/>
+  </a-form-item>
+  <!--密码-->
+  <a-form-item v-if="props.row.type==='password'" :field="props.row.key" :label="props.row.label+'：'" feedback>
+    <a-input-password v-model="props.form[props.row.key]" autocomplete="off"  :placeholder="props.row.placeholder||'请输入密码'" show-password allow-clear>
+    </a-input-password>
   </a-form-item>
   <!--数字框-->
   <a-form-item v-if="props.row.type==='number'" :field="props.row.key" :label="props.row.label+'：'" feedback>

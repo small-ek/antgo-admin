@@ -42,4 +42,5 @@ const (
 	AUTH_DEVICE_ERROR = "AUTH_DEVICE_ERROR" // 设备不存在
 	AUTH_USER_ERROR   = "AUTH_USER_ERROR"   // 用户不存在
 	PASSWORD_ERROR    = "PASSWORD_ERROR"    // 密码错误
+	USERNAME_EXISTS   = "USERNAME_EXISTS"   // 用户名已存在
 )

@@ -101,7 +101,7 @@ defineExpose({
 .ant-page {
   margin: 0 auto;
   margin-top: 30px;
-  width: 650px;
+  width: fit-content;
 }
 
 </style>

@@ -84,7 +84,7 @@ func (ctrl *SysAdminUsersController) Create(c *gin.Context) {
 	}
 
 	if err := ctrl.SysAdminUsersService.SetReq(req).Store(); err != nil {
-		ctrl.Fail(c, vo.CREATION_FAILED, err)
+		ctrl.Fail(c, vo.CreateUserErrorMsg(err), err)
 		return
 	}
 	ctrl.Success(c, vo.CREATION_SUCCESS)
@@ -108,7 +108,7 @@ func (ctrl *SysAdminUsersController) Update(c *gin.Context) {
 	}
 
 	if err := ctrl.SysAdminUsersService.SetReq(req).Update(); err != nil {
-		ctrl.Fail(c, vo.UPDATE_FAILED, err)
+		ctrl.Fail(c, vo.UpdateUserErrorMsg(err), err)
 		return
 	}
 	ctrl.Success(c, vo.UPDATE_SUCCESS)

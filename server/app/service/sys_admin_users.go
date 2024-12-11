@@ -38,11 +38,7 @@ func (svc *SysAdminUsers) SetReq(req interface{}) *SysAdminUsers {
 	case request.IdsRequest:
 		svc.reqIds = value
 	case request.SysAdminUsersRequestForm:
-		svc.reqForm = value
-		// 根据需求做字段赋值
-		svc.reqForm.SysAdminUsers.Username = value.Username
-		svc.reqForm.SysAdminUsers.Password = value.Password
-		svc.reqForm.SysAdminUsers.NickName = value.NickName
+		conv.ToStruct(value, &svc.reqForm.SysAdminUsers)
 	case request.SysAdminUsersInfoRequest:
 		conv.ToStruct(value, &svc.reqForm.SysAdminUsers)
 	case request.SysAdminUsersLoginRequestForm:
@@ -64,12 +60,15 @@ func (svc *SysAdminUsers) Index() ([]models.SysAdminUsers, int64, error) {
 }
 
 // Show 查询单个
-func (svc *SysAdminUsers) Show() models.SysAdminUsers {
+func (svc *SysAdminUsers) Show() *models.SysAdminUsers {
 	return dao.NewSysAdminUsersDao().GetById(svc.req.SysAdminUsers.Id)
 }
 
 // Store 添加
 func (svc *SysAdminUsers) Store() error {
+	if err := svc.checkUserNameExists(svc.reqForm.SysAdminUsers.Id, svc.reqForm.SysAdminUsers.Username); err != nil {
+		return err
+	}
 	return dao.NewSysAdminUsersDao().Create(&svc.reqForm.SysAdminUsers)
 }
 
@@ -90,7 +89,28 @@ func (svc *SysAdminUsers) UpdatePassword() error {
 
 // Update 修改
 func (svc *SysAdminUsers) Update() error {
+	if err := svc.checkUserNameExists(svc.reqForm.SysAdminUsers.Id, svc.reqForm.SysAdminUsers.Username); err != nil {
+		return err
+	}
 	return dao.NewSysAdminUsersDao().Update(svc.reqForm.SysAdminUsers)
+}
+
+// checkUserNameExists 检查用户名是否存在
+func (svc *SysAdminUsers) checkUserNameExists(id int, userName string) error {
+	if id == 0 {
+		row := dao.NewSysAdminUsersDao().GetByUserName(userName)
+		if row != nil && row.Id > 0 {
+			return errors.New(vo.USERNAME_EXISTS)
+		}
+		return nil
+	} else if dao.NewSysAdminUsersDao().GetById(id).Username != userName {
+		row := dao.NewSysAdminUsersDao().GetByUserName(userName)
+		if row != nil && row.Id > 0 {
+			return errors.New(vo.USERNAME_EXISTS)
+		}
+	}
+
+	return nil
 }
 
 // Deletes 批量删除
@@ -100,7 +120,7 @@ func (svc *SysAdminUsers) Deletes() error {
 
 // Login 登录操作
 func (svc *SysAdminUsers) Login() (result map[string]interface{}, err error) {
-	item := dao.NewSysAdminUsersDao().GetByUserName(svc.reqLoginForm.Username)
+	item := dao.NewSysAdminUsersDao().GetByUserNameAndStatus(svc.reqLoginForm.Username)
 	if utils.VerifyPassword(item.Password, svc.reqLoginForm.Password) == true {
 
 		token, expiresAt, err := svc.token(map[string]interface{}{"id": item.Id, "username": item.Username, "device-id": svc.reqLoginForm.DeviceId})

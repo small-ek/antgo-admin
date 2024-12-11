@@ -14,6 +14,7 @@
     "AUTH_ERROR": "用户认证错误,请重新登录",
     "AUTH_USER_ERROR": "当前用户不存在, 请重新登录",
     "AUTH_DEVICE_ERROR": "当前用户已被登录, 请重新登录",
-    "PASSWORD_ERROR": "原密码不正确, 请重新输入"
+    "PASSWORD_ERROR": "原密码不正确, 请重新输入",
+    "USERNAME_EXISTS": "用户名已存在"
   }
 }

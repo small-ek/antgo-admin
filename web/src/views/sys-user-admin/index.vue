@@ -67,6 +67,8 @@ const updatedStatus = (status, row) => {
 };
 
 const showEdit = (row) => {
+  // 如果是编辑，密码默认隐藏
+  formList.value[1].type = row ? "hidden" : "password";
   formData.value = {...row};
   formRef.value.setVisible(true);
 };
@@ -117,7 +119,7 @@ const reload = () => {
   <!--过滤栏-->
   <FilterBar :model="searchList" @search="search">
     <template #topBtn>
-      <a-button type="outline" @click="showEdit">
+      <a-button type="outline" @click="showEdit()">
         <template #icon>
           <icon-plus/>
         </template>
@@ -159,7 +161,8 @@ const reload = () => {
     </Table>
   </div>
   <!-- 编辑表单-->
-  <EditForm ref="formRef" :model="formList" :form="formData" :rules="formRules" @submit="submit"></EditForm>
+  <EditForm ref="formRef" :model="formList" :form="formData" :rules="formRules" @submit="submit">
+  </EditForm>
 </template>
 
 <style scoped>
