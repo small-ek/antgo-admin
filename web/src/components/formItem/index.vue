@@ -37,6 +37,18 @@ const onSearch = () => {
     <a-input-password v-model="props.form[props.row.key]" autocomplete="off"  :placeholder="props.row.placeholder||'请输入密码'" show-password allow-clear>
     </a-input-password>
   </a-form-item>
+
+  <!--开关-->
+  <a-form-item v-if="props.row.type==='switch'&&props.row.options" :field="props.row.key" :label="props.row.label+'：'" feedback>
+    <a-switch v-model="props.form[props.row.key]"  :checked-value="props.row.options[1]?props.row.options[1]['value']:'1'" :unchecked-value="props.row.options[0]?props.row.options[0]['value']:'2'" >
+      <template #checked v-if="props.row.options[1]&&props.row.options[1]['label']">
+        {{ props.row.options[1]['label'] }}
+      </template>
+      <template #unchecked v-if="props.row.options[0]&&props.row.options[0]['label']">
+        {{ props.row.options[0]['label'] }}
+      </template>
+    </a-switch>
+  </a-form-item>
   <!--数字框-->
   <a-form-item v-if="props.row.type==='number'" :field="props.row.key" :label="props.row.label+'：'" feedback>
     <a-input-number v-model="props.form[props.row.key]" class="input" :placeholder="props.row.placeholder||'请输入'"

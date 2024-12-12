@@ -184,17 +184,17 @@ const formList = ref([
         label: '状态',
         key: 'status',
         value: "",
-        type: 'select',
+        type: 'switch',
         placeholder: '请选择状态',
         options: [
             {
-                label: '已禁用',
+
                 value: 1
             },
             {
-                label: '已启用',
+                
                 value: 2
-            }],
+        }],
     }
 ]);
 
