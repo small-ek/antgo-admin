@@ -5,6 +5,11 @@ import FormItem from "@/components/formItem/index.vue";
 
 const isVisible = ref(false)
 const props = defineProps({
+  title: {
+    type: String,
+    required: false,
+    default: '编辑'
+  },
   model: {
     type: Array,
     required: true
@@ -41,7 +46,7 @@ defineExpose({
            :width="modalWidth('800px')">
     <template #title>
       <a-typography-title :heading="5">
-        编辑
+        {{ props.title }}
       </a-typography-title>
     </template>
     <a-form ref="formRef" :model="props.form" :rules="props.rules" class="form" layout="horizontal" auto-label-width

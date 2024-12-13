@@ -1,6 +1,6 @@
 import {reactive, ref} from "vue";
 
-//分页
+//分页参数
 const page = ref({
     current: 1,
     pageSize: 10,
@@ -18,7 +18,7 @@ const formData = ref({
     "status": 0
 })
 const ids = ref([])
-
+const formTitle = ref("")
 //搜索列表
 const searchList = ref([
     {
@@ -78,7 +78,7 @@ const columns = [
     {
         title: '标识',
         dataIndex: 'id',
-        minWidth: 120,
+        width: 120,
         sortable: {
             sortDirections: ['ascend', 'descend']
         }
@@ -86,14 +86,12 @@ const columns = [
     {
         title: '用户名',
         dataIndex: 'username',
-        minWidth: 200,
         tooltip: true,
         ellipsis: true,
     },
     {
         title: '昵称',
         dataIndex: 'nick_name',
-        minWidth: 100,
         tooltip: true,
         ellipsis: true,
     },
@@ -113,7 +111,7 @@ const columns = [
     }, {
         title: '状态',
         dataIndex: 'status',
-        minWidth: 100,
+        width: 90,
         tooltip: true,
         ellipsis: true,
         slotName: 'status'
@@ -127,7 +125,7 @@ const columns = [
     }, {
         title: '操作',
         slotName: 'optional',
-        minWidth: 300,
+        width: 220,
     }
 ];
 
@@ -143,6 +141,7 @@ const formRules = reactive({
         {required: true, message: '请输入密码', trigger: 'blur',},
     ]
 })
+
 //表单列表
 const formList = ref([
     {
@@ -177,7 +176,7 @@ const formList = ref([
         label: '手机号',
         key: 'phone',
         value: "",
-        type: 'textarea',
+        type: 'input',
         placeholder: '请输入手机号'
     },
     {
@@ -194,8 +193,8 @@ const formList = ref([
             {
                 label: '已启用',
                 value: 2
-        }],
+            }],
     }
 ]);
 
-export {searchList, columns, page, formList, list, formRef, formData, formRules, ids, tableRef};
+export {searchList, columns, page, formList, list, formRef, formData, formRules, ids, tableRef, formTitle};

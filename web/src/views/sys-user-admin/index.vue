@@ -12,7 +12,19 @@ import {
   getSysAdminUsersList,
   updateSysAdminUsers
 } from "@/api/sys_admin_users.js";
-import {columns, formData, formList, formRef, formRules, ids, list, page, searchList, tableRef} from "./index.js";
+import {
+  columns,
+  formData,
+  formList,
+  formRef,
+  formRules,
+  formTitle,
+  ids,
+  list,
+  page,
+  searchList,
+  tableRef
+} from "./index.js";
 
 const fetchPageList = async (params) => {
   const res = await getSysAdminUsersList(params.currentPage, params.pageSize, params.filter_map, params.order, params.desc);
@@ -69,6 +81,7 @@ const updatedStatus = (status, row) => {
 const showEdit = (row) => {
   // 如果是编辑，密码默认隐藏
   formList.value[1].type = row ? "hidden" : "password";
+  formTitle.value = row ? '编辑' : '添加';
   formData.value = {...row};
   formRef.value.setVisible(true);
 };
@@ -152,6 +165,7 @@ const reload = () => {
       <template #optional="{ record }">
         <a-button size="mini" @click="showEdit(record)">编辑</a-button>
 
+        <a-button size="mini" class="ml-10" @click="showEdit(record)">新密码</a-button>
         <a-popconfirm content="确认要删除当前项目吗?" okText="确认删除" cancelText="取消" @ok="deletesItem(record.id)">
           <a-button size="mini" type="outline" class="ml-10" status="danger">
             删除
@@ -161,7 +175,7 @@ const reload = () => {
     </Table>
   </div>
   <!-- 编辑表单-->
-  <EditForm ref="formRef" :model="formList" :form="formData" :rules="formRules" @submit="submit">
+  <EditForm :title="formTitle" ref="formRef" :model="formList" :form="formData" :rules="formRules" @submit="submit">
   </EditForm>
 </template>
 

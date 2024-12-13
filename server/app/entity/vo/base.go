@@ -67,3 +67,8 @@ func (b *Base) GetUser(c *gin.Context) models.SysAdminUsers {
 func (b *Base) GetDeviceId(c *gin.Context) string {
 	return c.GetHeader("device-id")
 }
+
+// GetParams 获取参数,如：/sys-admin-users/*id
+func (b *Base) GetParams(c *gin.Context, str string) string {
+	return c.Param(str)[1:]
+}
