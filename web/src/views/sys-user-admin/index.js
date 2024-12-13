@@ -177,22 +177,22 @@ const formList = ref([
         label: '手机号',
         key: 'phone',
         value: "",
-        type: 'input',
-        placeholder: '请输入年龄'
+        type: 'textarea',
+        placeholder: '请输入手机号'
     },
     {
         label: '状态',
         key: 'status',
         value: "",
-        type: 'switch',
+        type: 'radio-group-btn',
         placeholder: '请选择状态',
         options: [
             {
-
+                label: '已禁用',
                 value: 1
             },
             {
-                
+                label: '已启用',
                 value: 2
         }],
     }

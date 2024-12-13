@@ -30,11 +30,12 @@ const onSearch = () => {
   <!--文本框-->
   <a-form-item v-if="props.row.type==='input'" :field="props.row.key" :label="props.row.label+'：'" feedback>
     <a-input v-model="props.form[props.row.key]" autocomplete="off" class="input"
-             :placeholder="props.row.placeholder||'请输入'" allow-clear @press-enter="onSearch" @clear="onSearch"/>
+             :placeholder="props.row.placeholder||'请输入'" :max-length="props.row.maxLength||60" show-word-limit allow-clear @press-enter="onSearch" @clear="onSearch"/>
   </a-form-item>
+
   <!--密码-->
   <a-form-item v-if="props.row.type==='password'" :field="props.row.key" :label="props.row.label+'：'" feedback>
-    <a-input-password v-model="props.form[props.row.key]" autocomplete="off"  :placeholder="props.row.placeholder||'请输入密码'" show-password allow-clear>
+    <a-input-password v-model="props.form[props.row.key]" autocomplete="off" :max-length="props.row.maxLength||60" show-word-limit  :placeholder="props.row.placeholder||'请输入密码'" show-password allow-clear>
     </a-input-password>
   </a-form-item>
 
@@ -49,11 +50,25 @@ const onSearch = () => {
       </template>
     </a-switch>
   </a-form-item>
+
+  <!--单选框按钮-->
+  <a-form-item v-if="props.row.type==='radio-group-btn'&&props.row.options" :field="props.row.key" :label="props.row.label+'：'" feedback>
+    <a-radio-group type="button" v-model="props.form[props.row.key]">
+      <a-radio :value="row.value" v-for="row in props.row.options">{{ row.label }}</a-radio>
+    </a-radio-group>
+  </a-form-item>
+
+  <!--文本许-->
+  <a-form-item v-if="props.row.type==='textarea'" :field="props.row.key" :label="props.row.label+'：'" feedback>
+    <a-textarea :placeholder="props.row.placeholder||'请输入'" :max-length="props.row.maxLength||200" allow-clear show-word-limit />
+  </a-form-item>
+
   <!--数字框-->
   <a-form-item v-if="props.row.type==='number'" :field="props.row.key" :label="props.row.label+'：'" feedback>
     <a-input-number v-model="props.form[props.row.key]" class="input" :placeholder="props.row.placeholder||'请输入'"
                     allow-clear @clear="onSearch"/>
   </a-form-item>
+
   <!--下拉框-->
   <a-form-item v-if="props.row.type==='select'" :field="props.row.key" :label="props.row.label+'：'" feedback>
     <a-select v-model="props.form[props.row.key]" :placeholder="props.row.placeholder||'请选择'" allow-clear
