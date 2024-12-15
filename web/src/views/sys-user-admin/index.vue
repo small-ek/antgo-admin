@@ -16,6 +16,7 @@ import {
   columns,
   formData,
   formList,
+  formListIndexMap,
   formRef,
   formRules,
   formTitle,
@@ -94,7 +95,7 @@ const updatedStatus = (status, row) => {
 
 const showEdit = (row) => {
   // 如果是编辑，密码默认隐藏
-  formList.value[1].type = row ? "hidden" : "password";
+  formList.value[formListIndexMap['password']].type = row ? "hidden" : "password";
   formTitle.value = row ? '编辑' : '添加';
   formData.value = {...row};
   formRef.value.setVisible(true);

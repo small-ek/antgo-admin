@@ -197,4 +197,36 @@ const formList = ref([
     }
 ]);
 
-export {searchList, columns, page, formList, list, formRef, formData, formRules, ids, tableRef, formTitle};
+/**
+ * 表单列表索引映射
+ * @type {{}}
+ */
+const formListIndexMap = formList.value.reduce((map, item, index) => {
+    map[item.key] = index;
+    return map;
+}, {});
+
+/**
+ * 搜索框列表索引映射
+ * @type {{}}
+ */
+const searchListIndexMap = searchList.value.reduce((map, item, index) => {
+    map[item.key] = index;
+    return map;
+}, {});
+
+export {
+    searchList,
+    columns,
+    page,
+    formList,
+    list,
+    formRef,
+    formData,
+    formRules,
+    ids,
+    tableRef,
+    formTitle,
+    formListIndexMap,
+    searchListIndexMap
+};

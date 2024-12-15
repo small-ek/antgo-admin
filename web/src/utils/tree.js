@@ -1,5 +1,7 @@
 //用于树形结构的操作
 import {pinyin} from "pinyin-pro";
+import {h} from "vue";
+import {IconCalendar} from '@arco-design/web-vue/es/icon';
 
 export function useTree() {
     /**
@@ -31,6 +33,20 @@ export function useTree() {
                     ...item,
                     ...(children.length > 0 && {children})
                 };
+            });
+    };
+    /**
+     * 构建树形选择器
+     * @param items
+     * @param parentId
+     * @returns {*}
+     */
+    const buildTreeSelect = (items) => {
+        return items
+            .map(item => {
+                delete item.icon
+                item["key"] = item.id
+                return item
             });
     };
     /**
@@ -82,6 +98,6 @@ export function useTree() {
 
     // 通过返回值暴露所管理的状态
     return {
-        buildTree, findKeys, subTree,buildTreeTable
+        buildTree, findKeys, subTree, buildTreeTable, buildTreeSelect
     }
 }

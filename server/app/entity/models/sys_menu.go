@@ -16,6 +16,7 @@ type SysMenu struct {
 	Sort      int            `gorm:"column:sort" json:"sort" form:"sort" comment:"排序"`                              //排序
 	Icon      string         `gorm:"column:icon" json:"icon" form:"icon" comment:"图标"`                              //图标
 	IsTab     int            `gorm:"column:is_tab" json:"is_tab" form:"is_tab" comment:"便签栏是否显示"`                   //便签栏是否显示
+	IsCache   int            `gorm:"column:is_cache" json:"is_cache" form:"is_cache" comment:"便签栏是否显示"`             //前端是否缓存
 	CreatedAt time.Time      `gorm:"column:created_at" json:"-" form:"created_at" comment:"创建时间"`                   //创建时间
 	UpdatedAt time.Time      `gorm:"column:updated_at" json:"-" form:"updated_at" comment:"修改时间"`                   //修改时间
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at" json:"-" form:"deleted_at" comment:"删除时间"`                   //删除时间

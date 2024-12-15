@@ -1,7 +1,7 @@
 <script setup>
 import FilterBar from "@/components/filterBar/index.vue";
 import Table from "@/components/table/index.vue";
-import {onMounted, ref} from "vue";
+import {onMounted} from "vue";
 import Status from "@/components/status/index.vue";
 import {Message} from "@arco-design/web-vue";
 import {formatTime} from "@/utils/time.js";
@@ -11,6 +11,7 @@ import {
   columns,
   formData,
   formList,
+  formListIndexMap,
   formRef,
   formRules,
   formTitle,
@@ -77,10 +78,18 @@ const updatedStatus = (status, row) => {
 };
 
 const showEdit = (row) => {
-  formList.value[5].options = iconAll;
+  setParentTree();
+  formList.value[formListIndexMap['icon']].options = iconAll;
   formTitle.value = row ? '编辑' : '添加';
   formData.value = {...row};
   formRef.value.setVisible(true);
+};
+
+const setParentTree = () => {
+  getSysMenuList(1, 1000).then((res) => {
+    const list = useTree().buildTreeSelect(res.data.items)
+    formList.value[formListIndexMap['parent_id']].options = useTree().buildTreeTable(list);
+  });
 };
 
 const submit = (row) => {
@@ -160,7 +169,7 @@ const reload = () => {
         <span class="icon" v-show="record.icon===''">
           <font-awesome-icon icon="fa-solid fa-table-list"/>
         </span>
-        <span class="ml-10">{{record.title}}</span>
+        <span class="ml-10">{{ record.title }}</span>
       </template>
       <template #status="{ record }">
         <Status :row="record" @onClick="updatedStatus"></Status>
@@ -180,7 +189,8 @@ const reload = () => {
     </Table>
   </div>
   <!-- 编辑表单-->
-  <EditForm :title="formTitle" :xxl="24" ref="formRef" :model="formList" :form="formData" :rules="formRules" @submit="submit">
+  <EditForm :title="formTitle" :xxl="24" ref="formRef" :model="formList" :form="formData" :rules="formRules"
+            @submit="submit">
     <template #icon>
       <a-button style="height: 27px" v-if="formData['icon']">
         <template #icon>
@@ -190,7 +200,7 @@ const reload = () => {
       <a-select v-model="formData['icon']" :placeholder="'请选择'" allow-clear
                 class="input" allow-search>
         <a-option v-for="icon in iconAll" :key="icon" :value="icon">
-          <font-awesome-icon :icon="icon" />
+          <font-awesome-icon :icon="icon"/>
           <span class="ml-10">{{ icon }}</span>
         </a-option>
       </a-select>

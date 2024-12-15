@@ -19,6 +19,7 @@ const formData = ref({
 })
 const ids = ref([])
 const formTitle = ref("")
+
 //搜索列表
 const searchList = ref([
     {
@@ -104,13 +105,13 @@ const columns = [
         width: 80,
         tooltip: true,
         ellipsis: true,
-    },{
+    }, {
         title: '排序',
         dataIndex: 'parent_id',
         width: 60,
         tooltip: true,
         ellipsis: true,
-    },{
+    }, {
         title: '创建时间',
         dataIndex: 'created_at',
         tooltip: true,
@@ -139,6 +140,14 @@ const formRules = reactive({
 
 //表单列表
 const formList = ref([
+    {
+        label: '父级菜单',
+        key: 'parent_id',
+        value: "",
+        type: 'tree-select',
+        placeholder: '请选择父级菜单',
+        options: [],
+    },
     {
         label: '菜单名称',
         key: 'title',
@@ -190,11 +199,27 @@ const formList = ref([
         placeholder: '请选择是否缓存',
         options: [
             {
-                label: '未缓存',
+                label: '不缓存',
                 value: 1
             },
             {
                 label: '已缓存',
+                value: 2
+            }],
+    },
+    {
+        label: '便签栏是否显示',
+        key: 'is_tab',
+        value: "",
+        type: 'radio-group-btn',
+        placeholder: '请选择是否缓存',
+        options: [
+            {
+                label: '不显示',
+                value: 1
+            },
+            {
+                label: '显示',
                 value: 2
             }],
     },
@@ -216,4 +241,36 @@ const formList = ref([
     }
 ]);
 
-export {searchList, columns, page, formList, list, formRef, formData, formRules, ids, tableRef, formTitle};
+/**
+ * 表单列表索引映射
+ * @type {{}}
+ */
+const formListIndexMap = formList.value.reduce((map, item, index) => {
+    map[item.key] = index;
+    return map;
+}, {});
+
+/**
+ * 搜索框列表索引映射
+ * @type {{}}
+ */
+const searchListIndexMap = searchList.value.reduce((map, item, index) => {
+    map[item.key] = index;
+    return map;
+}, {});
+
+export {
+    searchList,
+    columns,
+    page,
+    formList,
+    list,
+    formRef,
+    formData,
+    formRules,
+    ids,
+    tableRef,
+    formTitle,
+    formListIndexMap,
+    searchListIndexMap
+};
