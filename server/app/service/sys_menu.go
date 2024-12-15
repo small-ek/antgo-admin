@@ -1,6 +1,10 @@
 package service
 
 import (
+	"github.com/small-ek/antgo/os/alog"
+	"github.com/small-ek/antgo/utils/conv"
+	"go.uber.org/zap"
+	"reflect"
 	"server/app/dao"
 	"server/app/entity/models"
 	"server/app/entity/request"
@@ -9,6 +13,7 @@ import (
 type SysMenu struct {
 	req     request.SysMenuRequest
 	reqForm request.SysMenuRequestForm
+	reqIds  request.IdsRequest
 }
 
 func NewSysMenuService() *SysMenu {
@@ -16,16 +21,17 @@ func NewSysMenuService() *SysMenu {
 }
 
 // SetReq 设置参数
-func (svc *SysMenu) SetReq(req request.SysMenuRequest) *SysMenu {
-	svc.req = req
-	return svc
-}
-
-// SetReqForm 设置参数
-func (svc *SysMenu) SetReqForm(req request.SysMenuRequestForm) *SysMenu {
-	req.SysMenu.Title = req.Title
-
-	svc.reqForm = req
+func (svc *SysMenu) SetReq(req interface{}) *SysMenu {
+	switch value := req.(type) {
+	case request.SysMenuRequest:
+		svc.req = value
+	case request.SysMenuRequestForm:
+		conv.ToStruct(value, &svc.reqForm.SysMenu)
+	case request.IdsRequest:
+		svc.reqIds = value
+	default:
+		alog.Write.Error("SetReq", zap.Any("Unsupported request type", reflect.TypeOf(value)))
+	}
 	return svc
 }
 
@@ -49,7 +55,7 @@ func (svc *SysMenu) Update() error {
 	return dao.NewSysMenuDao().Update(svc.reqForm.SysMenu)
 }
 
-// Delete 删除
-func (svc *SysMenu) Delete() error {
-	return dao.NewSysMenuDao().DeleteById(svc.req.SysMenu.Id)
+// Deletes 批量删除
+func (svc *SysMenu) Deletes() error {
+	return dao.NewSysMenuDao().DeleteByIds(svc.reqIds.Ids)
 }

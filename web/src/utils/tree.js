@@ -1,7 +1,5 @@
 //用于树形结构的操作
 import {pinyin} from "pinyin-pro";
-import {h} from "vue";
-import {IconCalendar} from '@arco-design/web-vue/es/icon';
 
 export function useTree() {
     /**
@@ -42,12 +40,13 @@ export function useTree() {
      * @returns {*}
      */
     const buildTreeSelect = (items) => {
-        return items
+        const list= items
             .map(item => {
                 delete item.icon
                 item["key"] = item.id
                 return item
             });
+        return buildTreeTable(list)
     };
     /**
      * 获取所有子节点

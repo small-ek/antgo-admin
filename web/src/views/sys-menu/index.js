@@ -180,7 +180,7 @@ const formList = ref([
         label: '排序',
         key: 'sort',
         value: "",
-        type: 'input',
+        type: 'number',
         placeholder: '请输入排序'
     },
     {

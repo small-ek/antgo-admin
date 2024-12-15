@@ -83,7 +83,7 @@ func (ctrl *SysMenuController) Create(c *gin.Context) {
 		return
 	}
 
-	if err := ctrl.SysMenuService.SetReqForm(req).Store(); err != nil {
+	if err := ctrl.SysMenuService.SetReq(req).Store(); err != nil {
 		ctrl.Fail(c, vo.CREATION_FAILED, err)
 		return
 	}
@@ -107,29 +107,29 @@ func (ctrl *SysMenuController) Update(c *gin.Context) {
 		return
 	}
 
-	if err := ctrl.SysMenuService.SetReqForm(req).Update(); err != nil {
+	if err := ctrl.SysMenuService.SetReq(req).Update(); err != nil {
 		ctrl.Fail(c, vo.UPDATE_FAILED, err)
 	}
 	ctrl.Success(c, vo.UPDATE_SUCCESS)
 }
 
-//	@Tags			后台菜单
-//	@Summary		删除后台菜单数据
+//	@Tags			管理员用户
+//	@Summary		删除管理员用户数据
 //	@Accept			json
 //	@Produce		json
 //	@Success		0	{object}	response.Write
 //	@Failure		1	{object}	response.Write
-//	@Router			/sys-menu/:id [delete]
+//	@Router			/sys-menu [delete]
 //
 // Delete 删除
-func (ctrl *SysMenuController) Delete(c *gin.Context) {
-	var req request.SysMenuRequest
-	if err := c.ShouldBindUri(&req); err != nil {
+func (ctrl *SysMenuController) DeleteIds(c *gin.Context) {
+	var req request.IdsRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
 		ctrl.Fail(c, vo.INVALID_REQUEST_PARAMETERS, err)
 		return
 	}
 
-	if err := ctrl.SysMenuService.SetReq(req).Delete(); err != nil {
+	if err := ctrl.SysMenuService.SetReq(req).Deletes(); err != nil {
 		ctrl.Fail(c, vo.DELETE_FAILED, err)
 		return
 	}

@@ -87,8 +87,8 @@ const showEdit = (row) => {
 
 const setParentTree = () => {
   getSysMenuList(1, 1000).then((res) => {
-    const list = useTree().buildTreeSelect(res.data.items)
-    formList.value[formListIndexMap['parent_id']].options = useTree().buildTreeTable(list);
+    const rootOption = { key: 0, title: '根目录', parent_id: 0 };
+    formList.value[formListIndexMap['parent_id']].options = [rootOption, ...useTree().buildTreeSelect(res.data.items)];
   });
 };
 
@@ -158,16 +158,16 @@ const reload = () => {
 
   <div class="container ant-card">
     <!-- 表格-->
-    <Table ref="tableRef" :columns="columns" :data="list" :total="page.total" :current="page.current"
+    <Table :rowSelection="null" ref="tableRef" :columns="columns" :data="list" :total="page.total" :current="page.current"
            :pageSize="page.pageSize" @changePage="changePage"
            @pageSizeChange="pageSizeChange"
            @changeTable="changeTable" @select="select">
       <template #title="{ record }">
-        <span class="icon" v-show="record.icon!==''">
+        <span class="icon" v-if="record.icon">
           <font-awesome-icon :icon="record.icon" size="1x"/>
         </span>
-        <span class="icon" v-show="record.icon===''">
-          <font-awesome-icon icon="fa-solid fa-table-list"/>
+        <span class="icon" v-else>
+          <font-awesome-icon icon="fa-table-list"/>
         </span>
         <span class="ml-10">{{ record.title }}</span>
       </template>
