@@ -17,13 +17,30 @@ export function useTree() {
             }));
     };
     /**
+     * 一维转树形结构 用于table
+     * @param items
+     * @param parentId
+     * @returns {*}
+     */
+    const buildTreeTable = (items, parentId = 0) => {
+        return items
+            .filter(item => item.parent_id === parentId)
+            .map(item => {
+                const children = buildTreeTable(items, item.id);
+                return {
+                    ...item,
+                    ...(children.length > 0 && {children})
+                };
+            });
+    };
+    /**
      * 获取所有子节点
      * @param items 数据
      * @returns {*}
      */
     const subTree = (items) => {
         return items
-            .filter(item => item.path !== "" &&  item.component !== "").map(item => ({
+            .filter(item => item.path !== "" && item.component !== "").map(item => ({
                 ...item,
                 pinyin: pinyin(item.title, {toneType: "none"}).replace(/\s+/g, ''),
             }));
@@ -65,6 +82,6 @@ export function useTree() {
 
     // 通过返回值暴露所管理的状态
     return {
-        buildTree, findKeys, subTree
+        buildTree, findKeys, subTree,buildTreeTable
     }
 }

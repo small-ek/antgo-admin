@@ -1,7 +1,7 @@
 <script setup>
 import FilterBar from "@/components/filterBar/index.vue";
 import Table from "@/components/table/index.vue";
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
 import Status from "@/components/status/index.vue";
 import {Message} from "@arco-design/web-vue";
 import {formatTime} from "@/utils/time.js";
@@ -25,6 +25,20 @@ import {
   searchList,
   tableRef
 } from "./index.js";
+
+
+const passwordFormRef = ref()
+//表单列表
+const passwordFormList = ref([
+  {
+    label: '密码',
+    key: 'password',
+    value: "",
+    type: 'password',
+    placeholder: '请输入新密码'
+  }
+]);
+
 
 const fetchPageList = async (params) => {
   const res = await getSysAdminUsersList(params.currentPage, params.pageSize, params.filter_map, params.order, params.desc);
@@ -84,6 +98,11 @@ const showEdit = (row) => {
   formTitle.value = row ? '编辑' : '添加';
   formData.value = {...row};
   formRef.value.setVisible(true);
+};
+
+const showPasswordEdit = (row) => {
+  formData.value = {...row};
+  passwordFormRef.value.setVisible(true);
 };
 
 const submit = (row) => {
@@ -165,7 +184,8 @@ const reload = () => {
       <template #optional="{ record }">
         <a-button size="mini" @click="showEdit(record)">编辑</a-button>
 
-        <a-button size="mini" class="ml-10" @click="showEdit(record)">新密码</a-button>
+        <a-button size="mini" class="ml-10" @click="showPasswordEdit(record)">新密码</a-button>
+
         <a-popconfirm content="确认要删除当前项目吗?" okText="确认删除" cancelText="取消" @ok="deletesItem(record.id)">
           <a-button size="mini" type="outline" class="ml-10" status="danger">
             删除
@@ -176,6 +196,11 @@ const reload = () => {
   </div>
   <!-- 编辑表单-->
   <EditForm :title="formTitle" ref="formRef" :model="formList" :form="formData" :rules="formRules" @submit="submit">
+  </EditForm>
+
+  <!-- 编辑密码-->
+  <EditForm title="修改密码" ref="passwordFormRef" :model="passwordFormList" :form="formData" :rules="formRules"
+            @submit="submit">
   </EditForm>
 </template>
 

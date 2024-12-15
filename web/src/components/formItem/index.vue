@@ -72,7 +72,7 @@ const onSearch = () => {
   <!--下拉框-->
   <a-form-item v-if="props.row.type==='select'" :field="props.row.key" :label="props.row.label+'：'" feedback>
     <a-select v-model="props.form[props.row.key]" :placeholder="props.row.placeholder||'请选择'" allow-clear
-              class="input" @clear="onSearch">
+              class="input" @clear="onSearch" allow-search>
       <a-option v-for="option in props.row.options" :key="option.value" :value="option.value">
         {{ option.label }}
       </a-option>

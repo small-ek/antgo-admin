@@ -44,11 +44,12 @@ func (dao *SysMenuDao) GetList() (list []models.SysMenu) {
 }
 
 // GetPage
-func (dao *SysMenuDao) GetPage(page page.PageParam, filter models.SysMenu) (list []models.SysMenu, total int64, err error) {
+func (dao *SysMenuDao) GetPage(page page.PageParam) (list []models.SysMenu, total int64, err error) {
 	err = dao.db.Model(&dao.models).Scopes(
-		sql.Where("title", "LIKE", filter.Title),
-		sql.Where("path", "LIKE", filter.Path),
-		//sql.Filters(page.Filter),
+		sql.Where("title", "LIKE", page.FilterMap["title"]),
+		sql.Where("path", "LIKE", page.FilterMap["path"]),
+		sql.Where("component", "LIKE", page.FilterMap["component"]),
+		sql.Filters(page.Filter),
 		sql.Order(page.Order, page.Desc),
 		sql.Paginate(page.PageSize, page.CurrentPage),
 	).Find(&list).Offset(0).Count(&total).Error

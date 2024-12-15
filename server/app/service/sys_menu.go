@@ -7,7 +7,7 @@ import (
 )
 
 type SysMenu struct {
-	req request.SysMenuRequest
+	req     request.SysMenuRequest
 	reqForm request.SysMenuRequestForm
 }
 
@@ -15,7 +15,7 @@ func NewSysMenuService() *SysMenu {
 	return &SysMenu{}
 }
 
-//SetReq 设置参数
+// SetReq 设置参数
 func (svc *SysMenu) SetReq(req request.SysMenuRequest) *SysMenu {
 	svc.req = req
 	return svc
@@ -31,7 +31,7 @@ func (svc *SysMenu) SetReqForm(req request.SysMenuRequestForm) *SysMenu {
 
 // Index 分页
 func (svc *SysMenu) Index() ([]models.SysMenu, int64, error) {
-	return dao.NewSysMenuDao().GetPage(svc.req.PageParam, svc.req.SysMenu)
+	return dao.NewSysMenuDao().GetPage(svc.req.PageParam)
 }
 
 // Show 查询单个
@@ -53,4 +53,3 @@ func (svc *SysMenu) Update() error {
 func (svc *SysMenu) Delete() error {
 	return dao.NewSysMenuDao().DeleteById(svc.req.SysMenu.Id)
 }
-
