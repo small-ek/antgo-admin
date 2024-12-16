@@ -9,14 +9,14 @@ import http from "@/utils/request.js";
  * @param desc 是否降序
  * @returns {Promise<axios.AxiosResponse<any>>} 返回列表
  */
-export const getSysMenuList = async (current_page, page_size=1000, filter_map, order = [], desc = []) => {
+export const getSysMenuList = async (current_page, page_size = 1000, filter_map, order = [], desc = []) => {
     return http.get('sys-menu', {
         params: {
             current_page: current_page,
             page_size: page_size,
             filter_map: JSON.stringify(filter_map),
-            order: order.length > 0 ? order : ['id'],
-            desc: desc.length > 0 ? desc : [true],
+            order: order.length > 0 ? order : ['sort', 'id'],
+            desc: desc.length > 0 ? desc : [true, false],
         }
     });
 }

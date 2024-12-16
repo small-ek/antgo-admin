@@ -107,7 +107,7 @@ const columns = [
         ellipsis: true,
     }, {
         title: '排序',
-        dataIndex: 'parent_id',
+        dataIndex: 'sort',
         width: 60,
         tooltip: true,
         ellipsis: true,
@@ -121,12 +121,15 @@ const columns = [
     }, {
         title: '操作',
         slotName: 'optional',
-        width: 220,
+        width: 240,
     }
 ];
 
 //表单验证
 const formRules = reactive({
+    parent_id: [
+        {required: true, message: '请选择父级菜单', trigger: 'blur'},
+    ],
     title: [
         {required: true, message: '请输入菜单名称', trigger: 'blur'},
     ],
@@ -135,6 +138,9 @@ const formRules = reactive({
     ],
     status: [
         {required: true, message: '请选择状态', trigger: 'blur',},
+    ],
+    is_tab: [
+        {required: true, message: '请选择标签栏', trigger: 'blur',},
     ],
 })
 
@@ -192,34 +198,34 @@ const formList = ref([
         options: [],
     },
     {
-        label: '是否缓存页面',
+        label: '缓存页面',
         key: 'is_cache',
         value: "",
         type: 'radio-group-btn',
         placeholder: '请选择是否缓存',
         options: [
             {
-                label: '不缓存',
+                label: '关闭缓存',
                 value: 1
             },
             {
-                label: '已缓存',
+                label: '启用缓存',
                 value: 2
             }],
     },
     {
-        label: '便签栏是否显示',
+        label: '显示便签栏',
         key: 'is_tab',
         value: "",
         type: 'radio-group-btn',
         placeholder: '请选择是否缓存',
         options: [
             {
-                label: '不显示',
+                label: '关闭便签栏',
                 value: 1
             },
             {
-                label: '显示',
+                label: '开启便签栏',
                 value: 2
             }],
     },
@@ -231,11 +237,11 @@ const formList = ref([
         placeholder: '请选择状态',
         options: [
             {
-                label: '已禁用',
+                label: '禁用中',
                 value: 1
             },
             {
-                label: '已启用',
+                label: '启用中',
                 value: 2
             }],
     }

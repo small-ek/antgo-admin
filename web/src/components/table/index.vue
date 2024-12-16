@@ -28,7 +28,7 @@ const props = defineProps({
     default: () => [10, 20, 50, 100, 200, 500, 1000]
   },
   expandable: { //展开行
-    type: Array,
+    type: Object,
     required: false
   },
   rowKey: {
@@ -76,15 +76,16 @@ const selectAll = (selected) => {
     emit('select', [])
   }
 }
+
 defineExpose({
   clearSelected
 })
 </script>
 
 <template>
-  <a-table :columns="props.columns" :data="props.data" :row-selection="props.rowSelection" stripe :pagination="false"
+  <a-table :columns="props.columns" :data="props.data" :row-selection="props.rowSelection"  :pagination="false"
            @change="changeTable" :expandable="props.expandable" :row-key="props.rowKey"
-           v-model:selectedKeys="selectedKeys" @select="select" @select-all="selectAll">
+           v-model:selectedKeys="selectedKeys" @select="select" @select-all="selectAll" stripe column-resizable :bordered="{cell:true}">
     <!--自定义插槽-->
     <template #[row.slotName]="{record, rowIndex}" v-for="row in slot">
       <slot :name="row.slotName" :record="record" :rowIndex="rowIndex"></slot>

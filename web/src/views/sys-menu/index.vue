@@ -28,6 +28,7 @@ import iconAll from "@/utils/icon.js";
 const fetchPageList = async (params) => {
   const res = await getSysMenuList(params.currentPage, params.pageSize, params.filter_map, params.order, params.desc);
   list.value = useTree().buildTreeTable(res.data.items);
+  console.log(list.value)
   page.value.current = params.currentPage;
   page.value.pageSize = params.pageSize;
   if (params.updateTotal) {
@@ -77,17 +78,23 @@ const updatedStatus = (status, row) => {
   });
 };
 
-const showEdit = (row) => {
+const showEdit = (row, parent_id) => {
   setParentTree();
   formList.value[formListIndexMap['icon']].options = iconAll;
-  formTitle.value = row ? '编辑' : '添加';
+  if (parent_id) {
+    row = {};
+    row.parent_id = parent_id;
+    formData.value = row;
+  }
   formData.value = {...row};
+  formTitle.value = row ? '编辑' : '添加';
+
   formRef.value.setVisible(true);
 };
 
 const setParentTree = () => {
   getSysMenuList(1, 1000).then((res) => {
-    const rootOption = { key: 0, title: '根目录', parent_id: 0 };
+    const rootOption = {key: 0, title: '根目录', parent_id: 0};
     formList.value[formListIndexMap['parent_id']].options = [rootOption, ...useTree().buildTreeSelect(res.data.items)];
   });
 };
@@ -158,7 +165,8 @@ const reload = () => {
 
   <div class="container ant-card">
     <!-- 表格-->
-    <Table :rowSelection="null" ref="tableRef" :columns="columns" :data="list" :total="page.total" :current="page.current"
+    <Table :rowSelection="null" ref="tableRef" :columns="columns" :data="list" :total="page.total"
+           :current="page.current"
            :pageSize="page.pageSize" @changePage="changePage"
            @pageSizeChange="pageSizeChange"
            @changeTable="changeTable" @select="select">
@@ -179,6 +187,7 @@ const reload = () => {
       </template>
       <template #optional="{ record }">
         <a-button size="mini" @click="showEdit(record)">编辑</a-button>
+        <a-button size="mini" class="ml-10" @click="showEdit(record,record.id)">添加子菜单</a-button>
 
         <a-popconfirm content="确认要删除当前项目吗?" okText="确认删除" cancelText="取消" @ok="deletesItem(record.id)">
           <a-button size="mini" type="outline" class="ml-10" status="danger">
