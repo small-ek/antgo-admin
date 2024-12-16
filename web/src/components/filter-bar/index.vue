@@ -1,6 +1,6 @@
 <script setup>
 import {defineEmits, defineProps, reactive, ref} from "vue";
-import formItem from "@/components/formItem/index.vue";
+import formItem from "@/components/form-item/index.vue";
 import {useLayout} from "@/stores/layout.js";
 
 const props = defineProps({

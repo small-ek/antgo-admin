@@ -1,11 +1,11 @@
 <script setup>
-import FilterBar from "@/components/filterBar/index.vue";
+import FilterBar from "@/components/filter-bar/index.vue";
 import Table from "@/components/table/index.vue";
 import {onMounted, ref} from "vue";
 import Status from "@/components/status/index.vue";
 import {Message} from "@arco-design/web-vue";
 import {formatTime} from "@/utils/time.js";
-import EditForm from "./form.vue";
+import EditForm from "@/components/edit-form/index.vue";
 import {
   createSysAdminUsers,
   deleteSysAdminUsers,

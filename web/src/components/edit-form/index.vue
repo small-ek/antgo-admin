@@ -1,7 +1,7 @@
 <script setup>
 import {modalWidth} from "@/utils/helper.js";
 import {defineExpose, defineProps, ref} from "vue";
-import FormItem from "@/components/formItem/index.vue";
+import FormItem from "@/components/form-item/index.vue";
 
 const isVisible = ref(false)
 const props = defineProps({
@@ -21,20 +21,6 @@ const props = defineProps({
   rules: {
     type: Object,
     required: false
-  },
-  slotsName: {
-    type: String,
-    required: false
-  },
-  xl: {
-    type: Number,
-    required: false,
-    default: 24
-  },
-  xxl: {
-    type: Number,
-    required: false,
-    default: 24
   }
 });
 const formRef = ref(null)
@@ -57,7 +43,7 @@ defineExpose({
 
 <template>
   <a-modal v-model:visible="isVisible" draggable title-align="start" :mask-closable="false" :footer="false"
-           :width="modalWidth('800px')">
+           :width="modalWidth('850px')">
     <template #title>
       <a-typography-title :heading="5">
         {{ props.title }}
@@ -69,7 +55,7 @@ defineExpose({
             @submit-success="submit">
       <a-row :gutter="15">
         <template v-for="(row,index) in props.model">
-          <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="props.xl" :xxl="props.xxl">
+          <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" :xxl="24">
             <FormItem v-if="row.type!=='slot'" :row="row" :form="props.form"></FormItem>
             <!--自定义插槽-->
             <a-form-item v-else :field="row.key" :label="row.label+'：'" feedback>
@@ -77,7 +63,6 @@ defineExpose({
             </a-form-item>
           </a-col>
         </template>
-        <slot v-if="slotsName" :name="slotsName"></slot>
         <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" :xxl="24">
           <div style="float: right;margin-bottom: 20px">
             <a-button @click="reset">

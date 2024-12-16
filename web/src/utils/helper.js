@@ -9,5 +9,5 @@ export function generateUniqueKey() {
 
 //弹窗宽度
 export function modalWidth(width) {
-    return useLayout().windowWidth > 768 ? width : '95%'
+    return useLayout().windowWidth > 850 ? width : '95%'
 }

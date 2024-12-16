@@ -1,8 +1,8 @@
 <script setup>
 import { useLayout } from "@/stores/layout.js";
 import { useNavigation } from "@/utils/base.js";
-import LogoImg from "@/layout/componets/logoImg/index.vue";
-import LogoText from "@/layout/componets/logoText/index.vue";
+import LogoImg from "@/layout/componets/logo-img/index.vue";
+import LogoText from "@/layout/componets/logo-text/index.vue";
 </script>
 
 <template>

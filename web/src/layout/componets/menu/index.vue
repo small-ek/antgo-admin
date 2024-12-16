@@ -1,7 +1,7 @@
 <script setup>
 import {defineProps, ref} from 'vue';
 import {useLayout} from "@/stores/layout.js";
-import MenuItem from "@/layout/componets/menuItem/index.vue";
+import MenuItem from "@/layout/componets/menu-item/index.vue";
 import {useMenu} from "@/stores/menu.js";
 import {useRouter} from "vue-router"
 import {Message} from "@arco-design/web-vue";

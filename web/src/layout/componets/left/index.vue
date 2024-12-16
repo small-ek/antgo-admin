@@ -3,7 +3,7 @@ import {nextTick, onMounted, ref} from 'vue';
 import Menu from "@/layout/componets/menu/index.vue";
 import Logo from "@/layout/componets/logo/index.vue";
 import {useLayout} from '@/stores/layout.js';
-import LogoImg from "@/layout/componets/logoImg/index.vue";
+import LogoImg from "@/layout/componets/logo-img/index.vue";
 import {useTree} from "@/utils/tree.js";
 import {useMenu} from "@/stores/menu.js";
 import {useRouter} from "vue-router";

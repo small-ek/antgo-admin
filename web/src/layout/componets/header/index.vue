@@ -2,7 +2,7 @@
 import Breadcrumbs from '@/layout/componets/breadcrumbs/index.vue'
 import {onMounted, onUnmounted, ref} from "vue";
 import {useLayout} from '@/stores/layout.js'
-import headerLogo from "@/layout/componets/headerLogo/index.vue";
+import headerLogo from "@/layout/componets/header-logo/index.vue";
 import {useTheme} from "@/utils/theme.js";
 import Menu from "@/layout/componets/menu/index.vue";
 import {useMenu} from "@/stores/menu.js";
