@@ -108,7 +108,7 @@ const columns = [
     }, {
         title: '排序',
         dataIndex: 'sort',
-        width: 60,
+        width: 70,
         tooltip: true,
         ellipsis: true,
     }, {
@@ -116,7 +116,7 @@ const columns = [
         dataIndex: 'created_at',
         tooltip: true,
         ellipsis: true,
-        width: 170,
+        width: 180,
         slotName: 'created_at'
     }, {
         title: '操作',

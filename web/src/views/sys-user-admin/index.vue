@@ -151,23 +151,6 @@ const reload = () => {
 <template>
   <!--过滤栏-->
   <FilterBar :model="searchList" @search="search">
-    <template #topBtn>
-      <a-button type="outline" @click="showEdit()">
-        <template #icon>
-          <icon-plus/>
-        </template>
-        添加
-      </a-button>
-      <a-popconfirm content="确认要删除选中项目吗?" okText="确认删除" cancelText="取消" @ok="deletesItem">
-        <a-button type="outline" class="ml-10" status="danger" v-show="ids.length>0">
-          <template #icon>
-            <icon-delete/>
-          </template>
-          批量删除
-        </a-button>
-      </a-popconfirm>
-
-    </template>
   </FilterBar>
 
   <div class="container ant-card">
@@ -175,7 +158,8 @@ const reload = () => {
     <Table ref="tableRef" :columns="columns" :data="list" :total="page.total" :current="page.current"
            :pageSize="page.pageSize" @changePage="changePage"
            @pageSizeChange="pageSizeChange"
-           @changeTable="changeTable" @select="select">
+           @changeTable="changeTable" @select="select" @deletes="deletesItem" @showEdit="showEdit">
+
       <template #status="{ record }">
         <Status :row="record" @onClick="updatedStatus"></Status>
       </template>

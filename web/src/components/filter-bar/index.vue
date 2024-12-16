@@ -28,10 +28,11 @@ const onReset = () => {
 <template>
 
   <div class="container ant-card" v-if="props.model">
-    <a-form ref="formRef" :model="form" class="form" :layout="useLayout().windowWidth>768?'horizontal':'vertical'" size="small"
-            label-align="right" :label-col-props="{span: 8, offset: 0}" :wrapper-col-props="{span: 16, offset: 0}" @submit-success="onSearch">
-
-      <a-grid  :cols="{ xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 }" :colGap="1" :rowGap="5" :collapsed="isExpand">
+    <a-form ref="formRef" :model="form" class="form" :layout="useLayout().windowWidth>768?'horizontal':'vertical'"
+            size="small" label-align="right" :label-col-props="{span: 8, offset: 0}"
+            :wrapper-col-props="{span: 16, offset: 0}"
+            @submit-success="onSearch">
+      <a-grid :cols="{ xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 }" :colGap="1" :rowGap="5" :collapsed="isExpand">
         <template v-for="(row,index) in props.model">
           <a-grid-item class="demo-item">
             <formItem v-if="row.type!=='slot'" :row="row" :form="form" @search="onSearch"></formItem>
@@ -54,7 +55,6 @@ const onReset = () => {
               </template>
               重置
             </a-button>
-
             <a-button type="text" class="ml-10" @click="onChangeIsExpand">
             <span v-show="isExpand===true">
               展开
@@ -68,14 +68,6 @@ const onReset = () => {
           </div>
         </a-grid-item>
       </a-grid>
-
-      <a-row :gutter="15">
-        <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="8" :xxl="8" style="margin-bottom: 10px">
-          <slot name="topBtn"></slot>
-        </a-col>
-
-      </a-row>
-
     </a-form>
   </div>
 </template>

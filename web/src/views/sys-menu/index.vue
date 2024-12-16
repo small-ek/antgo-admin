@@ -156,7 +156,7 @@ const reload = () => {
           <template #icon>
             <icon-delete/>
           </template>
-          批量删除
+          删除
         </a-button>
       </a-popconfirm>
 
@@ -169,7 +169,7 @@ const reload = () => {
            :current="page.current"
            :pageSize="page.pageSize" @changePage="changePage"
            @pageSizeChange="pageSizeChange"
-           @changeTable="changeTable" @select="select">
+           @changeTable="changeTable" @select="select" @deletesItem="deletesItem" @showEdit="showEdit">
       <template #title="{ record }">
         <span class="icon" v-if="record.icon">
           <font-awesome-icon :icon="record.icon" size="1x"/>
