@@ -13,8 +13,11 @@ type SysMenuDao struct {
 	models *models.SysMenu
 }
 
-func NewSysMenuDao() *SysMenuDao {
-	return &SysMenuDao{db: ant.Db()}
+func NewSysMenuDao(db *gorm.DB) *SysMenuDao {
+	if db == nil {
+		db = ant.Db()
+	}
+	return &SysMenuDao{db: db}
 }
 
 // Create

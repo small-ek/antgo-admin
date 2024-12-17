@@ -37,25 +37,25 @@ func (svc *SysMenu) SetReq(req interface{}) *SysMenu {
 
 // Index 分页
 func (svc *SysMenu) Index() ([]models.SysMenu, int64, error) {
-	return dao.NewSysMenuDao().GetPage(svc.req.PageParam)
+	return dao.NewSysMenuDao(nil).GetPage(svc.req.PageParam)
 }
 
 // Show 查询单个
 func (svc *SysMenu) Show() models.SysMenu {
-	return dao.NewSysMenuDao().GetById(svc.req.SysMenu.Id)
+	return dao.NewSysMenuDao(nil).GetById(svc.req.SysMenu.Id)
 }
 
 // Store 添加
 func (svc *SysMenu) Store() error {
-	return dao.NewSysMenuDao().Create(&svc.reqForm.SysMenu)
+	return dao.NewSysMenuDao(nil).Create(&svc.reqForm.SysMenu)
 }
 
 // Update 修改
 func (svc *SysMenu) Update() error {
-	return dao.NewSysMenuDao().Update(svc.reqForm.SysMenu)
+	return dao.NewSysMenuDao(nil).Update(svc.reqForm.SysMenu)
 }
 
 // Deletes 批量删除
 func (svc *SysMenu) Deletes() error {
-	return dao.NewSysMenuDao().DeleteByIds(svc.reqIds.Ids)
+	return dao.NewSysMenuDao(nil).DeleteByIds(svc.reqIds.Ids)
 }

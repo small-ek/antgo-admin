@@ -52,6 +52,6 @@ func AuthJWT() gin.HandlerFunc {
 
 // getUserByUser 通过 ID 获取用户信息
 func getUserByUser(userID int) *models.SysAdminUsers {
-	user := dao.NewSysAdminUsersDao().GetById(userID)
+	user := dao.NewSysAdminUsersDao(nil).GetById(userID)
 	return user
 }

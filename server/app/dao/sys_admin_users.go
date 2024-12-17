@@ -15,8 +15,11 @@ type SysAdminUsersDao struct {
 	models *models.SysAdminUsers
 }
 
-func NewSysAdminUsersDao() *SysAdminUsersDao {
-	return &SysAdminUsersDao{db: ant.Db()}
+func NewSysAdminUsersDao(db *gorm.DB) *SysAdminUsersDao {
+	if db == nil {
+		db = ant.Db()
+	}
+	return &SysAdminUsersDao{db: db}
 }
 
 // Create
