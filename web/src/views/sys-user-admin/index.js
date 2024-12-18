@@ -74,26 +74,29 @@ const searchList = ref([
     }]);
 
 //表格列
-const columns = [
+const columns = ref([
     {
         title: '标识',
         dataIndex: 'id',
         width: 120,
         sortable: {
             sortDirections: ['ascend', 'descend']
-        }
+        },
+        visible: true
     },
     {
         title: '用户名',
         dataIndex: 'username',
         tooltip: true,
         ellipsis: true,
+        visible: true
     },
     {
         title: '昵称',
         dataIndex: 'nick_name',
         tooltip: true,
         ellipsis: true,
+        visible: true
     },
     {
         title: '手机号',
@@ -101,6 +104,7 @@ const columns = [
         minWidth: 100,
         tooltip: true,
         ellipsis: true,
+        visible: true
     },
     {
         title: '电子邮箱',
@@ -108,26 +112,30 @@ const columns = [
         minWidth: 100,
         tooltip: true,
         ellipsis: true,
+        visible: true
     }, {
         title: '状态',
         dataIndex: 'status',
         width: 90,
         tooltip: true,
         ellipsis: true,
+        visible: true,
         slotName: 'status'
     }, {
         title: '创建时间',
         dataIndex: 'created_at',
         tooltip: true,
         ellipsis: true,
+        visible: true,
         minWidth: 100,
         slotName: 'created_at'
     }, {
         title: '操作',
         slotName: 'optional',
         width: 220,
+        visible: true
     }
-];
+]);
 
 //表单验证
 const formRules = reactive({
