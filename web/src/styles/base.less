@@ -19,7 +19,15 @@
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
   background-color: #DDDDDD;
 }
+:fullscreen {
+  background: var(--color-bg-1); /* 确保全屏背景颜色 */
+  overflow: auto;
+  padding:1vw
+}
 
+::backdrop {
+  background: transparent /* 调整背景遮罩颜色 */
+}
 #app,
 body,
 html {

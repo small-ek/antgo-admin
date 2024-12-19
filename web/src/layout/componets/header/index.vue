@@ -12,10 +12,10 @@ import {useUserLoginStore} from "@/stores/userLogin.js";
 import {Message} from "@arco-design/web-vue";
 import Mousetrap from 'mousetrap';
 import {modalWidth} from "@/utils/helper.js";
+import {onScreenFull,screenFullStatus} from "@/utils/screenfull.js";
 
 const router = useRouter()
 const navigation = useNavigation(router)
-const isFullscreen = ref(false)
 const menuRef = ref()
 const isSearch = ref(false);
 const searchList = ref(useMenu().subMenu)
@@ -40,33 +40,6 @@ const onCollapse = () => {
 //刷新
 const onRefresh = () => {
   window.location.reload()
-}
-
-//全屏
-const onFullscreen = () => {
-  if (!isFullscreen.value) {
-    const element = document.documentElement;
-    if (element.requestFullscreen) {
-      element.requestFullscreen();
-    } else if (element.mozRequestFullScreen) { // Firefox
-      element.mozRequestFullScreen();
-    } else if (element.webkitRequestFullscreen) { // Chrome, Safari and Opera
-      element.webkitRequestFullscreen();
-    } else if (element.msRequestFullscreen) { // IE/Edge
-      element.msRequestFullscreen();
-    }
-  } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.mozCancelFullScreen) { // Firefox
-      document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) { // IE/Edge
-      document.msExitFullscreen();
-    }
-  }
-  isFullscreen.value = !isFullscreen.value
 }
 
 const onShowSearch = () => {
@@ -163,8 +136,8 @@ onUnmounted(() => {
       <a-col :flex="useLayout().windowWidth>768?'320px':'250px'">
         <template v-if="useLayout().isFullScreen">
           <a-tooltip content="全屏开关" v-if="useLayout().windowWidth>768">
-            <a-button @click="onFullscreen" class="btn-icon shadow" shape="circle">
-              <icon-fullscreen size="19" v-if="!isFullscreen"/>
+            <a-button @click="onScreenFull()" class="btn-icon shadow" shape="circle">
+              <icon-fullscreen size="19" v-if="!screenFullStatus"/>
               <icon-fullscreen-exit size="19" v-else/>
             </a-button>
           </a-tooltip>

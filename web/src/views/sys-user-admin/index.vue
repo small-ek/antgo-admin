@@ -69,15 +69,17 @@ const pageSizeChange = (size) => {
   fetchPageList({currentPage: page.value.pageSize, pageSize: size, filter_map: page.value.searchForm});
 };
 
-const changeTable = (data, extra) => {
-  if (extra.sorter) {
-    fetchPageList({
-      currentPage: page.value.current,
-      pageSize: page.value.pageSize,
-      filter_map: page.value.searchForm,
-      order: [extra.sorter.field],
-      desc: [extra.sorter.direction === 'descend']
-    });
+const sorterChange = (field,sort) => {
+  console.log(field);
+  console.log(sort);
+  if (sort&&field) {
+    // fetchPageList({
+    //   currentPage: page.value.current,
+    //   pageSize: page.value.pageSize,
+    //   filter_map: page.value.searchForm,
+    //   order: [field],
+    //   desc: [sort === 'descend']
+    // });
   }
 };
 
@@ -158,7 +160,7 @@ const reload = () => {
     <Table ref="tableRef" :columns="columns" :data="list" :total="page.total" :current="page.current"
            :pageSize="page.pageSize" @changePage="changePage"
            @pageSizeChange="pageSizeChange"
-           @changeTable="changeTable" @select="select" @deletes="deletesItem" @showEdit="showEdit">
+           @sorterChange="sorterChange" @select="select" @deletes="deletesItem" @showEdit="showEdit">
 
       <template #status="{ record }">
         <Status :row="record" @onClick="updatedStatus"></Status>

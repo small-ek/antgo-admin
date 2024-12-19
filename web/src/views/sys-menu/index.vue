@@ -169,7 +169,7 @@ const reload = () => {
            :current="page.current"
            :pageSize="page.pageSize" @changePage="changePage"
            @pageSizeChange="pageSizeChange"
-           @changeTable="changeTable" @select="select" @deletesItem="deletesItem" @showEdit="showEdit">
+           @changeTable="changeTable" @select="select" @deletesItem="deletesItem" @showEdit="showEdit" hide-export>
       <template #title="{ record }">
         <span class="icon" v-if="record.icon">
           <font-awesome-icon :icon="record.icon" size="1x"/>

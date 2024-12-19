@@ -1,43 +1,53 @@
 <script setup>
 import {defineProps, ref} from "vue";
-import {columns, ids} from "@/views/sys-user-admin/index.js";
+import {ids} from "@/views/sys-user-admin/index.js";
 import {useCsv} from "@/utils/csv.js";
+import {onScreenFull} from "@/utils/screenfull.js";
 
 const props = defineProps({
+  //列
   columns: {
     type: Object,
     required: true
   },
+  //数据
   data: {
     type: Array,
     required: true
   },
+  //总数
   total: {
     type: Number,
     required: true
   },
+  //当前页
   current: {
     type: Number,
     required: true
   },
+  //每页显示数量
   pageSize: {
     type: Number,
     required: true
   },
+  //每页显示数量选项
   pageSizeOptions: {
     type: Array,
     required: false,
     default: () => [10, 20, 50, 100, 200, 500, 1000]
   },
-  expandable: { //展开行
+  //展开行
+  expandable: {
     type: Object,
     required: false
   },
+  //行key
   rowKey: {
     type: String,
     required: false,
     default: 'id'
   },
+  //行选择
   rowSelection: {
     type: Object,
     required: false,
@@ -48,44 +58,76 @@ const props = defineProps({
       }
     }
   },
+  //隐藏删除按钮
   hideDel: {
     type: Boolean,
     required: false,
     default: false
   },
+  //隐藏添加按钮
   hideAdd: {
     type: Boolean,
     required: false,
     default: false
   },
+  //自定义导出
   customExport: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+  //隐藏导出按钮
+  hideExport: {
     type: Boolean,
     required: false,
     default: false
   }
 });
 const selectedKeys = ref([])
-const emit = defineEmits(['changePage', 'pageSizeChange', 'changeTable', 'select', 'deletes', 'showEdit', 'exportData'])
+const emit = defineEmits(['changePage', 'pageSizeChange', 'sorterChange', 'select', 'deletes', 'showEdit', 'exportData'])
+/**
+ * 分页
+ * @param page
+ */
 const onChangePage = (page) => {
   emit('changePage', page)
 }
+/**
+ * 每页显示数量
+ * @param size
+ */
 const pageSizeChange = (size) => {
   emit('pageSizeChange', size)
 }
 
 const slot = props.columns.filter(item => item.slotName)
 
-const changeTable = (data, extra, currentDataSource) => {
-  emit('changeTable', data, extra, currentDataSource)
+/**
+ * 切换表格
+ * @param field
+ * @param sort
+ */
+const sorterChange = (field,sort) => {
+  emit('sorterChange', field,sort)
 }
+/**
+ * 选中
+ * @param selectedRowKeys
+ * @param selectedRows
+ */
 const select = (selectedRowKeys, selectedRows) => {
   emit('select', selectedRowKeys)
 }
-
+/**
+ * 清空选中
+ */
 const clearSelected = () => {
   selectedKeys.value = []
 }
-
+/**
+ * 全选
+ * @param selected
+ */
 const selectAll = (selected) => {
   if (selected) {
     emit('select', props.data.map(item => item[props.rowKey]))
@@ -94,15 +136,26 @@ const selectAll = (selected) => {
   }
 }
 
+/**
+ * 删除
+ */
 const deletes = () => {
   emit('deletes')
 }
-
+/**
+ * 显示编辑
+ */
 const showEdit = () => {
   emit('showEdit')
 }
+console.log(props.columns)
 const defaultColumn = ref(props.columns.filter(item => item.title && item.visible).map(item => item.title));
 
+console.log(defaultColumn.value)
+/**
+ * 切换列
+ * @param value
+ */
 const changeColumn = (value) => {
   const visibleTitles = new Set(value);
   const updatedColumns = [];
@@ -116,13 +169,16 @@ const changeColumn = (value) => {
 
   defaultColumn.value = updatedColumns;
 };
-// 导出数据
+
+/**
+ * 导出数据
+ */
 const exportData = () => {
   if (props.customExport) {
     emit('exportData')
     return
   }
-  useCsv().exportCsv([props.columns.filter(column => column.visible).map(column => column.title), ...props.data.map(row => props.columns.filter(column => column.visible).map(column => row[column.dataIndex]))], "导出列表")
+  useCsv().exportCsv([props.columns.filter(column => column.visible && column.title !== '操作').map(column => column.title), ...props.data.map(row => props.columns.filter(column => column.visible).map(column => row[column.dataIndex]))], "导出列表")
 }
 
 defineExpose({
@@ -131,7 +187,7 @@ defineExpose({
 </script>
 
 <template>
-  <div id="print-area">
+  <div id="ant-table">
     <a-row :gutter="15" style="margin-bottom: 5px;margin-top: 5px">
       <a-col :xs="14" :sm="12" :md="12" :lg="12" :xl="12" :xxl="12">
         <a-button type="outline" @click="showEdit()" v-if="!hideAdd">
@@ -161,14 +217,14 @@ defineExpose({
               <template #content>
                 <div style="padding: 0 1vw">
                   <a-checkbox-group :default-value="defaultColumn" direction="vertical" @change="changeColumn">
-                    <a-checkbox :value="row.title" v-for="row in columns">{{ row.title }}</a-checkbox>
+                    <a-checkbox :value="row.title" v-for="row in props.columns">{{ row.title }}</a-checkbox>
                   </a-checkbox-group>
                 </div>
               </template>
             </a-dropdown>
           </a-tooltip>
 
-          <a-tooltip content="导出">
+          <a-tooltip content="导出" v-if="!hideExport">
             <a-dropdown>
               <a-button type="outline" class="ml-10" size="mini" @click="exportData">
                 <template #icon>
@@ -180,7 +236,7 @@ defineExpose({
 
           <a-tooltip content="全屏">
             <a-dropdown>
-              <a-button type="outline" class="ml-10" size="mini">
+              <a-button type="outline" class="ml-10" size="mini" @click="onScreenFull('ant-table')">
                 <template #icon>
                   <icon-fullscreen/>
                 </template>
@@ -192,7 +248,7 @@ defineExpose({
     </a-row>
     <a-table :columns="props.columns.filter(column => column.visible)" :data="props.data"
              :row-selection="props.rowSelection" :pagination="false"
-             @change="changeTable" :expandable="props.expandable" :row-key="props.rowKey" :bordered="false"
+             @sorterChange="sorterChange" :expandable="props.expandable" :row-key="props.rowKey" :bordered="false"
              v-model:selectedKeys="selectedKeys" @select="select" @select-all="selectAll" stripe column-resizable>
       <!--自定义插槽-->
       <template #[row.slotName]="{record, rowIndex}" v-for="row in slot">

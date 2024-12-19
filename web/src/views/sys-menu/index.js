@@ -61,13 +61,16 @@ const searchList = ref([
     }]);
 
 //表格列
-const columns = [
+const columns = ref([
     {
         title: '标识',
         dataIndex: 'id',
         width: 110,
+        visible: true,
+        sorter: true,
         sortable: {
-            sortDirections: ['ascend', 'descend']
+            sortDirections: ['ascend', 'descend'],
+            sorter: true
         }
     },
     {
@@ -75,6 +78,7 @@ const columns = [
         dataIndex: 'title',
         tooltip: true,
         ellipsis: true,
+        visible: true,
         width: 150,
         slotName: 'title'
     },
@@ -82,6 +86,7 @@ const columns = [
         title: '菜单跳转路径',
         dataIndex: 'path',
         width: 150,
+        visible: true,
         tooltip: true,
         ellipsis: true,
     },
@@ -90,6 +95,7 @@ const columns = [
         dataIndex: 'component',
         tooltip: true,
         ellipsis: true,
+        visible: true,
     },
     {
         title: '状态',
@@ -97,6 +103,7 @@ const columns = [
         width: 90,
         tooltip: true,
         ellipsis: true,
+        visible: true,
         slotName: 'status'
     },
     {
@@ -105,25 +112,29 @@ const columns = [
         width: 80,
         tooltip: true,
         ellipsis: true,
+        visible: true,
     }, {
         title: '排序',
         dataIndex: 'sort',
         width: 70,
         tooltip: true,
         ellipsis: true,
+        visible: true,
     }, {
         title: '创建时间',
         dataIndex: 'created_at',
         tooltip: true,
         ellipsis: true,
+        visible: true,
         width: 180,
         slotName: 'created_at'
     }, {
         title: '操作',
         slotName: 'optional',
         width: 240,
+        visible: true,
     }
-];
+]);
 
 //表单验证
 const formRules = reactive({
