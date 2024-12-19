@@ -4,22 +4,19 @@ import formItem from "@/components/form-item/index.vue";
 import {useLayout} from "@/stores/layout.js";
 
 const props = defineProps({
-  model: {
-    type: Object,
-    required: true
-  }
+  model: {type: Object, required: true}
 });
 const formRef = ref(null)
 const isExpand = ref(true)
+const emit = defineEmits(['search'])
+const form = reactive({})
+
+const onSearch = () => emit('search', form)
+
 const onChangeIsExpand = () => {
   isExpand.value = !isExpand.value
 }
-const emit = defineEmits(['search'])
-const form = reactive({})
-const onSearch = () => {
-  emit('search', form)
 
-}
 const onReset = () => {
   formRef.value.resetFields()
 }

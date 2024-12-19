@@ -2,16 +2,12 @@
 import {defineEmits, defineProps} from 'vue';
 
 const props = defineProps({
-  row: {
-    type: Object,
-    required: true
-  }
+  row: {type: Object, required: true}
 });
 
 const emit = defineEmits(['onClick'])
-const onClick = (status) => {
-  emit('onClick', status, props.row)
-}
+
+const onClick = (status) => emit('onClick', status, props.row)
 </script>
 
 <template>

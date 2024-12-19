@@ -2,14 +2,10 @@
 import {defineProps} from "vue";
 
 const props = defineProps({
-  row: {
-    type: Object,
-    required: true
-  },
-  form: {
-    type: Object,
-    required: true
-  }
+  //行数据
+  row: {type: Object, required: true},
+  //表单数据
+  form: {type: Object, required: true}
 });
 const type = props.row.value
 
@@ -18,11 +14,10 @@ if (props.row.type === 'number' && typeof type !== 'number') {
 }
 
 props.form[props.row.key] = props.row.value
+const onSearch = () => emit('search')
 
 const emit = defineEmits(['search'])
-const onSearch = () => {
-  emit('search')
-}
+
 /**
  * 树菜单过滤
  * @param searchValue

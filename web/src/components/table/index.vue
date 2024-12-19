@@ -6,46 +6,32 @@ import {onScreenFull} from "@/utils/screenfull.js";
 
 const props = defineProps({
   //列
-  columns: {
-    type: Object,
-    required: true
-  },
+  columns: {type: Object, required: true},
   //数据
-  data: {
-    type: Array,
-    required: true
-  },
+  data: {type: Array, required: true},
   //总数
-  total: {
-    type: Number,
-    required: true
-  },
+  total: {type: Number, required: true},
   //当前页
-  current: {
-    type: Number,
-    required: true
-  },
+  current: {type: Number, required: true},
   //每页显示数量
-  pageSize: {
-    type: Number,
-    required: true
-  },
+  pageSize: {type: Number, required: true},
+  //展开行
+  expandable: {type: Object, required: false},
+  //隐藏删除按钮
+  hideDel: {type: Boolean, required: false, default: false},
+  //隐藏添加按钮
+  hideAdd: {type: Boolean, required: false, default: false},
+  //自定义导出
+  customExport: {type: Boolean, required: false, default: false},
+  //隐藏导出按钮
+  hideExport: {type: Boolean, required: false, default: false},
+  //行key
+  rowKey: {type: String, required: false, default: 'id'},
   //每页显示数量选项
   pageSizeOptions: {
     type: Array,
     required: false,
     default: () => [10, 20, 50, 100, 200, 500, 1000]
-  },
-  //展开行
-  expandable: {
-    type: Object,
-    required: false
-  },
-  //行key
-  rowKey: {
-    type: String,
-    required: false,
-    default: 'id'
   },
   //行选择
   rowSelection: {
@@ -58,66 +44,49 @@ const props = defineProps({
       }
     }
   },
-  //隐藏删除按钮
-  hideDel: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-  //隐藏添加按钮
-  hideAdd: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-  //自定义导出
-  customExport: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-  //隐藏导出按钮
-  hideExport: {
-    type: Boolean,
-    required: false,
-    default: false
-  }
 });
-const selectedKeys = ref([])
+//响应式数据
+const selectedKeys = ref([]);
+const columns = ref(props.columns.filter(column => column.visible));
+const defaultColumn = ref(props.columns.filter(item => item.title && item.visible).map(item => item.title));
+const slot = props.columns.filter(item => item.slotName)
+
+//定义事件
 const emit = defineEmits(['changePage', 'pageSizeChange', 'sorterChange', 'select', 'deletes', 'showEdit', 'exportData'])
 /**
  * 分页
  * @param page
  */
-const onChangePage = (page) => {
-  emit('changePage', page)
-}
+const onChangePage = (page) => emit('changePage', page);
 /**
  * 每页显示数量
  * @param size
  */
-const pageSizeChange = (size) => {
-  emit('pageSizeChange', size)
-}
-
-const slot = props.columns.filter(item => item.slotName)
+const pageSizeChange = (size) => emit('pageSizeChange', size)
 
 /**
  * 切换表格
  * @param field
  * @param sort
  */
-const sorterChange = (field,sort) => {
-  emit('sorterChange', field,sort)
-}
+const sorterChange = (field, sort) => emit('sorterChange', field, sort)
 /**
  * 选中
  * @param selectedRowKeys
  * @param selectedRows
  */
-const select = (selectedRowKeys, selectedRows) => {
-  emit('select', selectedRowKeys)
-}
+const select = (selectedRowKeys, selectedRows) => emit('select', selectedRowKeys)
+
+/**
+ * 删除
+ */
+const deletes = () => emit('deletes');
+
+/**
+ * 显示编辑
+ */
+const showEdit = () => emit('showEdit');
+
 /**
  * 清空选中
  */
@@ -136,22 +105,7 @@ const selectAll = (selected) => {
   }
 }
 
-/**
- * 删除
- */
-const deletes = () => {
-  emit('deletes')
-}
-/**
- * 显示编辑
- */
-const showEdit = () => {
-  emit('showEdit')
-}
-console.log(props.columns)
-const defaultColumn = ref(props.columns.filter(item => item.title && item.visible).map(item => item.title));
 
-console.log(defaultColumn.value)
 /**
  * 切换列
  * @param value
@@ -166,7 +120,7 @@ const changeColumn = (value) => {
       updatedColumns.push(column.title);
     }
   });
-
+  columns.value = props.columns.filter(column => column.visible);
   defaultColumn.value = updatedColumns;
 };
 
@@ -176,9 +130,9 @@ const changeColumn = (value) => {
 const exportData = () => {
   if (props.customExport) {
     emit('exportData')
-    return
+  } else {
+    useCsv().exportCsv([props.columns.filter(column => column.visible && column.title !== '操作').map(column => column.title), ...props.data.map(row => props.columns.filter(column => column.visible).map(column => row[column.dataIndex]))], "导出列表")
   }
-  useCsv().exportCsv([props.columns.filter(column => column.visible && column.title !== '操作').map(column => column.title), ...props.data.map(row => props.columns.filter(column => column.visible).map(column => row[column.dataIndex]))], "导出列表")
 }
 
 defineExpose({
@@ -246,8 +200,7 @@ defineExpose({
         </div>
       </a-col>
     </a-row>
-    <a-table :columns="props.columns.filter(column => column.visible)" :data="props.data"
-             :row-selection="props.rowSelection" :pagination="false"
+    <a-table :columns="columns" :data="props.data" :row-selection="props.rowSelection" :pagination="false"
              @sorterChange="sorterChange" :expandable="props.expandable" :row-key="props.rowKey" :bordered="false"
              v-model:selectedKeys="selectedKeys" @select="select" @select-all="selectAll" stripe column-resizable>
       <!--自定义插槽-->
@@ -255,6 +208,8 @@ defineExpose({
         <slot :name="row.slotName" :record="record" :rowIndex="rowIndex"></slot>
       </template>
     </a-table>
+
+    <!--分页-->
     <div class="ant-page">
       <a-pagination :total="props.total" :current="props.current" :page-size="props.pageSize" show-total show-jumper
                     show-page-size @change="onChangePage" :page-size-options="props.pageSizeOptions"

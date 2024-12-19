@@ -73,13 +73,14 @@ const sorterChange = (field,sort) => {
   console.log(field);
   console.log(sort);
   if (sort&&field) {
-    // fetchPageList({
-    //   currentPage: page.value.current,
-    //   pageSize: page.value.pageSize,
-    //   filter_map: page.value.searchForm,
-    //   order: [field],
-    //   desc: [sort === 'descend']
-    // });
+    console.log(sort === 'descend')
+    fetchPageList({
+      currentPage: page.value.current,
+      pageSize: page.value.pageSize,
+      filter_map: page.value.searchForm,
+      order: [field],
+      desc: [sort === 'descend']
+    });
   }
 };
 

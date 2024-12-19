@@ -3,35 +3,23 @@ import {modalWidth} from "@/utils/helper.js";
 import {defineExpose, defineProps, ref} from "vue";
 import FormItem from "@/components/form-item/index.vue";
 
-const isVisible = ref(false)
 const props = defineProps({
-  title: {
-    type: String,
-    required: false,
-    default: '编辑'
-  },
-  model: {
-    type: Array,
-    required: true
-  },
-  form: {
-    type: Object,
-    required: true
-  },
-  rules: {
-    type: Object,
-    required: false
-  }
+  title: {type: String, required: false, default: '编辑'},
+  model: {type: Array, required: true},
+  form: {type: Object, required: true},
+  rules: {type: Object, required: false}
 });
+
+const isVisible = ref(false)
 const formRef = ref(null)
 const emit = defineEmits(['submit'])
+
+const submit = () => emit('submit', props.form)
+
 const setVisible = (value) => {
   isVisible.value = value
 }
 
-const submit = () => {
-  emit('submit', props.form)
-}
 const reset = () => {
   formRef.value.resetFields()
 }

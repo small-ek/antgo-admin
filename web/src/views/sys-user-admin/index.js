@@ -74,7 +74,7 @@ const searchList = ref([
     }]);
 
 //表格列
-const columns = ref([
+const columns = [
     {
         title: '标识',
         dataIndex: 'id',
@@ -135,7 +135,7 @@ const columns = ref([
         width: 220,
         visible: true
     }
-]);
+];
 
 //表单验证
 const formRules = reactive({
