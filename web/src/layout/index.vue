@@ -8,7 +8,6 @@ import transverse from '@/layout/transverse/index.vue'
 //分栏布局
 import columns from '@/layout/columns/index.vue'
 import {useLayout} from "@/stores/layout.js";
-console.log(useLayout().layout)
 //布局组件
 const Layout = {
   vertical,
