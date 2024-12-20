@@ -5,6 +5,7 @@ import {useCsv} from "@/utils/csv.js";
 import {onScreenFull} from "@/utils/screenfull.js";
 
 const props = defineProps({
+  name: {type: String, required: true},
   //列
   columns: {type: Object, required: true},
   //数据
@@ -131,7 +132,7 @@ const exportData = () => {
   if (props.customExport) {
     emit('exportData')
   } else {
-    useCsv().exportCsv([props.columns.filter(column => column.visible && column.title !== '操作').map(column => column.title), ...props.data.map(row => props.columns.filter(column => column.visible).map(column => row[column.dataIndex]))], "导出列表")
+    useCsv().exportCsv([props.columns.filter(column => column.visible && column.title !== '操作').map(column => column.title), ...props.data.map(row => props.columns.filter(column => column.visible).map(column => row[column.dataIndex]))], "导出数据")
   }
 }
 
